@@ -6,9 +6,9 @@
         <title>Leo Meyerovich, CS Graduate Student -- Peon Extraordinaire</title>
         <style type="text/css">
 
-.news { color: blue} 
-        
-hr { margin-left: -20px }        
+.news { color: blue}
+
+hr { margin-left: -20px }
 p, .txt li {
 font-family: arial, sans-serif;
 font-size: .9em;
@@ -45,7 +45,7 @@ li.highlight { border: 1px solid #77F; padding: 3px }
             }
             #header ul { list-style-type: none; margin-top: -1em;}
             #header li { display: inline; padding: .5em;}
-            h2 {  clear: both; display: block;  }            
+            h2 {  clear: both; display: block;  }
 div.area { margin-bottom: 1em; display: block; float: left; min-width: 10em;  padding-left: 1em; margin-left: 0em; border-top: 1px solid; clear: left; }
 	div.area img { width: 8em; }
             div.area {  background-color: #EEE; color: #000 }
@@ -54,27 +54,27 @@ div.area { margin-bottom: 1em; display: block; float: left; min-width: 10em;  pa
             ul.papers {float: left;  margin: 0em; padding-top: .5em; border-top: 1px solid }
             ul.papers li { list-style-type: none; padding: 0em}
             ul.papers li { padding-bottom: 0.5em; }
-           b.title {} 
+           b.title {}
             // b.title { font-weight: normal; }
             b.title:before { content: "\""; }
             b.title:after { content: "\""; }
-            li.starredOld b.title:before { 
-              content: "\2605";  
+            li.starredOld b.title:before {
+              content: "\2605";
               color: transparent;
-              background-color: transparent; 
-              margin-right: 1em; 
+              background-color: transparent;
+              margin-right: 1em;
               margin-left: -2em;
               position: relative;
               top: -1.5em; left: -.3em;
             }
-            li.starredOld.highlight b.title:before { 
-              content: "\2605";  
+            li.starredOld.highlight b.title:before {
+              content: "\2605";
               color: black;
-              background-color: transparent; 
-              margin-right: 1em; 
+              background-color: transparent;
+              margin-right: 1em;
               margin-left: -2em;
               position: relative;
-              top: -1.5em; 
+              top: -1.5em;
               left: -.3em;
             }
 
@@ -144,14 +144,14 @@ div.area { margin-bottom: 1em; display: block; float: left; min-width: 10em;  pa
                 border-bottom: 1px #FF9900 dotted;
             }
 
-            a:hover, .hit:hover { color:#F00; border-bottom: 1px #F00 solid} 
+            a:hover, .hit:hover { color:#F00; border-bottom: 1px #F00 solid}
             body {
                 background: #FFF;
                 margin-left: 2em;
                 padding-left:1em;
                 border-left: 1px #DDD dashed;
                 color: #000;
-                margin-bottom: 0px; 
+                margin-bottom: 0px;
             }
 
             html {
@@ -159,9 +159,9 @@ div.area { margin-bottom: 1em; display: block; float: left; min-width: 10em;  pa
                 padding-bottom: 0px;
             }
 
-.papers li {padding-bottom: 15px; max-width: 700px; }            
-.hit span {font-size: .8em; font-family: Courier}            
-.papers blockquote { padding: 10px; margin: 20px; border: 1px dotted gray; background-color: #fff; max-width: 500px; text-align: justify; text-justify: newspaper; font-size: 1em; line-height: 1em;}            
+.papers li {padding-bottom: 15px; max-width: 700px; }
+.hit span {font-size: .8em; font-family: Courier}
+.papers blockquote { padding: 10px; margin: 20px; border: 1px dotted gray; background-color: #fff; max-width: 500px; text-align: justify; text-justify: newspaper; font-size: 1em; line-height: 1em;}
 .papers blockquote:before { margin-top: -5px; margin-left: -20px; content: "\201C"; font-weight: bold; font-size: 3.5em; color: gray; float: left; }
 .papers blockquote:after { margin-top: 30px; margin-right: -20px; content: "\201D"; font-weight: bold; font-size: 3.5em; float: right; color: gray}
 
@@ -189,7 +189,7 @@ var element = false;
 $('ul.papers li .hit').each(function (i) {
   if (this.parentNode.innerHTML.toLowerCase().indexOf(elementSummary) != -1) {
     if (element == false) {
-      element = this;    
+      element = this;
     }
   }
 });
@@ -198,7 +198,7 @@ if (element == false) {
   $('ul.papers li .hit').each(function (i) {
     if  (this.parentNode.parentNode.parentNode.innerHTML.toLowerCase().indexOf(elementSummary) != -1) {
       if (element == false) {
-        element = this;    
+        element = this;
       }
     }
   });
@@ -247,7 +247,7 @@ $(function() {
 
 //label blocks as first in li
 $(function() {
-  $(".papers blockquote").each(function (i) {    
+  $(".papers blockquote").each(function (i) {
       var count = 0;
       $(this).prev().each(function rec (j) {
           if (this.tagName == "BLOCKQUOTE") count++;
@@ -261,23 +261,23 @@ $(function() {
 $(function () {
 
   var abstracts = $(".papers blockquote");
-  $(".papers blockquote").each(function (i) {    
-  
+  $(".papers blockquote").each(function (i) {
+
     var bl = $(this);
     var isFirstBlInLi = parseInt(this.getAttribute("nthBlock")) == 0;
-    
+
     var paper = this.parentNode;
     var where = this.previousSibling.previousSibling;
     var links = paper.removeChild(this.previousSibling);
-    
+
     var abstract = paper.removeChild(this);
     var onB;
     var abstractLink =
-      rec_e(function (clickE) {          
-        onB = toggle(clickE, false && i == 0).startsWith(false && i == 0 && isFirstBlInLi);   
-        
+      rec_e(function (clickE) {
+        onB = toggle(clickE, false && i == 0).startsWith(false && i == 0 && isFirstBlInLi);
+
         var whenOn = SPAN({className: 'hit'}, SPAN("[hide]"));
-        var whenOff = SPAN({className: 'hit'},  SPAN("[peek]"));      
+        var whenOff = SPAN({className: 'hit'},  SPAN("[peek]"));
         return [clicksE(whenOn).mergeE(clicksE(whenOff)),
                 onB.ifB(whenOn, whenOff)]; });
    onB.liftB(function (v) {
@@ -327,7 +327,7 @@ $(function () {
 <!--
 
 <li><a href="js/cv.pdf">CV</a> </li>
-    
+
 -->
                 </ul>
 
@@ -337,26 +337,29 @@ $(function () {
 
 
 <a name="bio"></a>
-        <p style="text-align:justify">I work with <a href="http://www.eecs.berkeley.edu/~bodik/">Ras Bodik</a> in the <a href="http://parlab.eecs.berkeley.edu">Par Lab</a> on <a href="http://sc-lang.com" style="color:blue">the Superconductor language for big data visualization</a>, a parallel web browser, and on the side, the sociology of programming languages.
+        <p style="text-align:justify">I'm the co-founder of <a href="http://www.graphistry.com" style="color:blue">Graphistry</a>: a startup pushing the limits of data visualization. Our GPU cloud streaming infrastructure enables interacting with 100X more data in the browser. We are initially focusing on improving exploration of time series data and big graphs.
 
-       Previously, I was a member of
-        <a href="http://www.cs.brown.edu/research/plt/">Brown PLT</a> with <a href="http://www.cs.brown.edu/~sk/">Shriram Krishnamurthi</a>. I have also worked at a startup, Microsoft Research, Macromedia, Adobe's Advanced Technology Labs, and WBRU, a commercial radio station.
+       <p>Previously, I worked with <a href="http://www.eecs.berkeley.edu/~bodik/">Ras Bodik</a> in the <a href="http://parlab.eecs.berkeley.edu">UC Berkeley Par Lab</a> on the <a href="http://sc-lang.com"> Superconductor</a> GPU language for big data visualization, which led to our startup, and built the first parallel web browser, which led the way to projects like <a href="https://github.com/servo/servo">Servo by Mozilla</a>. On the side, I explored <a href="projects/socioplt">the sociology of programming languages</a>, built <a href="http://www.proofist.com">Proofist</a>, a crowdsourcing proofreader, and researched language-based security techniques for the web similar to the subsequent CSP standard and JavaScript proxy objects.
+
+       <p>Even earlier, I was a member of
+        <a href="http://www.cs.brown.edu/research/plt/">Brown PLT</a> with <a href="http://www.cs.brown.edu/~sk/">Shriram Krishnamurthi</a>. While there, we did the first functional reactive web language <a href="http://www.flapjax-lang.org">Flapjax</a> and began my dalliance with language-based security. I have also worked at a startup, Microsoft Research, Macromedia, Adobe's Advanced Technology Labs, and WBRU, a commercial radio station.
 <!--Most recently, I have been researching <a href="#ftl" onclick="fireEvent('ftl','click')">synthesis and parallelization</a> for low-power browsers and big data visualization,  <a href="#cdp" onclick="fireEvent('cdp','click')"><i>clustered</i> data parallel algorithms</a>, and <a href="#socio" onclick="fireEvent('socioplt','click')">sociological foundations of programming languages</a>. Up till the end run for my thesis, I also worked on JavaScript and browser security (with <i>Views</i> being partially superseded by <a href="http://wiki.ecmascript.org/doku.php?id=harmony:proxies"><i>Proxies</i> in JavaScript/ECMAScript</a>).
 -->
 
-<!-- I've designed languages for important problems beyond parallelism as well: 
+<!-- I've designed languages for important problems beyond parallelism as well:
 <a href="#security" onclick="fireEvent('conscript','click')">ConScript for scripting security policies</a>, <a href="#guise" onclick="fireEvent('extraction','click')">GUISE for mashup meta-programming</a>, and <a href="#flapjax" onclick="fireEvent('flapjax','click')">Flapjax for coordination</a>.</p>
 -->
-<p style="clear:both"></p>
+<p style="clear:both"></p><br/>
+
 <p>My following languages paint a brighter future for the web:
 <ul class="txt">
-<li><a href="#parallelism" style="color:black" onclick="fireEvent('ftl','click')"><b>Parallelism:</b></a> the <a href="#ftl" onclick="fireEvent('ftl','click')">FTL</a> parallel pattern synthesizer and surrounding <a href="http://www.sc-lang.com" style="color:blue">Superconductor language</a> <a href="http://www.youtube.com/watch?v=H1aHul6UaV4&feature=youtu.be" style="color:green">(screencast!)</a> for multicore CSS and GPU big data visualization 
+<li><a href="#parallelism" style="color:black" onclick="fireEvent('ftl','click')"><b>Parallelism:</b></a> the <a href="#ftl" onclick="fireEvent('ftl','click')">FTL</a> parallel pattern synthesizer and surrounding <a href="http://www.sc-lang.com">Superconductor language</a> <a href="http://www.youtube.com/watch?v=H1aHul6UaV4&feature=youtu.be" style="color:green">(screencast!)</a> for multicore CSS and GPU big data visualization
 <!-- <br/>
  (<i style="color:blue">PLDI+ECOOP SRC 2nd place</i>, ParLab in <a href="http://www.economist.com/node/18750706" class="news">The Economist</a> and <a href="http://www.nytimes.com/2008/04/30/technology/30lab.html" class="news">New York Times</a>)--></li>
-<li><a href="#productivity" style="color:black" onclick="fireEvent('flapjax','click')"><b>Productivity:</b></a> the <a href="#flapjax" onclick="fireEvent('flapjax','click')">Flapjax</a> web event language 
+<li><a href="#productivity" style="color:black" onclick="fireEvent('flapjax','click')"><b>Productivity:</b></a> the <a href="#flapjax" onclick="fireEvent('flapjax','click')">Flapjax</a> web event language
 <!--<br/>
 --></li>
-<li><a href="#security" style="color:black" onclick="fireEvent('conscript','click')"><b>Security:</b></a> the <a href="#conscript" onclick="fireEvent('conscript','click')">ConScript</a> script security language 
+<li><a href="#security" style="color:black" onclick="fireEvent('conscript','click')"><b>Security:</b></a> the <a href="#conscript" onclick="fireEvent('conscript','click')">ConScript</a> script security language
 <!--
     <br/>
     -->
@@ -365,7 +368,7 @@ $(function () {
 </p>
 <p>Finally, causing some excitement, see our work on
 <a href="#socio" onclick="fireEvent('socioicse','click')">
-Socio-PLT: Sociology for Programming Languages!</a><br/> 
+Socio-PLT: Sociology for Programming Languages!</a><br/>
 <!--
 <p>These are in collaboration with some great researchers: <a href="http://research.microsoft.com/en-us/people/toddm/">Todd Mytkowicz</a> (SIMD algorithms for irregular codes), <a href="http://www.cs.berkeley.edu/~asrabkin/">Ari Rabkin</a> (Socio-PLT), and our great undergraduates, Eric Atkinson (mechanization of CSS) and Matt Torok (GPU language for big data visualizations). Also, check out parallelization research by our friends that may soon end up in a browser near you: Calin Cascaval (Qualcomm), Mohammad Haghighat (Intel), Tasneem Brutch (Samsung), and the <a href="https://github.com/mozilla/servo/">Servo team</a> at Mozilla!
 -->
@@ -390,16 +393,27 @@ Wolfram Schulte (Research Manager / Principal Researcher, Microsoft Research)</p
 <h2>Upcoming</h2>
 <p>Ping me if we coincide!
 <ul class="txt">
-<li><b>Google</b>: Parallelizing the Web Browser and Other Browser Research at UC Berkeley (Mountain View, November)</li>
-<li><b>AMD Developer Summit</b>: Superconductor: Hardware-accelerating Web Languages for Massive Visualizations (San Jose, November)</li>
-<li><b>Node Summit</b>: Panel on The Evolution of JavaScript (San Francisco, December)</li>
-<li><b>Cal Poly</b>: Scaling Charts with Superconductor: When a Language Designer Encounters a Cloud (San Luis Obispo, January 2014)</li>
-<li><b>Strata</b>: Superconductor: Scaling Charts with Design and GPUs (Santa Clara, February 2014)</li>
+<li><b>Strange Loop</b>: The Sociology of Programming Languages + Future of Data Visualization(St. Louis, September 2014)</li>
+<li><b>Strata + Hadoop World</b>: Graphistry: Scaling Visual Exploration with GPUs and Design (NYC, October 2014)</li>
+<li><b>Data Visualization New York</b>: Scaling Visual Exploration with GPUs and Design (NYC, October 2014)</li>
+
+
 </ul>
 <p>Recent</p>
 <ul class="txt" style="opacity: 0.5">
+<li><b>GraphLab Conf</b>: Graphistry demos (San Francisco, July 2014)</li>
+<li><b>FooCamp</b>: Future of Data Visualization (Sebastapol, June 2014)</li>
+<li><b>Oakland Data Viz</b>: Superconductor: Scaling Charts with Design and GPUs  (Oakland, March 2014)</li>
+<li><b>GDC / Khronos</b>: Superconductor: GPU-Accelerating Data Visualization (San Francisco, March 2014)</li>
+<li><b>HPC+GPU</b>: Superconductor: Scaling Charts with Design and GPUs (CMU NASA, February 2014)</li>
+<li><b>Strata</b>: Superconductor: Scaling Charts with Design and GPUs (Santa Clara, February 2014)</li>
+<li><b>Cal Poly</b>: Scaling Charts with Superconductor: When a Language Designer Encounters a Cloud (San Luis Obispo, January 2014)</li>
+<!--
+<li><b>Node Summit</b>: Panel on The Evolution of JavaScript (San Francisco, December)</li>
+<li><b>AMD Developer Summit</b>: Superconductor: Hardware-accelerating Web Languages for Massive Visualizations (San Jose, November)</li>
+<li><b>Google</b>: Parallelizing the Web Browser and Other Browser Research at UC Berkeley (Mountain View, November)</li>
 <li><b>OOPSLA (SPLASH)</b>: Empirical Analysis of Programming Language Adoption
-<b><i style="color:blue">best paper award</i></b> <a href="projects/socioplt/talks/oopsla2013.pptx">pptx</a>, <a href="http://www.slideshare.net/lmeyerov/oopsla-talk2">slideshare</a>
+<b><i style="color:blue">best paper award</i>, <i style="color:blue">SIGPLAN research highlight</i></b>, <a href="projects/socioplt/talks/oopsla2013.pptx">pptx</a>, <a href="http://www.slideshare.net/lmeyerov/oopsla-talk2">slideshare</a>
  (Indianapolis, October 26th-31st)</li>
 <li><b>IBM PL Day</b>: Keynote on Socio-PLT (September, 2013)</li>
 <li><a href="https://thestrangeloop.com/"><b>Strange Loop</b></a>: Superconductor -- Thinking DSLs for Massive Visualizations (September 18th-20th, St. Louis, Missouri)</li>
@@ -411,6 +425,7 @@ Wolfram Schulte (Research Manager / Principal Researcher, Microsoft Research)</p
 <li><b>LASH-C</b>: Superconductor: A Language for Big Data Visualization (Shenzen, China, February, 2013)</li>
 <li><b>DARPA ISAT Workshop on Language Adoption</b> (Philadelphia, February 2013)</li>
 <li><b>UPCRC</b>: The Parallel Browser (January, 2013)</li>
+-->
 </ul>
 
 
@@ -441,7 +456,7 @@ Wolfram Schulte (Research Manager / Principal Researcher, Microsoft Research)</p
 <a href="http://eecs.berkeley.edu/~lmeyerov/projects/simtasks/cdp.pdf">draft</a>
 </span><blockquote>
 
-Many data layout optimizations cluster data accesses and memory into high-locality groups in order to optimize for the memory hierarchy. In this paper, we demonstrate that similar clustering program transformations enable efficient vectorization. We call this approach clustered data parallelism (CDP). CDP enables fast and power-efficient parallelism by partitioning a data structure into clusters such that SIMD evaluation is efficient <i>within</i> a cluster.  
+Many data layout optimizations cluster data accesses and memory into high-locality groups in order to optimize for the memory hierarchy. In this paper, we demonstrate that similar clustering program transformations enable efficient vectorization. We call this approach clustered data parallelism (CDP). CDP enables fast and power-efficient parallelism by partitioning a data structure into clusters such that SIMD evaluation is efficient <i>within</i> a cluster.
 
 <br/><br/>
 
@@ -451,7 +466,7 @@ We describe the CDP latent in three common computational patterns: map, reduce, 
 <br/><br/>
 
 
-We report strong performance improvements. Targeting AVX, we see a 5.5X speedup and 6.9X performance/Watt increase over FAST, the previously fastest SIMD binary search algorithm. Running webpage layout with SSE4.2 instructions, we observe a 3.5X speedup and 3.6X performance/Watt increase over an already optimized baseline. 
+We report strong performance improvements. Targeting AVX, we see a 5.5X speedup and 6.9X performance/Watt increase over FAST, the previously fastest SIMD binary search algorithm. Running webpage layout with SSE4.2 instructions, we observe a 3.5X speedup and 3.6X performance/Watt increase over an already optimized baseline.
 
 </blockquote>
 </li>
@@ -461,8 +476,8 @@ We report strong performance improvements. Targeting AVX, we see a 5.5X speedup 
 <li class="starred highlight">
 <a name="ftl"></a>
 <span class="authors">Leo A. Meyerovich, Matthew E. Torok, Eric Atkinson,  <a href="http://www.cs.berkeley.edu/~bodik/">Rastislav Bodik</a>.</span>
-<b class="title">Parallel Schedule Synthesis for Attribute Grammars.</b> 
-<i class="conference">PPoPP 2013</i><span><b><i style="color:blue">PLDI+ECOOP SRC (2nd place)</i></b>, 
+<b class="title">Parallel Schedule Synthesis for Attribute Grammars.</b>
+<i class="conference">PPoPP 2013</i><span><b><i style="color:blue">PLDI+ECOOP SRC (2nd place)</i></b>,
 <a href="http://eecs.berkeley.edu/~lmeyerov/projects/pbrowser/pubfiles/synthesizer2012.pdf">pdf</a>, <b>
 <br/>[Demos: <a href="http://www.youtube.com/watch?v=H1aHul6UaV4&feature=youtu.be&t=40s" style="color:green">GPU acceleration screencast!</a>, <a href="http://jsfiddle.net/lmeyerov/sHDsb" style="color: green">programmable demo</a>, <a href="http://eecs.berkeley.edu/~lmeyerov/projects/pbrowser/pubfiles/everything/everything.html" style="color: green">box model</a>, <a style="color:green" href="http://www.eecs.berkeley.edu/~lmeyerov/projects/pbrowser/pubfiles/tables/tablesidealClean3.html">table layout</a>, <a style="color:green" href="http://www.eecs.berkeley.edu/~lmeyerov/projects/pbrowser/pubfiles/fisheye/index.html">fisheye animation</a>]</b></span><blockquote>
 We examine how to synthesize a parallel schedule of structured traversals over trees. In our system, programs are declaratively specified as attribute grammars and parallel traversals for GPUs and multicore CPUs are defined by a compiler. Our synthesizer automatically, correctly, and quickly schedules the attribute grammar.
@@ -487,10 +502,10 @@ This paper presents our cubic-time schedule synthesizer, and its support for fin
 <b class="title">Data Parallel Programming for Irregular Tree Computations.</b> <i class="workshop">HotPar '11</i>
 <span><a href="projects/simtasks/hotpar2011.pdf">pdf</a></span><blockquote>
 
-  The adoption of data parallel primitives to increase multicore utilization presents an opportunity for aggressive compiler optimization. We examine computations over the tree abstract datatype (ADT) in particular. 
-<br/><br/>  
+  The adoption of data parallel primitives to increase multicore utilization presents an opportunity for aggressive compiler optimization. We examine computations over the tree abstract datatype (ADT) in particular.
+<br/><br/>
   For better utilization than approaches like flattening, we argue that transformations should specialize for common data and computation regularities. For example, we demonstrate a novel pattern that exploits regularity in node labeling as a SIMD parallelism opportunity, which we call SIMTask parallelism. For better applicability, we argue for better linguistic support of irregularity. For example, we show how the future primitive might be used to tolerate occasional data dependencies in an otherwise associative computation.
-<br/><br/>  
+<br/><br/>
   We validate our approach on two tree computations:
   RepMin, popular in the functional programming community,
   and \benchmark{intrinsic widths}, a stage of webpage layout in a
@@ -500,14 +515,14 @@ This paper presents our cubic-time schedule synthesizer, and its support for fin
 </li>
 <li class="starred">
 <span class="authors">Leo A. Meyerovich and <a href="http://www.cs.berkeley.edu/~bodik/">Rastislav Bodik</a>.</span>
-<b class="title">Fast and Parallel Webpage Layout.</b> <i class="conference">WWW 2010</i> 
+<b class="title">Fast and Parallel Webpage Layout.</b> <i class="conference">WWW 2010</i>
 <!-- 12% -->
 <span><a href="projects/pbrowser/pubfiles/paper.pdf">pdf</a>, <a href="projects/pbrowser/pubfiles/extended.pdf">extended draft</a>, <!-- <a href="projects/pbrowser/pubfiles/bss.html" style="color:green"><b>BSS0-2 in JS</b></a>, --> <a style="color: green" href="http://code.google.com/p/pbrowser/source/browse/#svn/trunk/layout/match"><b>multicore code</b></a></span><blockquote>
 
-The web browser is a CPU-intensive program. Especially on mobile devices, loading of webpages is too slow, spending much of its time in processing a document's appearance. Due to power constraints, most hardware improvements will 
-come in the form of parallel architectures. This is also true of mobile devices such as phones. Current browsers, however, do not yet fully exploit hardware parallelism, so we are designing a parallel mobile browser. In this paper, we 
-introduce new algorithms for CSS selector matching, layout solving, and font rendering, which represent key components for a fast layout engine. Evaluation on popular sites shows speedups as high as 80x. We also formulate layout solving 
-with attribute grammars, enabling us to not only parallelize our algorithm but prove that it computes in O(log) time and without reflow. 
+The web browser is a CPU-intensive program. Especially on mobile devices, loading of webpages is too slow, spending much of its time in processing a document's appearance. Due to power constraints, most hardware improvements will
+come in the form of parallel architectures. This is also true of mobile devices such as phones. Current browsers, however, do not yet fully exploit hardware parallelism, so we are designing a parallel mobile browser. In this paper, we
+introduce new algorithms for CSS selector matching, layout solving, and font rendering, which represent key components for a fast layout engine. Evaluation on popular sites shows speedups as high as 80x. We also formulate layout solving
+with attribute grammars, enabling us to not only parallelize our algorithm but prove that it computes in O(log) time and without reflow.
 </blockquote>
 </li>
 <li>
@@ -515,28 +530,56 @@ with attribute grammars, enabling us to not only parallelize our algorithm but p
 
 <span><b style="color:blue;"><i>invited article</i></b>, <a href="projects/pbrowser/pubfiles/login.pdf">pdf</a></span>
 
-</li> 
+</li>
 
 <li class="starred highlight">
 <span class="authors"><a href="http://blog.mozilla.com/cjones/">Chris Jones</a>, Rose Liu, Leo Meyerovich, <a href="http://www.eecs.berkeley.edu/~krste/">Krste Asanovic</a>, <a href="http://www.cs.berkeley.edu/~bodik/">Rastislav Bodik</a>.</span> <b class="title">Parallelizing the Web Browser.</b> <i class="workshop">HotPar '09</i>
 
 <span><a href="projects/pbrowser/hotpar09/paper.pdf">pdf</a></span><blockquote>
-We argue that the transition from laptops to handheld computers will happen only if we rethink the design of web browsers. Web browsers are an indispensable part 
-of the end-user software stack but they are too inefficient for handhelds. While the laptop reused the software stack of its desktop ancestor, solid-state device 
-trends suggest that today's browser designs will not become sufficiently (1) responsive and (2) energy-efficient. We argue that browser improvements must go beyond JavaScript JIT compilation and discuss how parallelism may help achieve these two goals. Motivated by a future browser-based application, we describe the preliminary design of our parallel browser, its work-efficient parallel 
+We argue that the transition from laptops to handheld computers will happen only if we rethink the design of web browsers. Web browsers are an indispensable part
+of the end-user software stack but they are too inefficient for handhelds. While the laptop reused the software stack of its desktop ancestor, solid-state device
+trends suggest that today's browser designs will not become sufficiently (1) responsive and (2) energy-efficient. We argue that browser improvements must go beyond JavaScript JIT compilation and discuss how parallelism may help achieve these two goals. Motivated by a future browser-based application, we describe the preliminary design of our parallel browser, its work-efficient parallel
 algorithms, and an actor-based scripting language.
 </blockquote>
-</li> 
+</li>
 </ul>
 
 <div class="area"><h2>Socio-PLT</h2><span>Social factors of language design</span><a href="http://www.eecs.berkeley.edu/~lmeyerov/projects/socioplt/viz/index.html"><img src="http://www.eecs.berkeley.edu/~lmeyerov/projects/socioplt/viz/zoom.png"></img></a></div>
 <ul class="papers">
 <a name="socio"></a>
+
+
+<li class="starred"><a name="socioicse"></a>
+<span class="authors">Leo A. Meyerovich and <a href="http://www.cs.berkeley.edu/~asrabkin/">Ariel S. Rabkin</a>.</span>
+<b class="title">Empirical Analysis of Programming Language Adoption.</b>
+<i class="conference">OOPSLA 2013</i>
+<span><b style="color:blue; "><i>best paper award</i> + <i style="color:blue">SIGPLAN research highlight (2014)</i></b>,
+<!-- 12% -->
+<span><a href="projects/socioplt/papers/oopsla2013.pdf">pre-print (July 2013)</a>,
+<a href="projects/socioplt/talks/oopsla2013.pptx">pptx</a>, <a href="http://www.slideshare.net/lmeyerov/oopsla-talk2">slideshare</a>,
+<a href="http://www.youtube.com/watch?v=v2ITaI4y7_0" class="news">Google Tech Talk video</a>,
+ <b><a href="projects/socioplt/data/all.tar.gz" style="color:green">39MB survey data</a></b></span><blockquote>
+Some programming languages become widely popular while others fail to grow beyond their niche or disappear altogether. This paper uses survey methodology to identify the factors that lead to language adoption. We analyze large datasets, including over 200,000 SourceForge projects, 590,000 projects tracked by Ohloh, and multiple surveys of 1,000-13,000 programmers. <br/><br/>
+
+We report several prominent findings.
+First, language adoption follows a power law; a small number of languages account for most language use, but the programming market supports many languages with niche user bases. Second, intrinsic features have only secondary importance in adoption.
+Open source libraries, existing code, and experience strongly influence
+developers when selecting a language for a project.
+Language features such as performance, reliability, and simple semantics do not.
+Third, developers will steadily learn and forget languages, and the overall number of languages developers are familiar with
+is independent of age.
+Developers select more varied languages if their education exposed them to different language families.
+Finally, when considering intrinsic aspects of languages, developers prioritize expressivity over correctness. They perceive static types as more valuable for properties such as the former rather than for correctness checking.
+</blockquote>
+</li>
+
+
+
 <li><span class="authors">Leo A. Meyerovich.</span>
 <b class="title">Adoption-Oriented Language Design.</b><i class="workshop">ISAT/DARPA Workshop on Fostering Adoption of Programming Languages 2013 (position paper)</i>
 <span><a href="projects/socioplt/papers/isat2013.pdf">pdf</a></span><blockquote>
 Language designers optimize features for adoption, yet research provides little guidance. Worse, optimizing for adoption leads to foregoing the suggestions that research does provide. For example, advanced type systems are breaking ground in guaranteeing correctness, yet after 30 years, we rarely see even ML-style type inference. As Erik Meijer relates, if the mountain will not come to Mohammed, then Mohammed must go to the mountain [1]. To do so, we ask: how can researchers explicitly optimize for adoptiblity to improve the value proposition of our work?
-<br/><br/>We propose three constructive steps towards adoption-oriented language design. Designing for adoption takes many forms because adoption itself is multifaceted: it is a desirable result, an exploitable process, and applies to both languages and features. Driven by our survey of social science literature on adoption [2] and our analysis of adoption factors for over 200,000 projects and 15,000 developers [3,4,5], we identify three constructive areas of adoption-oriented design: 
+<br/><br/>We propose three constructive steps towards adoption-oriented language design. Designing for adoption takes many forms because adoption itself is multifaceted: it is a desirable result, an exploitable process, and applies to both languages and features. Driven by our survey of social science literature on adoption [2] and our analysis of adoption factors for over 200,000 projects and 15,000 developers [3,4,5], we identify three constructive areas of adoption-oriented design:
 <br/>
 <br/>I.	Feature Streamlining: Improving adoptability of a feature
 <br/>II.	Language Targeting: Improving the adoptability of a language
@@ -546,29 +589,7 @@ Language designers optimize features for adoption, yet research provides little 
 
 </blockquote>
 </li>
-<li class="starred"><a name="socioicse"></a>
-<span class="authors">Leo A. Meyerovich and <a href="http://www.cs.berkeley.edu/~asrabkin/">Ariel S. Rabkin</a>.</span> 
-<b class="title">Empirical Analysis of Programming Language Adoption.</b>
-<i class="conference">OOPSLA 2013</i>
-<span><b style="color:blue; "><i>best paper award</i></b>,
-<!-- 12% -->
-<span><a href="projects/socioplt/papers/oopsla2013.pdf">pre-print (July 2013)</a>,
-<a href="projects/socioplt/talks/oopsla2013.pptx">pptx</a>, <a href="http://www.slideshare.net/lmeyerov/oopsla-talk2">slideshare</a>,
-<a href="http://www.youtube.com/watch?v=v2ITaI4y7_0" class="news">Google Tech Talk video</a>,
- <b><a href="projects/socioplt/data/all.tar.gz" style="color:green">39MB survey data</a></b></span><blockquote>
-Some programming languages become widely popular while others fail to grow beyond their niche or disappear altogether. This paper uses survey methodology to identify the factors that lead to language adoption. We analyze large datasets, including over 200,000 SourceForge projects, 590,000 projects tracked by Ohloh, and multiple surveys of 1,000-13,000 programmers. <br/><br/>
 
-We report several prominent findings. 
-First, language adoption follows a power law; a small number of languages account for most language use, but the programming market supports many languages with niche user bases. Second, intrinsic features have only secondary importance in adoption.
-Open source libraries, existing code, and experience strongly influence 
-developers when selecting a language for a project. 
-Language features such as performance, reliability, and simple semantics do not. 
-Third, developers will steadily learn and forget languages, and the overall number of languages developers are familiar with 
-is independent of age.
-Developers select more varied languages if their education exposed them to different language families. 
-Finally, when considering intrinsic aspects of languages, developers prioritize expressivity over correctness. They perceive static types as more valuable for properties such as the former rather than for correctness checking.
-</blockquote>
-</li>
 
 
 
@@ -576,7 +597,7 @@ Finally, when considering intrinsic aspects of languages, developers prioritize 
 <b class="title">Interactive Visualizations of Language Perception.</b>
 <span>
 
-<a class="news" href="http://www.wired.com/wiredenterprise/2012/06/berkeley-programming-languages/">Wired</a>, <a href="http://developers.slashdot.org/story/12/06/07/1314208/why-do-programming-languages-succeed-or-fail" class="news">Slashdot</a>, 
+<a class="news" href="http://www.wired.com/wiredenterprise/2012/06/berkeley-programming-languages/">Wired</a>, <a href="http://developers.slashdot.org/story/12/06/07/1314208/why-do-programming-languages-succeed-or-fail" class="news">Slashdot</a>,
 <b><a href="projects/socioplt/viz/index.html" style="color:green">interactive visualizations</a></b></span><blockquote>
 Fueled by the web, open source, and the mainstreaming of programming, software research is undergoing an empirical revolution. In this project, we use data from these sources to examine basic and sensitive issues about programming languages. For example, we found developers negatively correlate static types with code reuse, which challenges typical research assumptions about module systems. This work is part of our on-going effort to understand and exploit the relationship between social phenomena and programming languages.
 
@@ -604,11 +625,11 @@ We find that survey methods are increasingly accessible and relevant, but there 
 <b class="title">Socio-PLT: Sociological Principles for Programming Language Adoption.</b>
 <i class="conference">Onward! 2012</i> <!-- 30% -->
 <span><a href="projects/socioplt/papers/onward2012.pdf">pdf</a>, <a href="http://www.infoq.com/presentations/Socio-PLT" class="news">video</a></span><blockquote>
-Why do some programming languages fail and others succeed? What does the answer tell us about programming language design, implementation, and principles? To help answer these and other questions, we argue for a sociologically-grounded programming language theory: <i>socio-PLT</i>. 
+Why do some programming languages fail and others succeed? What does the answer tell us about programming language design, implementation, and principles? To help answer these and other questions, we argue for a sociologically-grounded programming language theory: <i>socio-PLT</i>.
 <br/><br/>
-Researchers in the social sciences have studied adoption in many contexts. 
+Researchers in the social sciences have studied adoption in many contexts.
 We show how their findings are applicable to programming language design.
-For example, many programming language features provide benefits that programmers cannot directly or immediately observe and therefore may not find compelling. From clean water to safe sex, the health community has long examined how to surmount similar observability barriers. 
+For example, many programming language features provide benefits that programmers cannot directly or immediately observe and therefore may not find compelling. From clean water to safe sex, the health community has long examined how to surmount similar observability barriers.
 We use such results from outside of programming language theory to frame a research agenda that should help us understand the social foundations of languages. Finally, we examine implications of our approach, such as for the design space of language features and the assessment of scientific research into programming languages.
 </blockquote>
 </li>
@@ -630,7 +651,7 @@ We use such results from outside of programming language theory to frame a resea
  <a href="projects/flapjax/flapjaxfinal.pdf">pdf</a>,  <a href="http://www.cs.brown.edu/research/pubs/techreports/reports/CS-09-04.html">TR CS-09-04</a>, <b><a style="color: green" href="http://www.flapjax-lang.org">try it out!</a></b>
 
 </span><blockquote>
-This paper presents Flapjax, a language designed for contemporary Web applications. These applications communicate with servers and have rich, interactive interfaces. Flapjax provides two key features that simplify writing these applications. First, it provides event streams, a uniform abstraction for communication within a program as well as with external Web services. Second, the language itself is reactive:  it automatically tracks data dependencies and propagates updates along those dataflows. This allows developers to write 
+This paper presents Flapjax, a language designed for contemporary Web applications. These applications communicate with servers and have rich, interactive interfaces. Flapjax provides two key features that simplify writing these applications. First, it provides event streams, a uniform abstraction for communication within a program as well as with external Web services. Second, the language itself is reactive:  it automatically tracks data dependencies and propagates updates along those dataflows. This allows developers to write
 reactive interfaces in a declarative and compositional style.<br/><br/>
 Flapjax is built on top of JavaScript. It runs on unmodified browsers and readily interoperates with existing JavaScript code. It is usable as either a programming language (that is compiled to JavaScript) or as a JavaScript library, and is designed for both uses. This paper presents the language, its design decisions, and illustrative examples drawn from several working Flapjax applications.
 </blockquote>
@@ -639,10 +660,10 @@ Flapjax is built on top of JavaScript. It runs on unmodified browsers and readil
 <a name="guise"></a>
 <span class="authors">Leo Meyerovich and <a href="http://www.cs.berkeley.edu/~sauciuc/">Raluca Sauciuc</a>.</span>
 <b class="title">Perceiving the GUISE: Graphical User Interface Specification Extraction.</b>
-<span></span> 
-<span> <a href="projects/guise/guise.pdf">pdf</a> </span><blockquote>A fundamental part of the web experience is running metaprograms: extensions modify webpages, search engines index them, and end-user programming tools mash them up. Unfortunately, these tools generally break on AJAX applications because they fail to understand application structure and cope with application updates. 
+<span></span>
+<span> <a href="projects/guise/guise.pdf">pdf</a> </span><blockquote>A fundamental part of the web experience is running metaprograms: extensions modify webpages, search engines index them, and end-user programming tools mash them up. Unfortunately, these tools generally break on AJAX applications because they fail to understand application structure and cope with application updates.
 <br/><br/>
-We present a GUI analysis tool that extracts a high-level interaction model of an application. Metaprograms are written with respect to the model instead of manual snapshots of an application. We demonstrate how it helps 2 scenarios. First, by inferring the structure of possible actions, we present a natural language interface for interpreting complex multi-step commands over arbitrary existing websites. Second, as commands are reused over time, we show how to detect when a previously working command will break or become ambigiuous in the face of updates to the underlying application. Furthermore, we can use our tool to heal the interpretations of the commands. 
+We present a GUI analysis tool that extracts a high-level interaction model of an application. Metaprograms are written with respect to the model instead of manual snapshots of an application. We demonstrate how it helps 2 scenarios. First, by inferring the structure of possible actions, we present a natural language interface for interpreting complex multi-step commands over arbitrary existing websites. Second, as commands are reused over time, we show how to detect when a previously working command will break or become ambigiuous in the face of updates to the underlying application. Furthermore, we can use our tool to heal the interpretations of the commands.
 <br/><br/>
 
 Our approach use abstract interpretation to learn a finite state model of a reactive system by dynamically watching user interactions. It is lightweight and precise without sacrificing recall.</blockquote>
@@ -653,10 +674,10 @@ Our approach use abstract interpretation to learn a finite state model of a reac
 <b>Playing with FIRE: Mixing Functional and Imperative Reactivity in ECMAScript.</b> Adobe TR (2007), <span>contact for draft</span><blockquote>
 Functional reactive abstractions over time have recently been shown to simplify the description of rich Internet applications,
 but usability difficulties in defining stateful functions, mixing imperative and functional reactive control sequences,
-and discerning the boundary for values between the time-varying and flat host domains continue to prevent adoption of 
+and discerning the boundary for values between the time-varying and flat host domains continue to prevent adoption of
 transparent embeddings for mainstream languages. We present four novel extensions to previous embedding strategies to help
 simplify safe, reusable, first-class event handling in the dominant object-oriented rich Internet application language family.
-Putting these distinct extensions together, we lower previously unsurmounted barriers for introducing structured concurrency 
+Putting these distinct extensions together, we lower previously unsurmounted barriers for introducing structured concurrency
 specification techniques into a typically ad-hoc yet important domain.
 </blockquote>
 
@@ -668,7 +689,7 @@ specification techniques into a typically ad-hoc yet important domain.
 <a name="security"></a>
 <li class="starred">
 <a name="conscript"></a><span class="authors">Leo A. Meyerovich and <a href="http://research.microsoft.com/en-us/um/people/livshits/">Benjamin Livshits</a>.</span>
-<b class="title">ConScript: Specifying and Enforcing Fine-Grained Security Policies for JavaScript in the Browser.</b> 
+<b class="title">ConScript: Specifying and Enforcing Fine-Grained Security Policies for JavaScript in the Browser.</b>
 <i class="conference">Security & Privacy 2010</i><!-- 12% -->
 <span>
 
@@ -689,7 +710,7 @@ This paper presents ConScript, an client-side advice implementation for security
 Browsers do not currently support the secure sharing of JavaScript objects between principals. We present this problem as the need for <i>object views</i>, which are consistent and controllable versions of objects. Multiple views can be made for the same object and customized for the recipients. We implement object views with a JavaScript library that wraps shared objects and interposes on all access attempts. The security challenge is to fully mediate access to objects shared through a view and prevent privilege escalation. We discuss how object views can be deployed in two settings: same-origin sharing with rewriting-based JavaScript isolation systems like Google Caja, and inter-origin sharing between browser frames over a message-passing channel.
 
 <br/><br/>
-To facilitate simple document sharing, we build a policy system for declaratively defining policies for document object views. Notably, our document policy system makes it possible to hide elements without breaking document structure invariants. We discuss how object views can be deployed in two settings: same-origin sharing with rewriting-based JavaScript isolation systems like Google Caja, and inter-origin sharing between browser frames over a message-passing channel. 
+To facilitate simple document sharing, we build a policy system for declaratively defining policies for document object views. Notably, our document policy system makes it possible to hide elements without breaking document structure invariants. We discuss how object views can be deployed in two settings: same-origin sharing with rewriting-based JavaScript isolation systems like Google Caja, and inter-origin sharing between browser frames over a message-passing channel.
 
 </blockquote>
 </li>
@@ -698,7 +719,7 @@ To facilitate simple document sharing, we build a policy system for declarativel
 <span class="authors">Leo A. Meyerovich, David Yu Zhu, <a href="http://research.microsoft.com/en-us/um/people/livshits/">Benjamin Livshits</a>.</span>
 <b class="title">Secure Cooperative Sharing of JavaScript, Browser, and Physical Resources.</b><i class="workshop">W2SP 2010</i><!-- 41% -->
 <span><a href="projects/ubrowser/w2sp.pdf">pdf</a>  </span><blockquote>
-For better application-level controls on mashups, we advocate extending the Single Origin Policy and associated primitives to support a cooperative model that allows applications to express explicit sharing policies over browser, Javascript, and physical resources. 
+For better application-level controls on mashups, we advocate extending the Single Origin Policy and associated primitives to support a cooperative model that allows applications to express explicit sharing policies over browser, Javascript, and physical resources.
 <br/><br/>
 First, we introduce an isolation model for content loading that is more complete than those of surveyed browser proposals.
 Second, we present new primitives to enable an application to secure its use of untrusted content by delegating browser, JavaScript, and physical resources in a fine-grained and reliable manner. Finally, essential to adoption, we propose an architecture based on designs for  related abstractions with low performance and implementation costs.
@@ -710,15 +731,15 @@ Second, we present new primitives to enable an application to secure its use of 
 <span class="authors"><a href="http://www.cs.washington.edu/homes/csgordon/">Colin Gordon</a>, Leo Meyerovich, <a href="http://www.cs.berkeley.edu/~jww/">Joel Weinberger</a>, and <a href="http://www.cs.brown.edu/~sk/">Shriram Krishnamurthi</a>. </span><b class="title">Composition with Consistent Updates for Abstract State Machines.</b> <i class="workshop">ASM '07</i> <span>
 
 <a href="projects/asm/asm07.pdf">pdf</a>, <a href="projects/asm/slidedraft23.pdf">draft slides</a></span><blockquote>
-We propose an approach to the consistent update problem of Abstract State Machines through a correctness preserving composition operator. Inconsistent updates are transparently isolated and cause local failure rather systemic failure. This is achieved by a source-to-source translation rather 
-than changing the semantics of Abstract State Machines, thus preserving findings of previous studies on Abstract State Machines and allowing independently verified modules to be composed. Our approach is motivated by experiences with 
-our complementary case study in describing dynamic security policies with Abstract State Machines in which we found the problem pervasive, stemming from a composition abstraction barrier. Previous efforts for supporting ASM composition are susceptible to the inconsistent update problem and may benefit from our approach. 
+We propose an approach to the consistent update problem of Abstract State Machines through a correctness preserving composition operator. Inconsistent updates are transparently isolated and cause local failure rather systemic failure. This is achieved by a source-to-source translation rather
+than changing the semantics of Abstract State Machines, thus preserving findings of previous studies on Abstract State Machines and allowing independently verified modules to be composed. Our approach is motivated by experiences with
+our complementary case study in describing dynamic security policies with Abstract State Machines in which we found the problem pervasive, stemming from a composition abstraction barrier. Previous efforts for supporting ASM composition are susceptible to the inconsistent update problem and may benefit from our approach.
 
 </blockquote>
 <br/>
 <b style="color:#666"  class="title">ASM Relational Transducer Policies.</b> <br>
 Leo A. Meyerovich, <a href="http://www.cs.berkeley.edu/~jww/">Joel H. W. Weinberger</a>, <a href="http://www.cs.washington.edu/homes/csgordon/">Colin S. Gordon</a>, and <a href="http://www.cs.brown.edu/~sk/">Shriram Krishnamurthi</a>
-    (<a href="projects/asm/asmcs06-12.pdf">pdf</a>) 
+    (<a href="projects/asm/asmcs06-12.pdf">pdf</a>)
 
 </li>
 <li class="starred highlight">
@@ -729,7 +750,7 @@ Leo A. Meyerovich, <a href="http://www.cs.berkeley.edu/~jww/">Joel H. W. Weinber
 
 Sensitive data are increasingly available on-line through the Web and other distributed protocols. This heightens the need to carefully control access to data. Control means not only preventing the leakage of data but also permitting access to necessary information. Indeed, the same datum is often treated differently depending on context. <br/><br/>
 System designers create policies to express conditions on the access to data. To reduce source clutter and improve maintenance, developers increasingly use domain-specific, declarative languages to express these policies. In turn, administrators need to analyze policies relative to properties, and to understand the effect of policy changes even in the absence of properties. <br/><br/>
-This paper presents Margrave, a software suite for analyzing role-based access-control policies. Margrave includes a verifier that analyzes policies written in the xacml lan- guage, translating them into a form of decision-diagram to answer queries. It also provides semantic differencing information between versions of policies. We have implemented these techniques and applied them to policies from a working software application. 
+This paper presents Margrave, a software suite for analyzing role-based access-control policies. Margrave includes a verifier that analyzes policies written in the xacml lan- guage, translating them into a form of decision-diagram to answer queries. It also provides semantic differencing information between versions of policies. We have implemented these techniques and applied them to policies from a working software application.
  </blockquote>
 <br/><b style="color:#666">The Soundness and Completeness of Margrave with Respect to a Subset of XACML.</b> <br><a href="http://www.cis.upenn.edu/~mgree/">Michael Matthew Greenberg</a>, Casey Marks, Leo Meyerovich, and <a href="http://www.cs.cmu.edu/~mtschant/">Michael Carl Tschantz</a> (<a href="ftp://ftp.cs.brown.edu/pub/techreports/05/cs05-05.pdf">pdf</a>)
 </li>
@@ -737,17 +758,17 @@ This paper presents Margrave, a software suite for analyzing role-based access-c
 
 
 
-<!-- 
+<!--
 <li><span class="authors">Leo A. Meyerovich</span>.<br/>
 <b>Socio-PLT: Programming Languages as Social Phenomena.</b><br/>
 <span>In progress, contact for working paper.</span>
 <blockquote>
-Programming languages are typically understood 
-in terms of formal properties of expressible programs such as performance, abstraction facilities, 
-and correctness guarantees. We argue that social phenomena  should also be considered. 
-As first steps, we explore an analogy with two well-studied social processes, natural language 
-spread and diffusion of innovation, finding surprising and predictive similarities. 
-We empirically motivate our analogy with an analysis of 97 
+Programming languages are typically understood
+in terms of formal properties of expressible programs such as performance, abstraction facilities,
+and correctness guarantees. We argue that social phenomena  should also be considered.
+As first steps, we explore an analogy with two well-studied social processes, natural language
+spread and diffusion of innovation, finding surprising and predictive similarities.
+We empirically motivate our analogy with an analysis of 97
 programming languages in over 200,000 programs from the past 10 years.
 </blockquote><analysis></analysis>
 </li>
@@ -802,7 +823,7 @@ Why does one programming language fail and another succeed? What does this tell 
 
         <ul>
                         <li>Finding Once-a-Year Concurrency Bugs is Provably Easy: birthday attacks on heisenbugs (proof + talk, 2009)</li>
-                        <li>automated web gui testing (2008, reenvisioned with the GUISE project). fun hackery: involved a python/MPI multicore cloud layer!</li> 
+                        <li>automated web gui testing (2008, reenvisioned with the GUISE project). fun hackery: involved a python/MPI multicore cloud layer!</li>
                         <li>modern back button: continuation-based web server idea applied to client apps (survey + proposal, 2008)</li>
                         <li>web dwarfs: challenge applications for future web browsers and frameworks (2008)</li>
                 <li>structural type-feedback: dynamically learning likely javascript object shapes (2007)</li>
@@ -825,14 +846,14 @@ li><b>UPCRC (MSR Faculty Summit)</b>: The Parallel Browser: Architecture and Syn
 <!--
 <li><b>Par Lab Retreat</b>: Data Visualization on Parallel Layout talk and demo (January, 2012)</li>
 -->
-<li><b>Parallelism Tools Workshop (Intel, Santa Clara)</b>: Synthesizing a Parallel CSS Engine (August, 2011)</li> 
+<li><b>Parallelism Tools Workshop (Intel, Santa Clara)</b>: Synthesizing a Parallel CSS Engine (August, 2011)</li>
 <li><b>HotPar 2011</b>: Data Parallel Programming for Irregular Tree Computations (May, 2011)</li>
-<li><b>Qualcomm (Santa Clara)</b>: FTL: Fast Tree Language (October, 2010)</li> 
+<li><b>Qualcomm (Santa Clara)</b>: FTL: Fast Tree Language (October, 2010)</li>
 <!-- <li><b>Google (Mountain View)</b>: A Parallel Browser for the Mobile Web (September, 2010)</li> -->
 <li><b>IBM Research (Almaden)</b>: Parallel Browsers for the Mobile Era: Challenges, Solutions, and Opportunities (September, 2010)</li>
-<li><b>Qualcomm (San Diego)</b>: FTL: Fast Tree Language (poster, September, 2010)</li> 
+<li><b>Qualcomm (San Diego)</b>: FTL: Fast Tree Language (poster, September, 2010)</li>
 <li><b>Parallel Bootcamp</b>: A Parallel Browser: Lessons in Mobility and Irregularity (September, 2010)</li>
-<li><b>Stanford</b>: A Parallel Browser for the Mobile Web (May, 2010)</li> 
+<li><b>Stanford</b>: A Parallel Browser for the Mobile Web (May, 2010)</li>
 <!--
 <li><b>Par Lab, OSQ Retreats</b>: A Principled Approach to a Browser Layout Engine, Socio-PLT (May, 2010)</li>
 -->
@@ -844,12 +865,12 @@ li><b>UPCRC (MSR Faculty Summit)</b>: The Parallel Browser: Architecture and Syn
 <!--
                        <li><b>Par Lab Retreat:</b> Parallel Webpage Processing (poster, January 2010)</li>
 -->
-                       <li><b>OOPSLA 2009</b>: Flapjax (October, 2009)</li> 
+                       <li><b>OOPSLA 2009</b>: Flapjax (October, 2009)</li>
                        <li><b>Intel Developer Forum</b>: Parallel Browser Algorithms (poster, September, 2009)</li>
                        <li><b>Microsoft Research (Redmond)</b>: Fast Webpage Layout (September, 2009)</li>
 
                        <li><b>Adobe</b>: Fast Webpage Layout (September, 2009)</li>
-                     <!-- 
+                     <!--
                        <li><b>OSQ Retreat</b>: GUISE: Extracting User Control-Flow Graphs from Web Apps (short talk, May, 2009)</li>
 -->
                        <li><b>#moz09 (Mozilla)</b>: It's the End of the Web as We Know It, and I Feel Fine (invited all-hands talk, April 30, 2009). contact for slides.</li>
@@ -860,7 +881,7 @@ li><b>UPCRC (MSR Faculty Summit)</b>: The Parallel Browser: Architecture and Syn
                        <li><b>Samsung Research</b>: Parallel Webpage Layout (invited seminar, February, 2009)</li>
 <!--
                         <li><b>Par Lab Retreat</b>: Parallel Webpage Layout (Berkeley/industry, January, 2009).  <a href="projects/pbrowser/retreatwinter2009/playout.pdf">pdf slides</a></li>
--->    
+-->
                     <li><b>Intel Languages Workshop</b>: Update on the Parallel Browser Language (industry, 2008)
                         <li><b>BayFP</b>: Flapjax & FIRE - Evolving a Reactive Web Language (industry, 2008). <a href="http://www.bayfp.org/blog/2008/08/04/video-and-slides-from-july-meeting/">video!</a></li>
 <!--
@@ -888,10 +909,10 @@ li><b>UPCRC (MSR Faculty Summit)</b>: The Parallel Browser: Architecture and Syn
                    <li>Adrienne Felt on Object Views: WWW 2010</li>
                   <li>Ras Bodik on the parallel browser project: ASPLOS PC Workshop 2011, STMCS 2008 keynote, Intel Browser Performance Workshop 2008, ...</li>
                   <li>Shriram Krishnamurthi on the Flapjax language: SBLP 2008 keynote, Microsoft Lang.NET Symposium 2006 (in part: <a href="http://download.microsoft.com/download/9/4/1/94138e2a-d9dc-435a-9240-bcd985bf5bd7/Shriram.wmv">video</a>), JAOO 2007, etc.</li>
-                   <li>Shriram Krishnamurthi on the Margrave tool and query system: a mystery!</li>   
+                   <li>Shriram Krishnamurthi on the Margrave tool and query system: a mystery!</li>
                 </ul>
 
-</div><!-- hiding presentations --> 
+</div><!-- hiding presentations -->
 
 <!--
 <h2>Awards and Support</h2>
@@ -901,7 +922,7 @@ li><b>UPCRC (MSR Faculty Summit)</b>: The Parallel Browser: Architecture and Syn
 <li>ACM and NSF travel awards, 2012</li>
 <li>2007-2013: Parallel browser and synthesis group grants (supported by Nokia, Qualcomm, Samsung, Google, and the NSF)</li>
 <li>2007-2013: Berkeley Parallelism Lab grants (supported by Microsoft, Intel, Samsung, Nokia, NEC, National Instruments, Sun/Oracle, Qualcomm, and nVidia)</li>
-<li>Qualcomm Innovation Fellowship (2 winners from 43 teams at Berkeley and Stanford), 2009</li> 
+<li>Qualcomm Innovation Fellowship (2 winners from 43 teams at Berkeley and Stanford), 2009</li>
 <li>OOPSLA 2009 Best Student Paper Award</li>
 <li>National Science Foundation Graduate Fellowship (NSF GRFP), 2007</li>
 <li>UC Berkeley First Year Fellowship, 2007</li>
@@ -934,7 +955,7 @@ li><b>UPCRC (MSR Faculty Summit)</b>: The Parallel Browser: Architecture and Syn
 <!--
 <h2>Teaching</h2>
 <b>Berkeley:</b>
-CS164, the undergrad compilers course at Berkeley. Prof. Bodik and I broke course records in class ratings leading back 15 years. 
+CS164, the undergrad compilers course at Berkeley. Prof. Bodik and I broke course records in class ratings leading back 15 years.
 <br/>
 
 <b>Brown:</b> I was the head teaching assistant for intro. to models of computation (cs51) and intro. programming language theory (cs173), was a regular TA for discrete math (cs22), and wrote lectures and projects for the new systems security course (cs166).
@@ -976,20 +997,20 @@ Ultimately, I believe <a href="http://barker.linguistics.fas.nyu.edu/Stuff/Iota"
 <!--
 <li>ANTLR 3, Python, Java, Bash, JavaScript, C, MPI, LaTeX</li>
 -->
-<!-- 
+<!--
 The semester is drawing to a close, and now I am writing in a mix of ANTLR 3, Python, Java, Bash, and JavaScript. This will likely be mixed in with MPI over either C or O'CAML. Inbetween the updates, I wrote way too much LaTeX.
 </li>
 -->
 
 <!--
-<li>                
+<li>
 LaTeX, HTML/CSS, JavaScript/XUL/SQL, O'CAML, Manticore, and attribute grammars.
 </li>
 <li>
               Powerpoint, HTML/CSS, LaTeX, C++/OpenMP 3.0/Cilk++, Python, and attribute grammars
 </li>
 <li>
-              JavaScript/SQLite/HTML/CSS, bash/C/C++/Cilk++/TBB, flex/bison (lex/yacc), LaTeX/Excel/PowerPoint             
+              JavaScript/SQLite/HTML/CSS, bash/C/C++/Cilk++/TBB, flex/bison (lex/yacc), LaTeX/Excel/PowerPoint
 </li>
 <li>
 JavaScript, CSS selectors, C/C++/Cilk++/TBB, LaTeX, Excel</li>
@@ -1031,7 +1052,7 @@ JavaScript, CSS selectors, C/C++/Cilk++/TBB, LaTeX, Excel</li>
 <li>Ras Bodik (Berkeley)</li>
 <li>Chris Jones (Berkeley, now @ Mozilla)</li>
 <li>Rose Liu (Berkeley)</li>
-<li>Krste Asanovic (Berkeley/ICSI/LBNL) </li> 
+<li>Krste Asanovic (Berkeley/ICSI/LBNL) </li>
 <li>Raluca Sauciuc (Berkeley)</li>
 <li>Adrienne Felt (Berkeley)</li>
 <li>Mark Miller (Google)</li>
