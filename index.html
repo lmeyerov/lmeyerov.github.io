@@ -1,84 +1,1065 @@
-<!DOCTYPE html>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
+    <head>
+        <title>Leo Meyerovich, CS Graduate Student -- Peon Extraordinaire</title>
+        <style type="text/css">
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Lmeyerov.github.io : ">
+.news { color: blue} 
+        
+hr { margin-left: -20px }        
+p, .txt li {
+font-family: arial, sans-serif;
+font-size: .9em;
+}
+li {font-family: serif; font-size: 1.0em; }
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+p { max-width: 700px; line-height: 1.3em  }
+li { max-width: 670px }
+/*
+li.highlight { border: 1px solid #77F; padding: 3px }
+*/
 
-    <title>Lmeyerov.github.io</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/lmeyerov">View on GitHub</a>
-
-          <h1 id="project_title">Lmeyerov.github.io</h1>
-          <h2 id="project_tagline"></h2>
-
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-27943864-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
+            .tiny, #keywords li, #b2 {
+                font-size: 0.6em;
+                font-family: arial;
+                font-weight: bold;
+            }
 
 
-  </body>
+
+
+            #keywords { list-style-type: none; }
+            #keywords li {
+                display: inline;
+                padding: .3em;
+                text-transform: uppercase;
+            }
+
+                        #himg { float: left; padding: 1em; }
+            div, body, html, #hcontent blockquote, h1, h2, #hcontent blockquote b2 {
+                margin: 0;
+                padding: 0;
+                line-height: 1.5em;
+            }
+            #header ul { list-style-type: none; margin-top: -1em;}
+            #header li { display: inline; padding: .5em;}
+            h2 {  clear: both; display: block;  }            
+div.area { margin-bottom: 1em; display: block; float: left; min-width: 10em;  padding-left: 1em; margin-left: 0em; border-top: 1px solid; clear: left; }
+	div.area img { width: 8em; }
+            div.area {  background-color: #EEE; color: #000 }
+            div.area h2 { font-variant: small-caps; font-size:1.2em;  display: block;}
+            div.area span { display: block; float: left; max-width: 8em; padding-top: .5em; }
+            ul.papers {float: left;  margin: 0em; padding-top: .5em; border-top: 1px solid }
+            ul.papers li { list-style-type: none; padding: 0em}
+            ul.papers li { padding-bottom: 0.5em; }
+           b.title {} 
+            // b.title { font-weight: normal; }
+            b.title:before { content: "\""; }
+            b.title:after { content: "\""; }
+            li.starredOld b.title:before { 
+              content: "\2605";  
+              color: transparent;
+              background-color: transparent; 
+              margin-right: 1em; 
+              margin-left: -2em;
+              position: relative;
+              top: -1.5em; left: -.3em;
+            }
+            li.starredOld.highlight b.title:before { 
+              content: "\2605";  
+              color: black;
+              background-color: transparent; 
+              margin-right: 1em; 
+              margin-left: -2em;
+              position: relative;
+              top: -1.5em; 
+              left: -.3em;
+            }
+
+            #hcontent {
+                float: left;
+                padding: 1em;
+            }
+
+            #b2 {
+                padding-top: 1em;
+                text-transform: uppercase;
+                font-weight: bold;
+            }
+
+            b3 {
+                text-transform: uppercase;
+                font-family: verdana;
+                font-style: italic;
+                font-size: 0.7em;
+                color: #000;
+            }
+
+
+            #header h1 {
+                margin-bottom: -0.5em;
+                padding-top: 0em;
+                padding-left: 2.3em;
+                font-family: Georgia;
+                color: #F60;
+                line-height: 1em;
+            }
+
+            #hcontent blockquote:before, #hcontent blockquote:after {
+                color: #F60;
+                font-size: 700%;
+                vertical-align: bottom;
+            }
+
+            #hcontent blockquote {
+                line-height: 1.7em;
+                padding: 1em;
+            }
+
+
+            #hcontent blockquote:before {
+                padding-right: 0.2em;
+                content: "\201C";            }
+
+            #hcontent blockquote:after {
+                padding-left: 0.1em;
+                content: "\201D";
+            }
+
+            #hcontent blockquote h1 {
+                    display: block;
+            }
+
+            h2 {
+                    color: #000;
+            }
+
+
+            a, .hit {
+                cursor: pointer;
+                color: #FF3300;
+                text-decoration: none;
+                border-bottom: 1px #FF9900 dotted;
+            }
+
+            a:hover, .hit:hover { color:#F00; border-bottom: 1px #F00 solid} 
+            body {
+                background: #FFF;
+                margin-left: 2em;
+                padding-left:1em;
+                border-left: 1px #DDD dashed;
+                color: #000;
+                margin-bottom: 0px; 
+            }
+
+            html {
+                background: #FFF;
+                padding-bottom: 0px;
+            }
+
+.papers li {padding-bottom: 15px; max-width: 700px; }            
+.hit span {font-size: .8em; font-family: Courier}            
+.papers blockquote { padding: 10px; margin: 20px; border: 1px dotted gray; background-color: #fff; max-width: 500px; text-align: justify; text-justify: newspaper; font-size: 1em; line-height: 1em;}            
+.papers blockquote:before { margin-top: -5px; margin-left: -20px; content: "\201C"; font-weight: bold; font-size: 3.5em; color: gray; float: left; }
+.papers blockquote:after { margin-top: 30px; margin-right: -20px; content: "\201D"; font-weight: bold; font-size: 3.5em; float: right; color: gray}
+
+i.conference, i.journal, i.workshop { font-weight: normal; font-style:normal; color: #000 }
+
+i.conference:after, i.journal:after, i.workshop:after { content: "." }
+/*
+performance:before, analysis:before, productivity:before, security:before {display: inline-block; padding: 0px 3px 0px 3px; margin: 3px; font-size: .7em; font-family: arial; text-transform: uppercase; background-color: #FEFEFE }
+performance:before { content: "performance"; color: #007700 }
+analysis:before { content: "analysis"; color:  #777700  }
+productivity:before { content: "productivity"; color: #000077 }
+security:before { content: "security"; color:  #770000  }
+*/
+
+.authors a { color: #700 }
+
+        </style>
+        <script type="text/javascript" src="flapjax.js"></script>
+        <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script> -->
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <script>
+
+function fireEvent(elementSummary,event){
+var element = false;
+$('ul.papers li .hit').each(function (i) {
+  if (this.parentNode.innerHTML.toLowerCase().indexOf(elementSummary) != -1) {
+    if (element == false) {
+      element = this;    
+    }
+  }
+});
+
+if (element == false) {
+  $('ul.papers li .hit').each(function (i) {
+    if  (this.parentNode.parentNode.parentNode.innerHTML.toLowerCase().indexOf(elementSummary) != -1) {
+      if (element == false) {
+        element = this;    
+      }
+    }
+  });
+
+}
+
+if (element == false) {
+  return;
+}
+if (document.createEventObject){
+// dispatch for IE
+var evt = document.createEventObject();
+return element.fireEvent('on'+event,evt)
+}
+else{
+// dispatch for firefox + others
+var evt = document.createEvent("HTMLEvents");
+evt.initEvent(event, true, true ); // event type,bubbling,cancelable
+return !element.dispatchEvent(evt);
+}
+}
+
+
+function rec_e(fn) {
+  var inE = receiverE();
+  var tup = fn(inE);
+  var outE=tup[0];
+  outE.mapE(function(_) {
+    inE.sendEvent(_);
+  });
+  return tup[1];
+}
+
+function toggle (stream, init) {
+  return stream.collectE(init, function (_, i) { return !i; });
+}
+
+//number authors
+/*
+$(function() {
+  $(".authors").each(function (i) {
+    $(this).before(SPAN({style: {marginLeft: "-18px", paddingRight: "10px"}},''));//(i+1)));
+  });
+});
+*/
+
+//label blocks as first in li
+$(function() {
+  $(".papers blockquote").each(function (i) {    
+      var count = 0;
+      $(this).prev().each(function rec (j) {
+          if (this.tagName == "BLOCKQUOTE") count++;
+          $(this).prev().each(rec);
+        });
+      this.setAttribute("nthBlock", count);
+    });
+});
+
+
+$(function () {
+
+  var abstracts = $(".papers blockquote");
+  $(".papers blockquote").each(function (i) {    
+  
+    var bl = $(this);
+    var isFirstBlInLi = parseInt(this.getAttribute("nthBlock")) == 0;
+    
+    var paper = this.parentNode;
+    var where = this.previousSibling.previousSibling;
+    var links = paper.removeChild(this.previousSibling);
+    
+    var abstract = paper.removeChild(this);
+    var onB;
+    var abstractLink =
+      rec_e(function (clickE) {          
+        onB = toggle(clickE, false && i == 0).startsWith(false && i == 0 && isFirstBlInLi);   
+        
+        var whenOn = SPAN({className: 'hit'}, SPAN("[hide]"));
+        var whenOff = SPAN({className: 'hit'},  SPAN("[peek]"));      
+        return [clicksE(whenOn).mergeE(clicksE(whenOff)),
+                onB.ifB(whenOn, whenOff)]; });
+   onB.liftB(function (v) {
+     if (v) $(abstract).fadeIn(300);
+     else $(abstract).hide(); });
+   insertDomB(SPAN(SPAN(abstractLink, ", ", links),
+                  onB.ifB(abstract, SPAN())),
+              where, 'after'); }); });
+        </script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-27943864-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+        <div id="header" >
+            <div id="himg">
+                <img src="leo2.jpg" width="250px"><!--<img src="profile.jpg"/>-->
+                        <div id="b2">lmeyerov at eecs dot berkeley dot edu <br/>Par Lab | 565 Soda Hall</div>
+            </div>
+
+            <div id="hcontent">
+
+                <h1 style="">Leo Meyerovich</h1>
+                <blockquote><b3>CS Graduate Student -- Peon Extraordinaire</b3></blockquote>
+
+                    <ul>
+<!--                        <li><a href="http://www.google.com/calendar/embed?src=khng8emhe92j4p4j4pfn0el0nc@group.calendar.google.com&src=g7v54c2qljo02tpbnpjt2rums8%40group.calendar.google.com&src=lmeyerov%40gmail.com&src=g7v54c2qljo02tpbnpjt2rums8%40group.calendar.google.com&src=s14jgmtbuhi426febvaja59op8%40group.calendar.google.com">Calendar</a></li> -->
+<!--
+                        <li><a href="http://lmeyerov.blogspot.com">Blog</a></li>
+-->
+                        <li><a href="http://sc-lang.com">Superconductor</a></li>
+
+                        <li><a href="http://www.flapjax-lang.org">Flapjax</a></li>
+
+                        <li><a href="http://osq.cs.berkeley.edu">Open Source Quality Seminar</a></li>
+<!--
+
+<li><a href="js/cv.pdf">CV</a> </li>
+    
+-->
+                </ul>
+
+            </div>
+        </div>
+
+
+
+<a name="bio"></a>
+        <p style="text-align:justify">I work with <a href="http://www.eecs.berkeley.edu/~bodik/">Ras Bodik</a> in the <a href="http://parlab.eecs.berkeley.edu">Par Lab</a> on <a href="http://sc-lang.com" style="color:blue">the Superconductor language for big data visualization</a>, a parallel web browser, and on the side, the sociology of programming languages.
+
+       Previously, I was a member of
+        <a href="http://www.cs.brown.edu/research/plt/">Brown PLT</a> with <a href="http://www.cs.brown.edu/~sk/">Shriram Krishnamurthi</a>. I have also worked at a startup, Microsoft Research, Macromedia, Adobe's Advanced Technology Labs, and WBRU, a commercial radio station.
+<!--Most recently, I have been researching <a href="#ftl" onclick="fireEvent('ftl','click')">synthesis and parallelization</a> for low-power browsers and big data visualization,  <a href="#cdp" onclick="fireEvent('cdp','click')"><i>clustered</i> data parallel algorithms</a>, and <a href="#socio" onclick="fireEvent('socioplt','click')">sociological foundations of programming languages</a>. Up till the end run for my thesis, I also worked on JavaScript and browser security (with <i>Views</i> being partially superseded by <a href="http://wiki.ecmascript.org/doku.php?id=harmony:proxies"><i>Proxies</i> in JavaScript/ECMAScript</a>).
+-->
+
+<!-- I've designed languages for important problems beyond parallelism as well: 
+<a href="#security" onclick="fireEvent('conscript','click')">ConScript for scripting security policies</a>, <a href="#guise" onclick="fireEvent('extraction','click')">GUISE for mashup meta-programming</a>, and <a href="#flapjax" onclick="fireEvent('flapjax','click')">Flapjax for coordination</a>.</p>
+-->
+<p style="clear:both"></p>
+<p>My following languages paint a brighter future for the web:
+<ul class="txt">
+<li><a href="#parallelism" style="color:black" onclick="fireEvent('ftl','click')"><b>Parallelism:</b></a> the <a href="#ftl" onclick="fireEvent('ftl','click')">FTL</a> parallel pattern synthesizer and surrounding <a href="http://www.sc-lang.com" style="color:blue">Superconductor language</a> <a href="http://www.youtube.com/watch?v=H1aHul6UaV4&feature=youtu.be" style="color:green">(screencast!)</a> for multicore CSS and GPU big data visualization 
+<!-- <br/>
+ (<i style="color:blue">PLDI+ECOOP SRC 2nd place</i>, ParLab in <a href="http://www.economist.com/node/18750706" class="news">The Economist</a> and <a href="http://www.nytimes.com/2008/04/30/technology/30lab.html" class="news">New York Times</a>)--></li>
+<li><a href="#productivity" style="color:black" onclick="fireEvent('flapjax','click')"><b>Productivity:</b></a> the <a href="#flapjax" onclick="fireEvent('flapjax','click')">Flapjax</a> web event language 
+<!--<br/>
+--></li>
+<li><a href="#security" style="color:black" onclick="fireEvent('conscript','click')"><b>Security:</b></a> the <a href="#conscript" onclick="fireEvent('conscript','click')">ConScript</a> script security language 
+<!--
+    <br/>
+    -->
+</li>
+</ul>
+</p>
+<p>Finally, causing some excitement, see our work on
+<a href="#socio" onclick="fireEvent('socioicse','click')">
+Socio-PLT: Sociology for Programming Languages!</a><br/> 
+<!--
+<p>These are in collaboration with some great researchers: <a href="http://research.microsoft.com/en-us/people/toddm/">Todd Mytkowicz</a> (SIMD algorithms for irregular codes), <a href="http://www.cs.berkeley.edu/~asrabkin/">Ari Rabkin</a> (Socio-PLT), and our great undergraduates, Eric Atkinson (mechanization of CSS) and Matt Torok (GPU language for big data visualizations). Also, check out parallelization research by our friends that may soon end up in a browser near you: Calin Cascaval (Qualcomm), Mohammad Haghighat (Intel), Tasneem Brutch (Samsung), and the <a href="https://github.com/mozilla/servo/">Servo team</a> at Mozilla!
+-->
+
+<!--
+<div style="border: 2px solid #000; padding: 1em;max-width: 40em ">
+<h2><u>Application Materials</u></h2>
+<b>Research Statement:</b> <a href="js/rs.pdf">pdf</a>, <a href="js/rs.html">html</a>  <br/>
+<b>Teaching Statement:</b> <a href="js/ts.pdf">pdf</a>, <a href="js/ts.html">html</a> <br/>
+<b>CV:</b> <a href="js/cv.pdf">pdf</a>, <a href="js/cv.html">html</a> (and <a href="http://scholar.google.com/citations?user=3pnyo7IAAAAJ&hl=en">Google Scholar</a>)<br/>
+<b>References:</b>
+<p style="padding-left: 0.5em; padding-top: 0; margin-top: 0">Ras Bodik (Professor, Berkeley)<br/>
+Brendan Eich (CTO, Mozilla)<br/>
+Jim Larus (Research Director / Principal Researcher, Microsoft Research)<br/>
+Wolfram Schulte (Research Manager / Principal Researcher, Microsoft Research)</p>
+<b>Combined Materials:</b> <a href="js/combined.pdf">pdf</a><br/>
+</div>
+-->
+
+<hr/>
+<div>
+<h2>Upcoming</h2>
+<p>Ping me if we coincide!
+<ul class="txt">
+<li><b>Google</b>: Parallelizing the Web Browser and Other Browser Research at UC Berkeley (Mountain View, November)</li>
+<li><b>AMD Developer Summit</b>: Superconductor: Hardware-accelerating Web Languages for Massive Visualizations (San Jose, November)</li>
+<li><b>Node Summit</b>: Panel on The Evolution of JavaScript (San Francisco, December)</li>
+<li><b>Cal Poly</b>: Scaling Charts with Superconductor: When a Language Designer Encounters a Cloud (San Luis Obispo, January 2014)</li>
+<li><b>Strata</b>: Superconductor: Scaling Charts with Design and GPUs (Santa Clara, February 2014)</li>
+</ul>
+<p>Recent</p>
+<ul class="txt" style="opacity: 0.5">
+<li><b>OOPSLA (SPLASH)</b>: Empirical Analysis of Programming Language Adoption
+<b><i style="color:blue">best paper award</i></b> <a href="projects/socioplt/talks/oopsla2013.pptx">pptx</a>, <a href="http://www.slideshare.net/lmeyerov/oopsla-talk2">slideshare</a>
+ (Indianapolis, October 26th-31st)</li>
+<li><b>IBM PL Day</b>: Keynote on Socio-PLT (September, 2013)</li>
+<li><a href="https://thestrangeloop.com/"><b>Strange Loop</b></a>: Superconductor -- Thinking DSLs for Massive Visualizations (September 18th-20th, St. Louis, Missouri)</li>
+<li><a href="http://program-transformation.org/WGLD/Aarhus2013"><b>IFIP Workshop on Language Design</b></a>: Applying Social Computing to the Superconductor Language for Big Data Visualization (Aarhus, Denmark, August, 2013)</li>
+<li><a href="http://www.meetup.com/jsmeetup/events/118015682/"><b>SFJS Functional Monthly</b></a>: Don't Call It a Comeback: Big Data Visualization in Superconductor with Attribute Grammars and Parallel JavaScript (WeWork Labs, San Francisco, June 25th, 2013) -- <a href="http://www.slideshare.net/lmeyerov/sfjsv1">slideshare</a></li>
+<li><a href="http://fluentconf.com/fluent2013/public/schedule/detail/27963"><b>O'Reilly Fluent</b></a>: Superconductor: A Language for Big Interactive Visualizations (San Francisco, May, 2013) -- <a href="http://www.slideshare.net/lmeyerov/v2-22393939">slideshare</a>, <a href="projects/pbrowser/pubfiles/talks/fluent2013superconductor.pptx">pptx</a> </li>
+<li><a href="http://www.khronos.org/news/events/march-meetup-2013"><b>GDC/Khronos meetup</b></a>: Superconductor: A Language for Big Data Visualization (San Francisco, March, 2013)</li>
+<li><b>PPoPP</b>: Parallel Schedule Synthesis for Attribute Grammars (Shenzen, China, February, 2013)</li>
+<li><b>LASH-C</b>: Superconductor: A Language for Big Data Visualization (Shenzen, China, February, 2013)</li>
+<li><b>DARPA ISAT Workshop on Language Adoption</b> (Philadelphia, February 2013)</li>
+<li><b>UPCRC</b>: The Parallel Browser (January, 2013)</li>
+</ul>
+
+
+</div>
+
+
+<h2>Research</h2>
+
+<!--
+<i><b>We are interested in working with students on the parallel web browser: please contact me or Ras about how to get involved!</b></i>
+-->
+<!--
+<p>Earlier, and hopefully again soon, I've worked on secure (multiprincipal, analyzeable) and productive (declarative, reactive) web languages. On the layout front, Thibaud Hottelier has been doing some cool work on constraint-based layout languages that compiles into FTL and we've been working on a neat HTML5 variant.</p>
+-->
+
+<a name="activities"></a>
+<div class="area"><h2>Parallel Browser</h2><span>Languages, compilers, and algorithms</span><a href="http://sc-lang.com"><img src="http://img.youtube.com/vi/H1aHul6UaV4/0.jpg"></img></a></div>
+<!-- <p>For an early overview of the Parallel Web Browser project, see our HotPar '09 paper. Since then, our group has systematically examined individual components for 10-60x speedups on commodity hardware: lexing, parsing, CSS selectors, layout solving, and rendering.</p>
+<p>Recently, our work has led to the idea of <i>clustered data parallelism</i>, a subset of data parallelism where we partition a data structure for SIMD evaluation within clusters. The basic idea is to adapt clustering data layout transformations originally designed for improving spatial locality to now also enable SIMD evaluation.</p> -->
+<ul class="papers">
+<a name="parallelism"></a>
+
+<li class="starred">
+<a name="cdp"></a>
+<span class="authors">Leo A. Meyerovich and <a href="http://research.microsoft.com/en-us/people/toddm/">Todd Mytkowicz</a>.</span>
+<b class="title">Clustered Data Parallelism.</b>
+<span>
+<a href="http://eecs.berkeley.edu/~lmeyerov/projects/simtasks/cdp.pdf">draft</a>
+</span><blockquote>
+
+Many data layout optimizations cluster data accesses and memory into high-locality groups in order to optimize for the memory hierarchy. In this paper, we demonstrate that similar clustering program transformations enable efficient vectorization. We call this approach clustered data parallelism (CDP). CDP enables fast and power-efficient parallelism by partitioning a data structure into clusters such that SIMD evaluation is efficient <i>within</i> a cluster.  
+
+<br/><br/>
+
+We describe the CDP latent in three common computational patterns: map, reduce, and graph traversals. Demonstrating the benefits of CDP, we present case studies of instantiating the CDP patterns in order to design fast and power-efficient  binary search and webpage layout algorithms. First, we increase binary search SIMD scalability by using CDP to expose speculative parallelism. Second, we achieve the first SIMD webpage layout algorithm by using CDP to eliminate heavy branching.
+
+
+<br/><br/>
+
+
+We report strong performance improvements. Targeting AVX, we see a 5.5X speedup and 6.9X performance/Watt increase over FAST, the previously fastest SIMD binary search algorithm. Running webpage layout with SSE4.2 instructions, we observe a 3.5X speedup and 3.6X performance/Watt increase over an already optimized baseline. 
+
+</blockquote>
+</li>
+
+
+
+<li class="starred highlight">
+<a name="ftl"></a>
+<span class="authors">Leo A. Meyerovich, Matthew E. Torok, Eric Atkinson,  <a href="http://www.cs.berkeley.edu/~bodik/">Rastislav Bodik</a>.</span>
+<b class="title">Parallel Schedule Synthesis for Attribute Grammars.</b> 
+<i class="conference">PPoPP 2013</i><span><b><i style="color:blue">PLDI+ECOOP SRC (2nd place)</i></b>, 
+<a href="http://eecs.berkeley.edu/~lmeyerov/projects/pbrowser/pubfiles/synthesizer2012.pdf">pdf</a>, <b>
+<br/>[Demos: <a href="http://www.youtube.com/watch?v=H1aHul6UaV4&feature=youtu.be&t=40s" style="color:green">GPU acceleration screencast!</a>, <a href="http://jsfiddle.net/lmeyerov/sHDsb" style="color: green">programmable demo</a>, <a href="http://eecs.berkeley.edu/~lmeyerov/projects/pbrowser/pubfiles/everything/everything.html" style="color: green">box model</a>, <a style="color:green" href="http://www.eecs.berkeley.edu/~lmeyerov/projects/pbrowser/pubfiles/tables/tablesidealClean3.html">table layout</a>, <a style="color:green" href="http://www.eecs.berkeley.edu/~lmeyerov/projects/pbrowser/pubfiles/fisheye/index.html">fisheye animation</a>]</b></span><blockquote>
+We examine how to synthesize a parallel schedule of structured traversals over trees. In our system, programs are declaratively specified as attribute grammars and parallel traversals for GPUs and multicore CPUs are defined by a compiler. Our synthesizer automatically, correctly, and quickly schedules the attribute grammar.
+<br/><br/>
+Scheduling impacts performance and software integration. We therefore introduce a declarative language of schedules where programmers may sketch any part of the schedule and the synthesizer will complete the rest. For the same motivation, the synthesizer answers debugging queries about if and how schedules may be completed and enumerates scheduling choices for autotuning.
+<br/><br/>
+This paper presents our cubic-time schedule synthesizer, and its support for finding, specifying, debugging, and autotuning schedules. We evaluate our approach with two case studies. First, we created the first parallel schedule for a large fragment of CSS and report a 3X speedup  on multicore hardware. Second, we created a GPU-accelerated visualization language for real-time interactive animations of over 100,000 nodes.
+</blockquote>
+</li>
+
+<li class="starred highlight">
+<a name="lashc"></a>
+<span class="authors">Leo A. Meyerovich, Matthew E. Torok, Eric Atkinson, <a href="http://www.cs.berkeley.edu/~bodik/">Rastislav Bodik</a>.</span>
+<b class="title">Superconductor: A Language for Big Data Visualization.</b>
+<i class="workshop">LASH-C 2013</i>
+<span><a href="projects/pbrowser/pubfiles/lashc2012.pdf">pdf</a> (position paper), <b><a href="http://www.youtube.com/watch?v=H1aHul6UaV4&feature=youtu.be" style="color:green">screencast</a></b>, <a href="http://www.slideshare.net/lmeyerov/v2-22393939">O'Reilly Fluent 2013 slideshare</a> / <a href="projects/pbrowser/pubfiles/talks/fluent2013superconductor.pptx">pptx</a>, <a href="http://www.slideshare.net/lmeyerov/sfjsv1">SFJS slideshare</a></span>
+</li>
+
+<li>
+
+<span class="authors">Leo A. Meyerovich, <a href="http://research.microsoft.com/en-us/people/toddm/">Todd Mytkowicz</a>, <a href="http://research.microsoft.com/en-us/people/schulte/">Wolfram Schulte</a>.</span>
+<b class="title">Data Parallel Programming for Irregular Tree Computations.</b> <i class="workshop">HotPar '11</i>
+<span><a href="projects/simtasks/hotpar2011.pdf">pdf</a></span><blockquote>
+
+  The adoption of data parallel primitives to increase multicore utilization presents an opportunity for aggressive compiler optimization. We examine computations over the tree abstract datatype (ADT) in particular. 
+<br/><br/>  
+  For better utilization than approaches like flattening, we argue that transformations should specialize for common data and computation regularities. For example, we demonstrate a novel pattern that exploits regularity in node labeling as a SIMD parallelism opportunity, which we call SIMTask parallelism. For better applicability, we argue for better linguistic support of irregularity. For example, we show how the future primitive might be used to tolerate occasional data dependencies in an otherwise associative computation.
+<br/><br/>  
+  We validate our approach on two tree computations:
+  RepMin, popular in the functional programming community,
+  and \benchmark{intrinsic widths}, a stage of webpage layout in a
+  prototype web browser. We show speedups over traditional versions of
+  these computations of 124X and 10X, respectively.
+</blockquote>
+</li>
+<li class="starred">
+<span class="authors">Leo A. Meyerovich and <a href="http://www.cs.berkeley.edu/~bodik/">Rastislav Bodik</a>.</span>
+<b class="title">Fast and Parallel Webpage Layout.</b> <i class="conference">WWW 2010</i> 
+<!-- 12% -->
+<span><a href="projects/pbrowser/pubfiles/paper.pdf">pdf</a>, <a href="projects/pbrowser/pubfiles/extended.pdf">extended draft</a>, <!-- <a href="projects/pbrowser/pubfiles/bss.html" style="color:green"><b>BSS0-2 in JS</b></a>, --> <a style="color: green" href="http://code.google.com/p/pbrowser/source/browse/#svn/trunk/layout/match"><b>multicore code</b></a></span><blockquote>
+
+The web browser is a CPU-intensive program. Especially on mobile devices, loading of webpages is too slow, spending much of its time in processing a document's appearance. Due to power constraints, most hardware improvements will 
+come in the form of parallel architectures. This is also true of mobile devices such as phones. Current browsers, however, do not yet fully exploit hardware parallelism, so we are designing a parallel mobile browser. In this paper, we 
+introduce new algorithms for CSS selector matching, layout solving, and font rendering, which represent key components for a fast layout engine. Evaluation on popular sites shows speedups as high as 80x. We also formulate layout solving 
+with attribute grammars, enabling us to not only parallelize our algorithm but prove that it computes in O(log) time and without reflow. 
+</blockquote>
+</li>
+<li>
+<span class="authors">Leo Meyerovich.</span> <b class="title">Rethinking Browser Performance.</b> <i class="workshop">USENIX ;login:, Aug. 2009</i>
+
+<span><b style="color:blue;"><i>invited article</i></b>, <a href="projects/pbrowser/pubfiles/login.pdf">pdf</a></span>
+
+</li> 
+
+<li class="starred highlight">
+<span class="authors"><a href="http://blog.mozilla.com/cjones/">Chris Jones</a>, Rose Liu, Leo Meyerovich, <a href="http://www.eecs.berkeley.edu/~krste/">Krste Asanovic</a>, <a href="http://www.cs.berkeley.edu/~bodik/">Rastislav Bodik</a>.</span> <b class="title">Parallelizing the Web Browser.</b> <i class="workshop">HotPar '09</i>
+
+<span><a href="projects/pbrowser/hotpar09/paper.pdf">pdf</a></span><blockquote>
+We argue that the transition from laptops to handheld computers will happen only if we rethink the design of web browsers. Web browsers are an indispensable part 
+of the end-user software stack but they are too inefficient for handhelds. While the laptop reused the software stack of its desktop ancestor, solid-state device 
+trends suggest that today's browser designs will not become sufficiently (1) responsive and (2) energy-efficient. We argue that browser improvements must go beyond JavaScript JIT compilation and discuss how parallelism may help achieve these two goals. Motivated by a future browser-based application, we describe the preliminary design of our parallel browser, its work-efficient parallel 
+algorithms, and an actor-based scripting language.
+</blockquote>
+</li> 
+</ul>
+
+<div class="area"><h2>Socio-PLT</h2><span>Social factors of language design</span><a href="http://www.eecs.berkeley.edu/~lmeyerov/projects/socioplt/viz/index.html"><img src="http://www.eecs.berkeley.edu/~lmeyerov/projects/socioplt/viz/zoom.png"></img></a></div>
+<ul class="papers">
+<a name="socio"></a>
+<li><span class="authors">Leo A. Meyerovich.</span>
+<b class="title">Adoption-Oriented Language Design.</b><i class="workshop">ISAT/DARPA Workshop on Fostering Adoption of Programming Languages 2013 (position paper)</i>
+<span><a href="projects/socioplt/papers/isat2013.pdf">pdf</a></span><blockquote>
+Language designers optimize features for adoption, yet research provides little guidance. Worse, optimizing for adoption leads to foregoing the suggestions that research does provide. For example, advanced type systems are breaking ground in guaranteeing correctness, yet after 30 years, we rarely see even ML-style type inference. As Erik Meijer relates, if the mountain will not come to Mohammed, then Mohammed must go to the mountain [1]. To do so, we ask: how can researchers explicitly optimize for adoptiblity to improve the value proposition of our work?
+<br/><br/>We propose three constructive steps towards adoption-oriented language design. Designing for adoption takes many forms because adoption itself is multifaceted: it is a desirable result, an exploitable process, and applies to both languages and features. Driven by our survey of social science literature on adoption [2] and our analysis of adoption factors for over 200,000 projects and 15,000 developers [3,4,5], we identify three constructive areas of adoption-oriented design: 
+<br/>
+<br/>I.	Feature Streamlining: Improving adoptability of a feature
+<br/>II.	Language Targeting: Improving the adoptability of a language
+<br/>III.	Network Effect Constructs: Designing features that improve with adoption
+
+
+
+</blockquote>
+</li>
+<li class="starred"><a name="socioicse"></a>
+<span class="authors">Leo A. Meyerovich and <a href="http://www.cs.berkeley.edu/~asrabkin/">Ariel S. Rabkin</a>.</span> 
+<b class="title">Empirical Analysis of Programming Language Adoption.</b>
+<i class="conference">OOPSLA 2013</i>
+<span><b style="color:blue; "><i>best paper award</i></b>,
+<!-- 12% -->
+<span><a href="projects/socioplt/papers/oopsla2013.pdf">pre-print (July 2013)</a>,
+<a href="projects/socioplt/talks/oopsla2013.pptx">pptx</a>, <a href="http://www.slideshare.net/lmeyerov/oopsla-talk2">slideshare</a>,
+<a href="http://www.youtube.com/watch?v=v2ITaI4y7_0" class="news">Google Tech Talk video</a>,
+ <b><a href="projects/socioplt/data/all.tar.gz" style="color:green">39MB survey data</a></b></span><blockquote>
+Some programming languages become widely popular while others fail to grow beyond their niche or disappear altogether. This paper uses survey methodology to identify the factors that lead to language adoption. We analyze large datasets, including over 200,000 SourceForge projects, 590,000 projects tracked by Ohloh, and multiple surveys of 1,000-13,000 programmers. <br/><br/>
+
+We report several prominent findings. 
+First, language adoption follows a power law; a small number of languages account for most language use, but the programming market supports many languages with niche user bases. Second, intrinsic features have only secondary importance in adoption.
+Open source libraries, existing code, and experience strongly influence 
+developers when selecting a language for a project. 
+Language features such as performance, reliability, and simple semantics do not. 
+Third, developers will steadily learn and forget languages, and the overall number of languages developers are familiar with 
+is independent of age.
+Developers select more varied languages if their education exposed them to different language families. 
+Finally, when considering intrinsic aspects of languages, developers prioritize expressivity over correctness. They perceive static types as more valuable for properties such as the former rather than for correctness checking.
+</blockquote>
+</li>
+
+
+
+<li class="starred highlight"><span class="authors">Leo A. Meyerovich and <a href="http://www.cs.berkeley.edu/~asrabkin/">Ariel S. Rabkin</a></span>
+<b class="title">Interactive Visualizations of Language Perception.</b>
+<span>
+
+<a class="news" href="http://www.wired.com/wiredenterprise/2012/06/berkeley-programming-languages/">Wired</a>, <a href="http://developers.slashdot.org/story/12/06/07/1314208/why-do-programming-languages-succeed-or-fail" class="news">Slashdot</a>, 
+<b><a href="projects/socioplt/viz/index.html" style="color:green">interactive visualizations</a></b></span><blockquote>
+Fueled by the web, open source, and the mainstreaming of programming, software research is undergoing an empirical revolution. In this project, we use data from these sources to examine basic and sensitive issues about programming languages. For example, we found developers negatively correlate static types with code reuse, which challenges typical research assumptions about module systems. This work is part of our on-going effort to understand and exploit the relationship between social phenomena and programming languages.
+
+<br/><br/>
+This website showcases some of our early experiences in large-scale and cross-language quantitative analysis. It presents early interactive visualizations that we -- and you -- can use to explore one of our data sets.
+</blockquote>
+</li>
+
+<li>
+<span class="authors">Leo A. Meyerovich and <a href="http://www.cs.berkeley.edu/~asrabkin/">Ariel S. Rabkin</a>.</span>
+<b class="title">
+How Not to Survey Developers and Repositories:
+Experiences Analyzing Language Adoption.
+</b>
+<i class="workshop">PLATEAU 2012</i> <!-- -->
+<span><a href="projects/socioplt/papers/plateau2012.pdf">pdf</a></span><blockquote>
+We present cross-sectional analyses of programming language use and reflect upon our experience in doing so. In particular, we directly analyze groups of 1,500-13,000 developers by using questionnaires and 260,000 developers indirectly so by mining 210,000  software repositories. Our analysis reveals programming language adoption phenomena surrounding developer age, birth year, workplace, and software repository preference.
+<br/><br/>
+We find that survey methods are increasingly accessible and relevant, but there are distinctive problems in examining developers and code repositories. We show that analyzing software repositories suffers from sample bias problems similar to those encountered when directly polling developers. Such bias limits the general validity of research claims based on analysis of software repositories. We aid future empirical researchers by describing concrete practices and opportunities to improve the results of developer and software repository surveys.
+</blockquote>
+</li>
+
+<li>
+<a name="socioplt"></a><span class="authors">Leo A. Meyerovich and <a href="http://www.cs.berkeley.edu/~asrabkin/">Ariel S. Rabkin</a>.</span>
+<b class="title">Socio-PLT: Sociological Principles for Programming Language Adoption.</b>
+<i class="conference">Onward! 2012</i> <!-- 30% -->
+<span><a href="projects/socioplt/papers/onward2012.pdf">pdf</a>, <a href="http://www.infoq.com/presentations/Socio-PLT" class="news">video</a></span><blockquote>
+Why do some programming languages fail and others succeed? What does the answer tell us about programming language design, implementation, and principles? To help answer these and other questions, we argue for a sociologically-grounded programming language theory: <i>socio-PLT</i>. 
+<br/><br/>
+Researchers in the social sciences have studied adoption in many contexts. 
+We show how their findings are applicable to programming language design.
+For example, many programming language features provide benefits that programmers cannot directly or immediately observe and therefore may not find compelling. From clean water to safe sex, the health community has long examined how to surmount similar observability barriers. 
+We use such results from outside of programming language theory to frame a research agenda that should help us understand the social foundations of languages. Finally, we examine implications of our approach, such as for the design space of language features and the assessment of scientific research into programming languages.
+</blockquote>
+</li>
+</ul>
+
+
+<div class="area"><h2>Productivity</h2><span>Dynamic languages</span><a href="http://www.flapjax-lang.org"><img src="http://www.flapjax-lang.org/images/logo.png"></img></a></div>
+<ul class="papers">
+<a name="productivity"></a>
+<li class="starred highlight">
+<a name="flapjax"></a>
+<span class="authors">Leo A. Meyerovich, <a href="http://www.cs.brown.edu/~arjun/">Arjun Guha</a>, Jacob Baskin, <a href="http://www.cs.brown.edu/~greg/">Gregory H. Cooper</a>, <a href="http://www.cis.upenn.edu/~mgree/">Michael Greenberg</a>, Aleks Bromfield, <a href="http://www.cs.brown.edu/~sk/">Shriram Krishnamurthi</a>.</span>  <b class="title">Flapjax: A Programming Language for Ajax Applications.</b> <i class="conference">OOPSLA 2009</i> <!-- 17% -->
+
+<span><b style="color:blue; "><i>best student paper</i></b>,
+
+
+ <a class="news" href="http://ajaxian.com/archives/flapjax-functional-javascript">blog</a>-<a href="http://www.infoworld.com/d/developer-world/flapjax-griddle-web-apps-351" class="news">o</a>-<a href="http://www.ibm.com/developerworks/web/tutorials/wa-flapjax/" class="news">sphere</a>, <a href="http://en.wikipedia.org/wiki/Flapjax" class="news">Wikipedia</a>,
+
+ <a href="projects/flapjax/flapjaxfinal.pdf">pdf</a>,  <a href="http://www.cs.brown.edu/research/pubs/techreports/reports/CS-09-04.html">TR CS-09-04</a>, <b><a style="color: green" href="http://www.flapjax-lang.org">try it out!</a></b>
+
+</span><blockquote>
+This paper presents Flapjax, a language designed for contemporary Web applications. These applications communicate with servers and have rich, interactive interfaces. Flapjax provides two key features that simplify writing these applications. First, it provides event streams, a uniform abstraction for communication within a program as well as with external Web services. Second, the language itself is reactive:  it automatically tracks data dependencies and propagates updates along those dataflows. This allows developers to write 
+reactive interfaces in a declarative and compositional style.<br/><br/>
+Flapjax is built on top of JavaScript. It runs on unmodified browsers and readily interoperates with existing JavaScript code. It is usable as either a programming language (that is compiled to JavaScript) or as a JavaScript library, and is designed for both uses. This paper presents the language, its design decisions, and illustrative examples drawn from several working Flapjax applications.
+</blockquote>
+</li>
+<li>
+<a name="guise"></a>
+<span class="authors">Leo Meyerovich and <a href="http://www.cs.berkeley.edu/~sauciuc/">Raluca Sauciuc</a>.</span>
+<b class="title">Perceiving the GUISE: Graphical User Interface Specification Extraction.</b>
+<span></span> 
+<span> <a href="projects/guise/guise.pdf">pdf</a> </span><blockquote>A fundamental part of the web experience is running metaprograms: extensions modify webpages, search engines index them, and end-user programming tools mash them up. Unfortunately, these tools generally break on AJAX applications because they fail to understand application structure and cope with application updates. 
+<br/><br/>
+We present a GUI analysis tool that extracts a high-level interaction model of an application. Metaprograms are written with respect to the model instead of manual snapshots of an application. We demonstrate how it helps 2 scenarios. First, by inferring the structure of possible actions, we present a natural language interface for interpreting complex multi-step commands over arbitrary existing websites. Second, as commands are reused over time, we show how to detect when a previously working command will break or become ambigiuous in the face of updates to the underlying application. Furthermore, we can use our tool to heal the interpretations of the commands. 
+<br/><br/>
+
+Our approach use abstract interpretation to learn a finite state model of a reactive system by dynamically watching user interactions. It is lightweight and precise without sacrificing recall.</blockquote>
+</li>
+<li>
+<span class="authors">Leo Meyerovich and Roger Webster.</span>
+
+<b>Playing with FIRE: Mixing Functional and Imperative Reactivity in ECMAScript.</b> Adobe TR (2007), <span>contact for draft</span><blockquote>
+Functional reactive abstractions over time have recently been shown to simplify the description of rich Internet applications,
+but usability difficulties in defining stateful functions, mixing imperative and functional reactive control sequences,
+and discerning the boundary for values between the time-varying and flat host domains continue to prevent adoption of 
+transparent embeddings for mainstream languages. We present four novel extensions to previous embedding strategies to help
+simplify safe, reusable, first-class event handling in the dominant object-oriented rich Internet application language family.
+Putting these distinct extensions together, we lower previously unsurmounted barriers for introducing structured concurrency 
+specification techniques into a typically ad-hoc yet important domain.
+</blockquote>
+
+</li></ul>
+
+
+<div class="area"><h2>Security</h2><span>Analyzable and scriptable policies</span><a href="http://www.margrave-tool.org"><img src="jail.jpg"></img></a></div>
+<ul class="papers">
+<a name="security"></a>
+<li class="starred">
+<a name="conscript"></a><span class="authors">Leo A. Meyerovich and <a href="http://research.microsoft.com/en-us/um/people/livshits/">Benjamin Livshits</a>.</span>
+<b class="title">ConScript: Specifying and Enforcing Fine-Grained Security Policies for JavaScript in the Browser.</b> 
+<i class="conference">Security & Privacy 2010</i><!-- 12% -->
+<span>
+
+    <a class="news" href="http://www.technologyreview.com/printer_friendly_article.aspx?id=25358">Technology Review</a>,
+
+<a href="projects/conscript/conscript.pdf">pdf</a>, <a href="http://research.microsoft.com/apps/pubs/?id=115390">extended technical report</a> <!--, <a href="biblio.bib">bibtex</a>--></span><blockquote>
+Much of the power of modern Web comes from the ability of a Web page to combine contents and JavaScript code from disparate servers on the same page. While the ability to create such mash-ups is attractive for both the user and the developer because of extra functionality, because of code inclusion, the hosting site effectively opens itself up for attacks and poor programming practices within every JavaScript library or API it chooses to use. In other words, expressiveness comes at the price of losing control. To regain the control, it is therefore valuable to provide means for the hosting page to restrict the behavior of the code that it may include.<br/><br/>
+
+This paper presents ConScript, an client-side advice implementation for security, built on top of Internet Explorer 8. ConScript allows the hosting page to express fine-grained application-specific security policies that are enforced at runtime. In addition to presenting 17 widely-ranging security and reliability policies that ConScript enables, we also show how policies can be generated automatically through static analysis of server-side code or runtime analysis of client-side code. We also present a type system that helps ensure correctness of ConScript policies. To show the practicality of ConScript in a range of settings, we compare the overhead of ConScript enforcement and conclude that it is significantly lower than that of other systems proposed in the literature, both on micro-benchmarks as well as large, widely-used applications such as MSN, GMail, Google Maps, and Live Desktop.
+</blockquote>
+</li>
+<li class="starred highlight">
+<span class="authors">Leo A. Meyerovich, <a  href="http://www.cs.berkeley.edu/~afelt/">Adrienne Porter Felt</a>, and <a href="http://www.caplet.com/">Mark S. Miller</a>.</span>
+<b class="title">Object Views: Fine-Grained Sharing in Browsers.</b>
+<i class="conference">WWW 2010</i> <!-- 12% -->
+<span><a href="projects/views/views.pdf">pdf</a>,   <a href="http://code.google.com/p/memblib/w/list">wiki</a>, <a href="http://code.google.com/p/memblib/source/browse/trunk/memblib/membrane.js" style="color:green"><b>core library</b></a>, <a href="http://wiki.ecmascript.org/doku.php?id=harmony:proxies" style="color:green">Object Proxies for the JavaScript/ECMAScript standard</a></span><blockquote>
+
+Browsers do not currently support the secure sharing of JavaScript objects between principals. We present this problem as the need for <i>object views</i>, which are consistent and controllable versions of objects. Multiple views can be made for the same object and customized for the recipients. We implement object views with a JavaScript library that wraps shared objects and interposes on all access attempts. The security challenge is to fully mediate access to objects shared through a view and prevent privilege escalation. We discuss how object views can be deployed in two settings: same-origin sharing with rewriting-based JavaScript isolation systems like Google Caja, and inter-origin sharing between browser frames over a message-passing channel.
+
+<br/><br/>
+To facilitate simple document sharing, we build a policy system for declaratively defining policies for document object views. Notably, our document policy system makes it possible to hide elements without breaking document structure invariants. We discuss how object views can be deployed in two settings: same-origin sharing with rewriting-based JavaScript isolation systems like Google Caja, and inter-origin sharing between browser frames over a message-passing channel. 
+
+</blockquote>
+</li>
+<li>
+
+<span class="authors">Leo A. Meyerovich, David Yu Zhu, <a href="http://research.microsoft.com/en-us/um/people/livshits/">Benjamin Livshits</a>.</span>
+<b class="title">Secure Cooperative Sharing of JavaScript, Browser, and Physical Resources.</b><i class="workshop">W2SP 2010</i><!-- 41% -->
+<span><a href="projects/ubrowser/w2sp.pdf">pdf</a>  </span><blockquote>
+For better application-level controls on mashups, we advocate extending the Single Origin Policy and associated primitives to support a cooperative model that allows applications to express explicit sharing policies over browser, Javascript, and physical resources. 
+<br/><br/>
+First, we introduce an isolation model for content loading that is more complete than those of surveyed browser proposals.
+Second, we present new primitives to enable an application to secure its use of untrusted content by delegating browser, JavaScript, and physical resources in a fine-grained and reliable manner. Finally, essential to adoption, we propose an architecture based on designs for  related abstractions with low performance and implementation costs.
+
+</blockquote>
+</li>
+
+<li>
+<span class="authors"><a href="http://www.cs.washington.edu/homes/csgordon/">Colin Gordon</a>, Leo Meyerovich, <a href="http://www.cs.berkeley.edu/~jww/">Joel Weinberger</a>, and <a href="http://www.cs.brown.edu/~sk/">Shriram Krishnamurthi</a>. </span><b class="title">Composition with Consistent Updates for Abstract State Machines.</b> <i class="workshop">ASM '07</i> <span>
+
+<a href="projects/asm/asm07.pdf">pdf</a>, <a href="projects/asm/slidedraft23.pdf">draft slides</a></span><blockquote>
+We propose an approach to the consistent update problem of Abstract State Machines through a correctness preserving composition operator. Inconsistent updates are transparently isolated and cause local failure rather systemic failure. This is achieved by a source-to-source translation rather 
+than changing the semantics of Abstract State Machines, thus preserving findings of previous studies on Abstract State Machines and allowing independently verified modules to be composed. Our approach is motivated by experiences with 
+our complementary case study in describing dynamic security policies with Abstract State Machines in which we found the problem pervasive, stemming from a composition abstraction barrier. Previous efforts for supporting ASM composition are susceptible to the inconsistent update problem and may benefit from our approach. 
+
+</blockquote>
+<br/>
+<b style="color:#666"  class="title">ASM Relational Transducer Policies.</b> <br>
+Leo A. Meyerovich, <a href="http://www.cs.berkeley.edu/~jww/">Joel H. W. Weinberger</a>, <a href="http://www.cs.washington.edu/homes/csgordon/">Colin S. Gordon</a>, and <a href="http://www.cs.brown.edu/~sk/">Shriram Krishnamurthi</a>
+    (<a href="projects/asm/asmcs06-12.pdf">pdf</a>) 
+
+</li>
+<li class="starred highlight">
+<span class="authors"><a href="http://web.cs.wpi.edu/~kfisler/">Kathi Fisler</a>, <a href="http://www.cs.brown.edu/~sk/">Shriram Krishnamurthi</a>, Leo A. Meyerovich, <a href="http://www.cs.cmu.edu/~mtschant/">Michael Carl Tschantz</a>.</span>
+ <b class="title">Verification and Change-Impact Analysis of Access-Control Policies.</b> <i class="conference">ICSE 2005 </i><!-- 14% -->
+
+ <span><a href="projects/margrave/paper.pdf">pdf</a>, <a style="color: green" href="http://www.cs.brown.edu/research/plt/software/margrave"><b>try it out!</b></a></span><blockquote>
+
+Sensitive data are increasingly available on-line through the Web and other distributed protocols. This heightens the need to carefully control access to data. Control means not only preventing the leakage of data but also permitting access to necessary information. Indeed, the same datum is often treated differently depending on context. <br/><br/>
+System designers create policies to express conditions on the access to data. To reduce source clutter and improve maintenance, developers increasingly use domain-specific, declarative languages to express these policies. In turn, administrators need to analyze policies relative to properties, and to understand the effect of policy changes even in the absence of properties. <br/><br/>
+This paper presents Margrave, a software suite for analyzing role-based access-control policies. Margrave includes a verifier that analyzes policies written in the xacml lan- guage, translating them into a form of decision-diagram to answer queries. It also provides semantic differencing information between versions of policies. We have implemented these techniques and applied them to policies from a working software application. 
+ </blockquote>
+<br/><b style="color:#666">The Soundness and Completeness of Margrave with Respect to a Subset of XACML.</b> <br><a href="http://www.cis.upenn.edu/~mgree/">Michael Matthew Greenberg</a>, Casey Marks, Leo Meyerovich, and <a href="http://www.cs.cmu.edu/~mtschant/">Michael Carl Tschantz</a> (<a href="ftp://ftp.cs.brown.edu/pub/techreports/05/cs05-05.pdf">pdf</a>)
+</li>
+</ul>
+
+
+
+<!-- 
+<li><span class="authors">Leo A. Meyerovich</span>.<br/>
+<b>Socio-PLT: Programming Languages as Social Phenomena.</b><br/>
+<span>In progress, contact for working paper.</span>
+<blockquote>
+Programming languages are typically understood 
+in terms of formal properties of expressible programs such as performance, abstraction facilities, 
+and correctness guarantees. We argue that social phenomena  should also be considered. 
+As first steps, we explore an analogy with two well-studied social processes, natural language 
+spread and diffusion of innovation, finding surprising and predictive similarities. 
+We empirically motivate our analogy with an analysis of 97 
+programming languages in over 200,000 programs from the past 10 years.
+</blockquote><analysis></analysis>
+</li>
+-->
+
+<!--
+-->
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<li><span class="authors">Leo A. Meyerovich, Todd Mytkowicz.</span>
+<b>Eliminating Tree Irregularities by Clustering.</b>
+<br/>
+<span>in preperation</span><blockquote>
+Programmers often increase the performance of their applications by employing data layout optimizations. Unfortunately, control flow can be data dependent, which harms the effectiveness of current techniques. In this paper, we provide novel data layout optimizations for basic patterns of computing over trees based on the idea of <i>clustering</i> nodes. We believe clustering is a simple but powerful approach to improving the applicability of hardware and compiler optimizations for many irregular data parallel programs.
+<br/><br/>
+Our insight is that we can exploit knowledge about similarities between computations of different nodes to better rearrange traversal order and layout. Nodes are accessed in clusters where each cluster is guaranteed to be self-similar. Focusing on computations over trees, we present clustering strategies for optimizing reductions, parallel iteration with data-dependent control, and search. We primarily focus on how to improve vectorization, but show clustering enables other hardware and software optimizations as well.
+<br/><br/>
+
+We validate our approach by optimizing the <i>single-core</i> performance of two challenging and important irregular applications. By characterizing each application according to our patterns and applying the corresponding clustering techniques, we are then able to implement facilitated optimizations such as vectorization. First, we achieve a 4.5x speedup for a phase of the CSS language for laying out webpages. Second, we achieve a 4x speedup for a mature algorithm in computer science, binary search.
+
+</blockquote>
+</li>
+-->
+<!--
+<li><span class="authors">Leo A. Meyerovich</a></span>
+<b>Socio-PLT: Adoption-Oriented Language Design.</b>
+<br/>
+<span><a href="projects/socioplt/pladoption.pdf">in preperation</a>span><blockquote>
+
+Why does one programming language fail and another succeed? What does this tell us about the quality of languages and how to design them? To help answer these and other questions, we argue for a sociological approach to programming language theory: socio-PLT. We focus on the particular area of programming language adoption, connecting it to traditional sociological theories on the diffusion of innovation and socially constructed design. Using these foundations, we argue for adoption-oriented language design as a way to improve language quality and avoid failure. Finally, as a demonstrative thought experiment, we present a hypothetical adoption-oriented language design.
+</blockquote>
+</li>
+-->
+
+
+
+
+
+<!--
+<h2>Never-to-be-published</h2>
+<p>One measure of research is what you do not write about :) A taste of life at Berkeley and beyond:</p>
+
+        <ul>
+                        <li>Finding Once-a-Year Concurrency Bugs is Provably Easy: birthday attacks on heisenbugs (proof + talk, 2009)</li>
+                        <li>automated web gui testing (2008, reenvisioned with the GUISE project). fun hackery: involved a python/MPI multicore cloud layer!</li> 
+                        <li>modern back button: continuation-based web server idea applied to client apps (survey + proposal, 2008)</li>
+                        <li>web dwarfs: challenge applications for future web browsers and frameworks (2008)</li>
+                <li>structural type-feedback: dynamically learning likely javascript object shapes (2007)</li>
+            <li>Playing with FIRE: Mixing Functional and Imperative Reactivity in ECMAScript (at Adobe's Advanced Technology Labs, 2007)</li>
+            <li>sentence clustering (as opposed to word or phrase, operating at a significantly higher scale; with Kim Burchett and Ryan Tarpine, 2006?)</li>
+                        <li>DOM-lifting: destructive updates for functional reactive libraries (e.g., what makes Flapjax fast, 2006)</li>
+            <li>scale-free process usage in single-user environments (2006?)</li>
+            <li>bezier curve flash library (way long ago; new Flash APIs make this partially obsolete)</li>
+    </ul>
+-->
+
+<div style="display:none">
+        <h2>Presentations</h2>
+
+        <ol>
+li><b>UPCRC (MSR Faculty Summit)</b>: The Parallel Browser: Architecture and Synthesis over Parallel Patterns (July, 2012)</li>
+<li><b>Microsoft Research (China)</b>: Parallel Browser / Socio-PLT (short talk, June, 2012)</li>
+<li><b>PLDI+ECOOP 2012</b> (SRC): Synthesizing and Parallelizing Layout Languages (finalist / short talk, June, 2012)</li>
+<li><b>Mozilla</b>: FTL: Synthesizing a Parallel Layout Engine (February, 2012)</li>
+<!--
+<li><b>Par Lab Retreat</b>: Data Visualization on Parallel Layout talk and demo (January, 2012)</li>
+-->
+<li><b>Parallelism Tools Workshop (Intel, Santa Clara)</b>: Synthesizing a Parallel CSS Engine (August, 2011)</li> 
+<li><b>HotPar 2011</b>: Data Parallel Programming for Irregular Tree Computations (May, 2011)</li>
+<li><b>Qualcomm (Santa Clara)</b>: FTL: Fast Tree Language (October, 2010)</li> 
+<!-- <li><b>Google (Mountain View)</b>: A Parallel Browser for the Mobile Web (September, 2010)</li> -->
+<li><b>IBM Research (Almaden)</b>: Parallel Browsers for the Mobile Era: Challenges, Solutions, and Opportunities (September, 2010)</li>
+<li><b>Qualcomm (San Diego)</b>: FTL: Fast Tree Language (poster, September, 2010)</li> 
+<li><b>Parallel Bootcamp</b>: A Parallel Browser: Lessons in Mobility and Irregularity (September, 2010)</li>
+<li><b>Stanford</b>: A Parallel Browser for the Mobile Web (May, 2010)</li> 
+<!--
+<li><b>Par Lab, OSQ Retreats</b>: A Principled Approach to a Browser Layout Engine, Socio-PLT (May, 2010)</li>
+-->
+<li><b>W2SP 2010</b>: Secure Cooperative Sharing of JavaScript, Browser, and Physical Resources (May, 2010)</li>
+<li><b>Oakland 2010</b>: ConScript: Specifying and Enforcing Fine-Grained Security Policies for JavaScript in the Browser (May, 2010)</li>
+<li><b>WWW 2010</b>: Fast and Parallel Webpage Layout (April, 2010)</li>
+<li><b>Qualcomm</b>: A Principled Approach to a Browser Layout Engine (April, 2010)</li>
+                       <li><b>Open House at Intel Labs:</b> Parallel Webpage Processing (poster, March, 2010)</li>
+<!--
+                       <li><b>Par Lab Retreat:</b> Parallel Webpage Processing (poster, January 2010)</li>
+-->
+                       <li><b>OOPSLA 2009</b>: Flapjax (October, 2009)</li> 
+                       <li><b>Intel Developer Forum</b>: Parallel Browser Algorithms (poster, September, 2009)</li>
+                       <li><b>Microsoft Research (Redmond)</b>: Fast Webpage Layout (September, 2009)</li>
+
+                       <li><b>Adobe</b>: Fast Webpage Layout (September, 2009)</li>
+                     <!-- 
+                       <li><b>OSQ Retreat</b>: GUISE: Extracting User Control-Flow Graphs from Web Apps (short talk, May, 2009)</li>
+-->
+                       <li><b>#moz09 (Mozilla)</b>: It's the End of the Web as We Know It, and I Feel Fine (invited all-hands talk, April 30, 2009). contact for slides.</li>
+
+                       <li><b>CodeCon 2009</b>: The Parallel Web Browser (biohackers and cypherpunks, April 19th, 2009). <a href="projects/pbrowser/codecon/codecon02.pdf">pdf slides</a></li>
+
+                       <li><b>HotPar 2009</b>: The Parallel Web Browser (April, 2009)</li>
+                       <li><b>Samsung Research</b>: Parallel Webpage Layout (invited seminar, February, 2009)</li>
+<!--
+                        <li><b>Par Lab Retreat</b>: Parallel Webpage Layout (Berkeley/industry, January, 2009).  <a href="projects/pbrowser/retreatwinter2009/playout.pdf">pdf slides</a></li>
+-->    
+                    <li><b>Intel Languages Workshop</b>: Update on the Parallel Browser Language (industry, 2008)
+                        <li><b>BayFP</b>: Flapjax & FIRE - Evolving a Reactive Web Language (industry, 2008). <a href="http://www.bayfp.org/blog/2008/08/04/video-and-slides-from-july-meeting/">video!</a></li>
+<!--
+                        <li><b>OSQ Retreat, Par Lab Retreat</b>: Web Dwarfs (Berkeley/Stanford/industry, 2008)</li>
+-->
+            <li><b>#moz08 (Mozilla)</b>: Implicitly parallel browser scripting (invited all-hands talk, 2008)</li>
+            <!-- <li><b>Par Lab Retreat</b>: Implicitly parallel browser scripting (Berkeley/industry, poster session, 2008)</li> -->
+            <li><b>Adobe</b>: Mixed Imperative and Functional Reactive Programming in Flex and AS3 (research staff review + Flex team talk<!--and intern poster session-->, 2007)</li>
+
+            <li><b>Adobe</b>: Flapjax: Functional Reactive Web Programming (Flex team talk, 2006)</li>
+
+        </ol>
+
+<h2>Internal Talks</h2>
+<p>Controversial talks @ Berkeley not covered by the above:</p>
+<ul>
+<li>"Social Construction of Software" (CS169 software engineering lecture, 2011)</li>
+<li>"Sociological Principles of Programming Language Adoption: Why Promoting Haskell is like Stopping HIV" (OSQ seminar, WebBlaze seminar, 2011)</li>
+<li>"Finding Once-a-Year Concurrency Bugs is Provably Easy: birthday attacks on heisenbugs" (Par Lab student seminar, February, 2009)</li>
+<li>"Spidering Applications" (OSQ seminar, 2008)</li>
+
+</ul>
+                <h2>Some External Talks by Better Presenters</h2>
+                <ul>
+                   <li>Adrienne Felt on Object Views: WWW 2010</li>
+                  <li>Ras Bodik on the parallel browser project: ASPLOS PC Workshop 2011, STMCS 2008 keynote, Intel Browser Performance Workshop 2008, ...</li>
+                  <li>Shriram Krishnamurthi on the Flapjax language: SBLP 2008 keynote, Microsoft Lang.NET Symposium 2006 (in part: <a href="http://download.microsoft.com/download/9/4/1/94138e2a-d9dc-435a-9240-bcd985bf5bd7/Shriram.wmv">video</a>), JAOO 2007, etc.</li>
+                   <li>Shriram Krishnamurthi on the Margrave tool and query system: a mystery!</li>   
+                </ul>
+
+</div><!-- hiding presentations --> 
+
+<!--
+<h2>Awards and Support</h2>
+
+<ul class="txt">
+<li>PLDI+ECOOP 2012 SRC (2nd place)</li>
+<li>ACM and NSF travel awards, 2012</li>
+<li>2007-2013: Parallel browser and synthesis group grants (supported by Nokia, Qualcomm, Samsung, Google, and the NSF)</li>
+<li>2007-2013: Berkeley Parallelism Lab grants (supported by Microsoft, Intel, Samsung, Nokia, NEC, National Instruments, Sun/Oracle, Qualcomm, and nVidia)</li>
+<li>Qualcomm Innovation Fellowship (2 winners from 43 teams at Berkeley and Stanford), 2009</li> 
+<li>OOPSLA 2009 Best Student Paper Award</li>
+<li>National Science Foundation Graduate Fellowship (NSF GRFP), 2007</li>
+<li>UC Berkeley First Year Fellowship, 2007</li>
+<li>Computer Research Association Outstanding Undergraduate Honorable Mention (CRA), 2007</li>
+
+<li>Karen. T. Romer Undergraduate Teaching and Research Award (UTRA), 2004</li>
+</ul>
+
+-->
+<!--
+        <h2>Presentations</h2>
+        <i>Industry presentations on unpublished work given by me</i>
+
+        <ul>
+            <li>Adobe 2006 for Flex Team (SF): Talk on Functional Reactive Web Programming in Flapjax</li>
+            <li>ParLab Retreat 2008 with industry members (Tahoe): Poster on implicitly parallel scripting for browsers</li>
+            <li>Mozilla All-Hands Meeting 2008 (Mountain View): Talk on implicitly parallel scripting for browsers</li>
+        </ul>
+
+<hr/>
+
+-->
+<a name="school"></a>
+<!--
+<h2>Reviewer/Subreviewer</h2>
+<p>VMCAI 2013, Transactions on the Web 2012, ASPLOS 2012, Software 2010, WebApps '10, APLAS 2008, ASPLOS 2008, PPDP 2007
+
+</p>
+-->
+<!--
+<h2>Teaching</h2>
+<b>Berkeley:</b>
+CS164, the undergrad compilers course at Berkeley. Prof. Bodik and I broke course records in class ratings leading back 15 years. 
+<br/>
+
+<b>Brown:</b> I was the head teaching assistant for intro. to models of computation (cs51) and intro. programming language theory (cs173), was a regular TA for discrete math (cs22), and wrote lectures and projects for the new systems security course (cs166).
+-->
+
+<!--
+        <h2>Languages</h2>
+<p>     I always find it interesting to know what languages language designers actually use.
+At various times since starting at Berkeley:
+-->
+<!--
+Over the past year, I rather equivalently wrote in
+        <a href="http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference">JavaScript 1.5</a>,
+        <a href="http://www.adobe.com/devnet/actionscript/articles/actionscript3_overview.html">ActionScript 3</a>,
+        <a href="http://www.gnu.org/software/bash/">Bash</a> + sed,
+        <a href="http://caml.inria.fr/ocaml/index.en.html">OCaml</a>,
+        <a href="http://www.r-project.org/">R</a>,
+        <a href="http://www.python.org/">Python</a>, and
+        <a href="http://java.sun.com/javase/downloads/index_jdk5.jsp">Java 1.5</a>.
+        The ActionScript and JavaScript projects often included snippets in the
+        functional reactive style. Contrast this against what I don't use. Even considering my time in commerical development, the only times I
+        used C or C++ were to interface to existing code bases, complete Operating Systems projects, or
+        whatever misguided things one does while in high school. I found lazy languages (Haskell),
+        logic and specification languages (Prolog, Alloy), data flow languages (Max/MSP, shell), and metaprogramming rich languages (Scheme)
+        formative, and writing Flapjax made me often appreciate many of their features that JavaScript did
+        not have (particuarly statically typed parametric polymorphism, delimited continuations, minimalistic syntax, and
+        hygienic macros), but, as implied above, find that I generally only turn to them out of curiosity. If the CLR lost a lot of proprietary restrictions, and otherwise gained the universality of the JVM, I would probably switch from Java to the F#/C# family. Laziness is probably what's keeping me from Scala (of my own, not to imply the language isn't eager...).
+
+Ultimately, I believe <a href="http://barker.linguistics.fas.nyu.edu/Stuff/Iota">Iota</a> is the most clean and unambigious language.
+</p>
+-->
+
+<!--
+<ul>
+<li> JavaScript 1.5, ActionScript 3, Bash + sed, OCaml, R, Python, Java 1.5</li>
+-->
+<!--
+                  As I've been mostly reading this semester, my code writing has been equally distributed between C, MPI for C, SK combinators, R (the Lisp of the Matlab universe), untyped lambdas, LaTeX,  and, nominally, UPC and OpenMP. To a lesser extent, I converted some Flapjax examples to FIRE, my reactivity extension for ECMAScript 3.5 (including side effects).-->
+<!--
+<li>ANTLR 3, Python, Java, Bash, JavaScript, C, MPI, LaTeX</li>
+-->
+<!-- 
+The semester is drawing to a close, and now I am writing in a mix of ANTLR 3, Python, Java, Bash, and JavaScript. This will likely be mixed in with MPI over either C or O'CAML. Inbetween the updates, I wrote way too much LaTeX.
+</li>
+-->
+
+<!--
+<li>                
+LaTeX, HTML/CSS, JavaScript/XUL/SQL, O'CAML, Manticore, and attribute grammars.
+</li>
+<li>
+              Powerpoint, HTML/CSS, LaTeX, C++/OpenMP 3.0/Cilk++, Python, and attribute grammars
+</li>
+<li>
+              JavaScript/SQLite/HTML/CSS, bash/C/C++/Cilk++/TBB, flex/bison (lex/yacc), LaTeX/Excel/PowerPoint             
+</li>
+<li>
+JavaScript, CSS selectors, C/C++/Cilk++/TBB, LaTeX, Excel</li>
+</ul>
+-->
+<!--
+<h2>Cool Papers</h2>
+<i>I am currently <u>not</u> including papers I read <u>before</u> starting this list. List started 11/12/08. Related works sections of my papers provide some hints for those :) These papers changed my perspective in a non-trivial way.</i>
+<ul>
+<li></li>
+</ul>
+-->
+<!--
+<h2>Graduate Coursework</h2>
+<p></p>
+<b>Berkeley:</b> Foundations of Parallel and Distrubted Systems (Algorithms), Highly Productive Parallel Programming Languages, Statistical Learning Theory, Current Berkeley Research in Programming Systems, Design and Analysis of Programming Languages, Applications of Parallel Computers, Advanced Systems and DBs, Web Security.
+<br/>
+<b>Brown: </b>Programming Language Semantics, Access Control Models, Statistical Natural Language Processing, Verification of Dynamic Access Control Policies.
+
+<p>My undergraduate coursework was mostly in computer science, math (analytic), and brains (neuro/cogsci), in that order of likeliness.
+</p>
+--><hr/>
+<a name="people"></a>
+<!--
+<h2>Collaborators</h2>
+<i>(chronological)</i>
+<ul>
+<li>Shriram Krishnamurthi (Brown)</li>
+<li>Kathi Fisler (WPI)</li>
+<li>Michael Tschantz (Brown, now @ CMU)</li>
+<li>Michael Greenberg (Brown, now @ U. Penn.)</li>
+<li>Greg Cooper (Brown, now @ Google)</li>
+<li>Arjun Guha (Brown)</li>
+<li>Jacob Baskin (Brown, now @ Google)</li>
+<li>Aleks Bromfield (Brown)</li>
+<li>Joel Weinberger (Brown, now @ Berkeley)</li>
+<li>Colin Gordon (Brown)</li>
+<li>Roger Webster (Adobe's Advanced Technology Labs)</li>
+<li>Ras Bodik (Berkeley)</li>
+<li>Chris Jones (Berkeley, now @ Mozilla)</li>
+<li>Rose Liu (Berkeley)</li>
+<li>Krste Asanovic (Berkeley/ICSI/LBNL) </li> 
+<li>Raluca Sauciuc (Berkeley)</li>
+<li>Adrienne Felt (Berkeley)</li>
+<li>Mark Miller (Google)</li>
+<li>Benjamin Livshits (MSR Redmond)</li>
+<li>Thibaud Hottelier (Berkeley)</li>
+<li>Todd Mytkowicz (MSR Redmond)</li>
+<li>Ari Rabkin (Berkeley)</li>
+</ul>
+-->
+<h2>Further Meyerovichs </h2>
+
+<ul class="txt">
+<li><a href="http://www.phys.uri.edu/~meyerovich">Papa Bear</a> discusses quantum and zero temperature physics</li>
+
+<li><a href="http://belenkiy.wordpress.com">Sister Bear</a> makes the world a provably safer place</li>
+<li><a href="http://www.kapitza.ras.ru/people/meierovich/">Uncle Bear</a> plays with strings, dimensions, and equilibria</li>
+
+</ul>
+<!--
+<hr/>
+<a name="code"></a>
+<h2>Code</h2>
+<li><b>Parallel Browser</b> <a href="projects/pbrowser/index.html">Project page</a></li>
+<li><b>JavaScript/Web Page Membranes</b> code currently being security audited before release</li>
+<li><b>Flapjax</b> The core is at the <a href="http://www.flapjax-lang.org">main site</a> and <a href="http://github.com/arjunguha/flapjax/">GitHub</a>. I whipped up a clean <a href="projects/random/repl.html">REPL</a> with a slightly modified library as well.</li>
+<li><b>Anything else</b> Ask; I probably have it floating around somewhere.</li></ul>
+<br/>
+-->
+
+</body>
 </html>

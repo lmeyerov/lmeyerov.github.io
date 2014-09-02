@@ -1,0 +1,35 @@
+<html>
+<head>
+</head>
+<body>
+
+<h1>SaaS Course Survey</h1>
+Redirecting to the survey.
+
+<script>
+(function(){
+  var urls = [
+      'https://www.surveymonkey.com/s/CQGMFVZ', 
+      'https://www.surveymonkey.com/s/CQ3SJT9', 
+      'https://www.surveymonkey.com/s/CQFHSXX', 
+      'https://www.surveymonkey.com/s/CQXMPWV'
+    ];
+  var n = Math.round((Math.random() * 3)); //0,1,2,3
+  var url = urls[n];
+  window.location = url;
+  
+  document.write('If your browser did not redirect, <a href="' + url + '">go to the survey here.</a>');
+  
+})();
+</script>
+<noscript>
+If your browser did not redirect, please select one of the survey options below:
+<ul>
+<li><a href="https://www.surveymonkey.com/s/CQGMFVZ">survey variant 1</a></li>
+<li><a href="https://www.surveymonkey.com/s/CQ3SJT9">survey variant 2</a></li>
+<li><a href="https://www.surveymonkey.com/s/CQFHSXX">survey variant 3</a></li>
+<li><a href="https://www.surveymonkey.com/s/CQXMPWV">survey variant 4</a></li>
+ </ul>
+</noscript>
+</body>
+</html>

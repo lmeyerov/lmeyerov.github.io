@@ -1,0 +1,80 @@
+#loader { 
+  width: 100%; height: 100%; 
+  position: fixed; left: 0px; top: 0px; 
+  background-color: black;
+  color: white;
+  opacity: .9;
+  z-index: 2;
+}
+#loader span {
+  display: block;
+  margin-top: 40%;
+  margin-left: 40%;
+  margin-right: auto;
+  font-size: 4em;
+}
+
+
+html {
+  font: 1.5em sans-serif;
+  background: #FFF; 
+  color: #000;
+  margin: 0;
+  padding-left: 1em
+}
+body { margin: 0; padding: 0;     line-height: 1.2em; font-size: .7em}
+* { margin: 0; padding: 0 }
+
+p { margin-top: 1em; }
+ul { margin-left: 1em; margin-top: .5em;}
+li { margin: .5em; }
+
+a { color: #f30; }
+
+.toolbar {
+  background: #CCC; margin: 0em;
+  padding: .5em;
+  margin-left: -1.2em;
+  font-size: 1.0em;
+  margin-top: 1.0em; 
+  padding-left: 1em;
+}
+.toolbar span {  color: #000; }
+.toolbar a { color: #f30; }
+.toolbar a.activeLink {  color: #600; margin: 0; padding: 0 }
+
+
+.toolbar.survey {
+  background: #000;
+  color: #fff
+}
+
+.toolbar.survey a { color: #FFF }
+
+h1 { 
+color: #f30; 
+margin-top: .8em; margin-bottom: .5em; margin-left: 1em; 
+padding: 0; 
+letter-spacing: -.10em; font-size: 3em; line-height: 1.0em;
+
+}
+h1 span { color: #000; }
+h2, h3 { margin-top: 1em; margin-bottom: 0.5em; }
+
+h1 a { text-decoration: none; color: black; }
+
+.about { font-size: .8em; letter-spacing: 0.03em; padding-left: 4em;  display: block; margin-top: .5em; font-weight: bold; }
+.about a { text-decoration: underline; color: black; }
+
+
+
+
+
+.step { max-width: 400px; display: inline-block; float: left; }
+.step img { display: block; margin: auto; padding: .3em; margin-top: .8em }
+p, li {max-width: 800px; }
+img { border: 1px solid black; padding: .3em; margin: .5em; margin-top: 0em; margin-bottom: 0em }
+.emph2 { font-weight: bold; text-decoration: underline; font-style: italic}
+h2, .emph { font-weight: bold;}
+
+

@@ -1,0 +1,24 @@
+li { padding: .3em; }
+
+line {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+table { display: none; }
+
+.lang { }
+.statement { }
+
+.statement {color: #777; }
+.major { color: #000; }
+
+input { width: 1em; height: 1em; padding: 1em; margin: 1em; }
+
+
+chart svg { background-color: #444; }

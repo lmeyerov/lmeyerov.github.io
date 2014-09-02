@@ -1,0 +1,252 @@
+<html>
+  <head>
+     <script type="text/javascript" src="flapjax.js"></script>
+     <script src="jquery-1.6.1.js"></script>
+     <script>
+      $(function () {
+        $('h1').each(function (i) {
+          if (i > 0) {
+            insertDomB(A({name: i}), $(this).get(0), 'after');
+            insertDomB(LI(A({href: "#" + i}, $(this).get(0).innerHTML)), $('#faq').get(0), 'end');
+            insertDomB(SPAN(i + ". "), $(this).get(0), 'beginning');
+          }
+          });
+      });
+    </script>
+    <style>
+      body { max-width: 700px; margin-left: 50px;  padding-left: 50px; border-left: 1px solid #000 }
+    </style>
+  </head>
+  <body>
+    <h1>FAQ</h1>
+    <ol id="faq"></ol>
+    
+    <h1>What is the Fast Tree Language (FTL)</h1>
+    <p>The Fast Tree Language (FTL) is a declarative attribute grammar language. Given a language specification, it emits a evaluator that can solve the attributes on a tree (document) in a bounded number of parallel traversals. For convenience, FTL supports a class system, loops, and a rendering API. Documents for input are specified in XML. FTL's C++ implementation supports using CSS templates for bulk definition of input node attributes but the JS version does not at this point.</p>
+    
+    <p>A grammar can define its own types, defines the document schema in terms of classes, interfaces, and attributes, and defines the values of attributes in terms of actions. It can share code using traits. A typical grammar has the following structure:</p>
+    <pre>
+    type Shape = Circle | Square | Line
+    /* more types */
+    
+    interface I1 {
+      var a : int;
+      var siblingId : int;
+      var p : int;
+    }
+    /* more interfaces */
+    
+    trait ChildCount {
+      attributes {
+        var numC : int;
+      }
+      actions {
+        loop moreChilds {
+          numC := fold 0 .. $-.numC + 1;
+        }
+      }
+    }
+    
+    class C1(ChildCount) : I1 {
+      children {
+        myChild : I1;
+        moreChilds : [ I1 ]
+      }
+      attributes {
+        var b : bool;
+        input c : Shape;
+        input d : ?int;
+        input e : int = 2;
+        var numSiblings : int;
+      }
+      actions {
+        a := 2;
+        self.b := myChild.a == 3 ? true : false;
+        loop moreChilds {
+          moreChilds.p := 1 + moreChilds$i.a;
+          moreChilds.siblingId := fold 0 .. moreChilds$-.siblingId + 1;
+          numSiblings := moreChilds$$.siblingId;
+        }
+      }
+    }
+    /* more classes */
+    </pre>
+    <p>A typical document (C++ backend):</p>
+    <pre>
+    &lt;style&gt;
+      box, mbox { display: C1; d: 20 }
+      box { refname: myChild; c: Circle }
+      mbox { refname: moreChilds; c : Square }
+    &lt;/style&gt;
+    &lt;box&gt;
+      &lt;mbox/&gt;
+      &lt;box/&gt;
+      &lt;mbox&gt;
+        &lt;box/&gt;
+      &lt;/mbox/&gt;
+      &lt;mbox/&gt;
+    &lt;/box&gt;
+    </pre>
+    <p>A typical document (weaker HTML5 backend without CSS selectors):</p>
+    <pre>
+    &lt;C1 refname="myChild" d="20" c="Circle"&gt;
+     &lt;C1 refname="moreChilds" d="20" c="Square"/&gt;
+      &lt;C1 refname="myChild" d="20" c="Circle"/&gt;
+      &lt;C1 refname="moreChilds" d="20" c="Square"&gt;
+        &lt;C1  refname="myChild" d="20" c="Circle"/&gt;
+      &lt;/C1&gt;
+      &lt;C1 refname="moreChilds" d="20" c="Square"/&gt;
+    &lt;/C1&gt;
+    
+    </pre>
+    
+    <h1>Classes and Interfaces</h1>
+    <i>Topics covered: <br/>class<br/>interface</i>
+    <p>The class and interface system defines the set of syntactically valid input documents. In the example, "class C1 : I1" means class "C1" implements interface "I1". There may be other classes that also implement "I1". In an input document, a "C1" node is indicated using attribute 'display="C1"'. The JS version currently instead uses the tag name ("&lt;C1/&gt;").</p>
+    <p>Classes must specify their child node types in the "children" section. In the example, "myChild : I1" indicates C1 has a child aliased "myChild" of interface "I1". In the input document, this relationship is indicated by using attribute 'refname="myChild"' on the child node. Multiple children may be referenced collectively. For example, "moreChilds : [ I1 ]" indicates that there may be 0 or more children with 'refname="moreChilds"' and they can instantiate different classes that implement "I1".</p>
+    
+    <h1>Attributes and attribute types</h1>
+    <i>Topics covered: <br/>type &lt;userType&gt; = &lt;name&gt; (| &lt; name &gt;)*<br/>(var | input) &lt;attr&gt; : [?] (bool | float | int | px | color | &lt;userType&gt;) [ = &lt;const&gt;]</i>
+    <p>Each node has attributes associated with its interface and class. We will revisit this, but interface-level attributes are referenceable by parent nodes, but class-level attributes are only referenceable by the node. </p>
+    <p>Attributes are either of system-implemented types or of user-defined types. System types are "bool", "int", "float", "px" (pixel), and "color". These are fully supported in the C++ version; the HTML5 backend has weaker support for "px" and "color". User-defined types are specified as enumerations, as in "type Shape = Circle | Square | Line". After this definition, "Circle" and "Square" can be used as values.</p>
+    <p>Attributes have modifiers "var" or "input". Modifier "var a : int" means the document does not supply the value of "a"; the grammar is responsible for finding its value based on the values of other attributes. Modifier "input c : Shape" means the document provides input attribute 'c="Circle"'.  Note that both system and user-defined types may be used for input types.</p>
+    <p>Input attributes may be optional. This comes in two forms. First, as in "input e : int = 2", if the input attribute is not defined by the document, the value "2" will be used. Second, as in "input d : ?int", the grammar may dynamically inspect attribute "d" using functions "isEmptyInt(d)" and "valueInt(d)". Function "isEmptyInt" returns true iff no input integer is available, and if it is available, "valueInt" returns the integer value.</p>
+    <p>If an input attribute was not flagged as optional and is missing from the document, its use should throw an error.</p>
+    
+    <h1>Actions</h1>
+    <i>Topics covered:
+    <br/>&lt;node&gt;&lt;attr&gt; := &lt;expr&gt
+    </i>
+    <p>Classes provide actions that constrain attribute values of the node and its children in terms of other attributes of the node and its children. The order of actions in a class does not matter. The FTL compiler will check that every attribute is defined and infer the order of evaluation.</p>
+    <p>Each attribute is named by the node and attribute name. For example, in "self.b := myChild.a == 3 ? true : false;", attribute "a" of child "myChild" is inspected to determine the value of attribute "b" of the node instantiating class "C1". Node identifier "self" is optional, as seen in "a := 2". Note that typical arithmetic and ternary conditional expressions can be on the right-hand side of an action.</p>
+    <p>Attributes abide by the class system. First, any class or interface attribute may be accessed for a "self" node, but only interface attributes may be accessed on a child node. Second, interfaces have an implicit contract on whether the implementing class provides the action to solve an attribute or if the class of the parent node must solve it. Our analyzer automatically infers and checks this relationship.</p>
+    
+    <h1>Actions in Loops: Collective Definitions</h1>
+    <i>Topics covered:
+    <br/>loop &lt;child&gt; { &lt;action&gt;* }
+    <br/> &lt;node&gt;($- | $i | $$)
+    </i>
+    <p>Actions may occur in loops. For example, "loop moreChilds { ... }" contains actions that either read or define attributes of the "moreChilds" children of C1. Multiple loops may be used, and as with normal actions, which loop an action is placed in does not matter to the compiler. Currently, loops cannot be nested.</p>
+    <p>
+    Collective assignment a child's attribute may reference other attributes of the child by using name suffices. For example, in "moreChilds.p := 1 + moreChilds$i.a;", the "p" attribute of the ith child is 1 plus its "a" attribute value.</p>
+    <p>It is convenient to reference the previous node's attributes, such as for counting: "moreChilds.siblingId := fold 0 .. moreChilds$-.siblingId + 1;". Suffix "$-" defines the ith node in terms of the "i - 1"th node. For the first node, there is no previous node, which is why we use the special "fold" form of "fold &lt;expr&gt; .. &lt;expr&gt;", where the first expression provides an initial value. Unlike accumulators in traditional fold operator, the previous attribute can be referenced from a different attribute also defined by a fold expression. (You can use "$-" of attributes besides the one you are currently defining).</p>
+    <p>It is also useful to reference the <i>last</i> value of a collective definition. For example, "numSiblings := moreChilds$$.siblingId" will be 0 if there are no children (due to the initial fold value) and 3 if there are 3 children (due to the full fold expression).</p>
+    
+    <h1>Traits</h1>
+    <p>Code sharing is currently performed through a simple trait construct. For example, if counting the number of children is a common enough behavior, we could encapsulate the code as a trait:</p>
+    <pre>
+    trait ChildCount {
+      attributes {
+        var numC : int;
+      }
+      actions {
+        loop moreChilds {
+          numC := fold 0 .. $-.numC + 1;
+        }
+      }
+    }    
+    </pre>
+    <p>The <i>attributes { ... }</i> and <i>actions { ... }</i> blocks are analogous to what is seen for classes. In this case, the <i>numC</i> attribute is introduced and it is the sum from looping over children <i>moreChilds</i>. Children could also be introduced in a trait using a <i>children { ... }</i> block. </p>
+    <p>The trait is mixed into a class, adding whatever children, attribute, and actions it has to that class. For example, class <i>C1</i> mixes in trait <i>ChildCount</i>. Once mixed in, the class definition implicitly expands into:
+    <pre>
+    class C1(ChildCount) : I1 {
+      children {
+        myChild : I1;
+        moreChilds : [ I1 ]
+      }
+      attributes {
+        var b : bool;
+        input c : Shape;
+        input d : ?int;
+        input e : int = 2;
+        var numSiblings : int;
+        var numC : int; //new
+      }
+      actions {
+        a := 2;
+        self.b := myChild.a == 3 ? true : false;
+        loop moreChilds {
+          moreChilds.p := 1 + moreChilds$i.a;
+          moreChilds.siblingId := fold 0 .. moreChilds$-.siblingId + 1;
+          numSiblings := moreChilds$$.siblingId;
+        }
+        loop moreChilds {
+          numC := fold 0 .. $-.numC + 1; //new
+        }
+      }
+    }    
+    </pre>
+    <p>Traits are entirely syntactic. Future versions of traits will likely enable  more flexible binding mechanisms.</p>
+    
+    <p>Multiple traits may be mixed in (<i>C1(ChildCount1, ChildCount2, ...)</i>). The order of traits do not matter. If traits conflict, the synthesizer will report an error, and if they are fine, the synthesizer will find a sound order of evaluation.
+    
+    <h1>Rendering</h1>
+    <p>FTL provides a rendering API. An initial form of FTL associated a visual shape with each node, but we found this to be too restrictive. Now, we expose an "immediate-mode" rendering API. The FTL compiler will automaatically schedule calls based on dependencies. For example, to paint a 1x1 at (x=0,y=0,z=2) square and then a 100x100 one at (x=0,y=0,z=2), assign "render := paintRect(0, 0, 1, 1, "#000", 2) + paintRect(0, 0, 100, 100, "#000", 2)". To then paint another 3x3 rectangle on top, assign "fld2 := render + paintRec(0,0,3,3,"#000",2). FTL will track the dependencies to paint in the right order.</p>
+    <p>Currently, the GPU-accelerated C++ implementation may have visual glitches for overlapping shapes, irrespective of their order.</p>
+    <p>Paint calls:</p>
+    <ul>
+    <li>int paintRect (int x, int y, int w, int h, int col, int z)</li>
+    <li>int paintRectZ (int x, int y, int w, int h, int col, int z, int ignore)</li>
+    <li>int paintQuad(
+          int x1, int y1, int z1, 
+          int x2, int y2, int z2, 
+          int x3, int y3, int z3, 
+          int x4, int y4, int z4, 
+          int col, int ignore)</li>
+    <li>int paintLine (int x1, int y1, int x2, int y2, int col, int ignore)</li>
+    <li>int paintOval (int x, int y, int w, int h, int col, int ignore)</li>
+    </ul>
+    <h1>Invoking the Compiler</h1>
+    <p>FTL can be invoked through our Ant build script. It has two backends, HTML5 and C++, and options to control the search for schedules.</p>
+    <p>To generate HTML5 code on input "foo/bar.ftl" as "baz/bar.js", from the "projects" folder run:</p>
+    <pre>
+    ant -DaleGrammar=foo/bar.ftl run-alegen-html5 -Doutput.dir=baz
+    </pre>
+    <p>To generate the C++ code:</p>
+    <pre>
+    ant -DaleGrammar=foo/bar.ftl run-alegen-ftl -Doutput.dir=baz
+    </pre>
+    <p>There are additional options for controlling the search. E.g., to limit search to "greedy prefix" schedules, to a schedule length, all parallel, or enumerate multiple. See the "build.xml" file for these options.</p>
+    <h1>Invoking a synthesized HTML5 layout engine</h1>
+    For layout language "mylanguage.ftl", which compiles into layout engine "mylanguage.js", include the following in your HTML document:
+    <pre>
+    &lt;html&gt;
+      &lt;head&gt;
+        &lt;title&gt;Demo&lt;/title&gt;
+        &lt;script src="mylanguage.js"&gt;&lt;/script&gt;
+        &lt;script src="render.js"&gt;&lt;/script&gt;
+        &lt;script src="jquery-1.6.1.js"&gt;&lt;/script&gt;
+        &lt;script&gt;    
+          window.addEventListener("load", function () {  displayDoc(0); }, false);   
+        &lt;/script&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+        &lt;canvas id="canvas"/&gt;
+        &lt;contents id="contents"&gt;
+          &lt;C1 refname="myChild" d="20" c="Circle"&gt;
+           &lt;C1 refname="moreChilds" d="20" c="Square"/&gt;
+            &lt;C1 refname="myChild" d="20" c="Circle"/&gt;
+            &lt;C1 refname="moreChilds" d="20" c="Square"&gt;
+              &lt;C1  refname="myChild" d="20" c="Circle"/&gt;
+            &lt;/C1&gt;
+            &lt;C1 refname="moreChilds" d="20" c="Square"/&gt;
+          &lt;/C1&gt;
+        &lt;/contents&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+    </pre>
+  <h1>Debugging HTML5 Layout</h1>
+  <p>All debug output is sent to the global <i>logger</i> object. The document may redefine this object, such as with the following code: </p>
+  <pre>
+  if (true) 
+    logger = {log: function () {}, group: function (){}, groupEnd: function(){}, error: function() {} };
+  else 
+    logger = console;
+  </pre>
+  <p>
+  By default (<i>true</i>), logging is disabled. Changing the condition to <i>false</i> will output logs to Firebug's <i>console</i> API.
+  </p>
+  <h1>Why do I not see anything?</h1>
+  <p>In general, try opening a JavaScript console / debugger (e.g., Firebug) for a more specific error message. A common error is having logging enabled (see above) but no console supported by the browser (e.g., Firebug is disabled).</p>
+  </body>
+</html>

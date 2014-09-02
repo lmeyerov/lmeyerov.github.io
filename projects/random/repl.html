@@ -1,0 +1,204 @@
+<html>
+	<head>
+		<title>Flapjax REPL</title>
+		<style type="text/css">
+			html, body {
+				margin: 0px;
+				padding: 0px;
+			}
+
+			.rButton {
+				background-color: #EEF;
+				border:1px #DDF solid;
+				text-align: center;
+				font-size: .7em;
+				width:33%;
+				margin-bottom: 7px;
+			}
+
+			#entry {
+				background-color: #FFF;
+				border: 1px #000 solid;
+				height: 100%;
+				margin: 0px;
+				padding: 0px;
+				width: 100%;
+			}
+
+			.moveBar {
+				color: #FFF;
+				cursor:move;
+				height: 5px;
+				margin-top: 5px;
+				padding: 0px;
+			}
+
+			#logHolder li { font-size: .5em; list-style-type: none; padding: 0px; margin: 0px; color: #DDF}
+
+			#nav a {
+				background-color: #EEF;
+				border-top: 1px #DDF solid;
+				border-bottom: 1px #DDF solid;
+				border-left: 1px #DDF solid;
+				display: block;
+				float: left;
+				font-size: .5em;
+				text-align: center;
+				width:33.25%;
+			}
+			#nav a:hover {
+				border-top: 1px #000 solid;
+				border-bottom: 1px #000 solid;
+				cursor:pointer;
+			}
+
+		</style>
+		<script type="text/javascript" src="flapjax.js"></script>
+		<script type="text/javascript">
+
+		var global;
+
+		function getYOffset (o) {
+			var r = 0;
+			do { r += o.offsetTop; } while (o = o.offsetParent);
+			return r;
+		};
+
+		function fx() {
+			flapjaxInit();
+
+			var mt_b = mouseTop_b(document);
+
+			var altEnters_e = $EVT('entry','keypress')
+								.filter(function(e){ return e.altKey && e.which==13; });
+
+			var commands_e = $EVT('submitter', 'click').merge_e(altEnters_e).snapshot_e($B('entry'));
+
+			//run commands
+			var res_b = commands_e.hold('">> flapjax repl"').transform_b(function(c) {
+					var r = eval(c);
+					return r instanceof Behavior ? r : constant_b(r);
+				});
+			insertDomB(res_b.switch_b(), 'res');
+
+
+			var c = $('canvas');
+			$EVT('clearcanv', 'click').transform_e(function () {
+					while (c.firstChild) c.removeChild(c.firstChild);
+				});
+
+			var resizeHeight = function (handle, box) {
+				var box = $(box);
+				return snapshot_b(
+						merge_e($EVT(handle, 'mousedown').constant_e(mt_b.changes()),
+								$EVT(document,'mouseup').constant_e(receiver_e()))
+						  	.switch_e(),
+						mt_b)
+						.transform(function(mt) { return mt - getYOffset(box) - 7; });
+			};
+
+			var insertResizing = function (elt) {
+				var hr = HR({className:'moveBar'});
+				insertDomB(hr, elt, 'after');
+				insertValueB(resizeHeight(hr, elt), elt, 'style', 'height');
+			};
+			map(insertResizing, ['txtHolder', 'logHolder', 'cnvHolder', 'entryHolder']);
+
+			var cLog_b =
+				commands_e.transform_e(function(t){return {add: t};}).
+				merge_e($EVT('clearer', 'click').transform_e(function(t){return {clear: true};})).
+					collect_b(
+						function(v, p) {
+							if (v.clear) {
+								while (p.firstChild) p.removeChild(p.firstChild);
+							} else {
+								p.appendChild(LI(SPAN({style:{color:'#000'}},v.add)));
+								lHolder_d.scrollTop = lHolder_d.scrollHeight;
+							}
+							return p;},
+						UL({style:{padding:10,margin:0}}));
+			insertDomB(cLog_b, 'log');
+
+			var lHolder_d = $('logHolder');
+			insertValue(cLog_b.transform_b(function(){ return lHolder_d.scrollHeight;}),
+			            lHolder_d, 'scrollTop');
+
+
+/*
+
+
+
+var ta = TEXTAREA();
+var bs= map(
+   function(i){
+     return INPUT({value:i,type:'button'});
+   },
+   ['try','clear log', 'clear canvas']);
+var canv = DIV({style:{backgroundColor:'#FFF'}},'canv');
+var log = DIV('log');
+var hrs=[HR(),HR(),HR()];
+
+var cmds_e = $EVT(bs[0], 'click')
+  .snapshot_e($B(ta));
+
+var evals_b = cmds_e
+  .transform_e(function(v){return eval(v);})
+  .startsWith('>> flapjax repl flapjax repl');
+
+var clears_e =
+   $EVT(bs[1],'click')
+     .transform_e(function(v){return {remove:true};});
+var adds_e =
+   cmds_e.transform_e(function(v){
+     return {add:v};});
+
+var log_b =
+  merge_e(clears_e, adds_e).collect_b(
+    function (cmd,acc) {
+      if (cmd.remove) {
+        while (acc.firstChild)
+          acc.removeChild(acc.firstChild);
+      } else {
+        acc.appendChild(LI(cmd.add));
+      }
+      return acc;
+    }, OL());
+
+DIVB(ta, hrs[0],
+     evals_b, BR(),
+     bs, BR(),
+     log_b, hrs[1],
+     canv, hrs[2])
+
+
+*/
+
+
+
+		}
+		</script>
+	</head>
+	<body onload="fx()" style="background-color:#DDF; padding: 45px;">
+	<div >
+		<div style="height: 200px" id="txtHolder">
+			<textarea style="" id="entry"></textarea>
+		</div>
+
+		<div id="entryHolder" style="font-size: .7em; font-family: Georgia; padding: 5px; border: 2px #EEF solid; margin-bottom: 5px; overflow: hidden">
+		    <div id="res"></div>
+         </div>
+
+		<div style="clear:both;height: 50px; overflow: auto; background-color: #eef" id="logHolder">
+			<div id="nav">
+				<a id="submitter" style="border-left:0px">try (alt-enter)</a><a id="clearer">clear log</a><a id="clearcanv">clear canvas</a>
+			</div>
+			<div id="log"><i>log</i></div>
+		</div>
+	</div>
+
+	<div id="cnvHolder" style="overflow:auto; background-color: #EEF">
+		<h3 style="padding:0px 0px 0px 10px; margin:0px; background-color:#EEF;border-bottom:3px #DDF solid; color:#DDF ">canvas</h3>
+		<div id="canvas" style="padding: 5px; "></div>
+	</div>
+	</body>
+</html>

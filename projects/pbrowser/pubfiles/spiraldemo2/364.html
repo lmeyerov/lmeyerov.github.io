@@ -1,0 +1,614 @@
+<html><head><title>html5 backend</title>
+<script>
+state = undefined;
+</script>
+<script src="spiraldemo2.js"></script>
+<script src="render.js"></script>
+<script src="jquery-1.6.1.js"></script>
+<script>
+function selectRandomToplevelNode () {
+  var r = document.getElementById("topBox");
+  
+  var l = 0;
+  for (var i = 0; i < r.childNodes.length; i++) {
+    if (r.childNodes[i].hasAttribute && r.childNodes[i].hasAttribute("open")) l++;
+  }
+  
+  var which = Math.round((l-1) * Math.random());
+  var c = 0;
+  for (var i = 0; i < r.childNodes.length; i++) {               
+   if (r.childNodes[i].hasAttribute && r.childNodes[i].hasAttribute("open")) {
+     if (c == which) {
+       return r.childNodes[i];
+       break;
+     } else {
+       c++;
+     }
+    }
+  }
+  throw "how'd I get here? bad selectRandomToplevelNode: " + c + ":" + which + ":" + l;  
+}
+
+var swapper;
+function startSwapping() {
+
+  swapper = setInterval(function () {  
+    var d = selectRandomToplevelNode();
+
+    var res = document.createElement(d.tagName.toLowerCase() == "radial" ? "RadialRect" : "Radial");
+    setAttribSafe(res, "refname", "child");
+    setAttribSafe(res, "open", getAttribSafe(d, "open")); //in case animation already edited this
+    setAttribSafe(res, "bgcolor", "#777");
+    setAttribSafe(res, "size", "8");
+    setAttribSafe(res, "name", "artificial");
+    d.parentNode.appendChild(res);
+    
+    while(d.childNodes.length) res.appendChild(d.childNodes[0]);
+    d.parentNode.insertBefore(res, d);
+    d.parentNode.removeChild(d);
+
+    displayDoc(0);
+  }, 500);
+}
+
+
+var animator;
+function animate() {
+  var step = 0.1;
+
+  var x = 0;
+  var inc = 0;
+  var d = document.getElementById("topBox");
+  
+  function swapAnimateRandom (r) {
+
+    d = selectRandomToplevelNode();
+
+    x = parseFloat(d.getAttribute("open"));
+    if (x < 0.001) {
+      inc = step;
+    } else {
+      inc = -step;
+    }
+  }
+  
+  
+  var last = new Date().getTime();
+  animator = setInterval(function () {     
+      var old = last;
+      last = new Date().getTime();
+      document.getElementById("fps").innerHTML = "FPS: " + Math.round((1000/(last - old))) + "";
+      if (x <= 0.0001 || x >= 0.9999) swapAnimateRandom();
+      var before = x;
+      x += inc;
+//      console.log(d + ":" + before + " ----> " + x);
+      d.setAttribute("open", x);
+      displayDoc(0);
+    }, 20);
+
+}
+
+function resetH (r) {
+  if (r.hasAttribute && r.hasAttribute("open")) {
+    r.setAttribute("open", "1");
+  }
+  for (var i = 0; i < r.childNodes.length; i++) resetH(r.childNodes[i]);
+}
+
+function reset () {
+  resetH(document.getElementById("topBox"));
+  clearInterval(animator);
+  clearInterval(swapper);
+  displayDoc(0);
+
+}
+
+function animateInit() {
+  $("#btn").click(animate);
+  $("#swapBtn").click(startSwapping);
+  $("#reset").click(reset);
+}
+
+
+
+window.addEventListener("load", animateInit, false);
+
+//logger = {log: function () {}, group: function (){}, groupEnd: function(){}, error: function() {} };
+</script>
+
+</head>
+<body>
+<input type="button" value="animate!" id="btn"/>
+<input type="button" value="swap!" id="swapBtn"/>
+<input type="button" value="(reset)" id="reset"/>
+<label id="fps">0 fps</label>
+	
+<div><canvas id="canvas"/></div>
+<contents id="contents">
+<Top  radius="282" centerRadius="282" centerAlpha="45" x="0" y="0" w="400" h="400" bgcolor="#CCC" open="1">  <Radial id="topBox" refname="child" open="1" bgcolor="#F00">
+
+
+<Radial refname="child" open="1" bgcolor="#777" size="296" name="../../..//Archive.zip"></Radial>
+<Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl">
+ <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/BrowserLayoutRenderer.app">
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/BrowserLayoutRenderer.app/Contents">
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/BrowserLayoutRenderer.app/Contents/Info.plist"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/BrowserLayoutRenderer.app/Contents/MacOS">
+   </Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/BrowserLayoutRenderer.app/Contents/PkgInfo"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/BrowserLayoutRenderer.app/Contents/Resources">
+    <Radial refname="child" open="1" bgcolor="#777" size="0" name="../../..//Ftl/BrowserLayoutRenderer.app/Contents/Resources/empty.lproj"></Radial>
+   </Radial>
+  </Radial>
+ </Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/BrowserLayoutRenderer.pro"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//Ftl/MakeRadial"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/browser"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d">
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/giraffeFlat">
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/giraffeFlat/css">
+    <Radial refname="child" open="1" bgcolor="#777" size="0" name="../../..//Ftl/d/giraffeFlat/css/style.css"></Radial>
+   </Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/giraffeFlat/giraffeFlat.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/giraffeFlat/ua.css"></Radial>
+  </Radial>
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/prettytree">
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/prettytree/css">
+    <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/prettytree/css/style.css"></Radial>
+   </Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/prettytree/prettytree.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/prettytree/ua.css"></Radial>
+  </Radial>
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/sample2">
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/sample2/css">
+    <Radial refname="child" open="1" bgcolor="#777" size="0" name="../../..//Ftl/d/sample2/css/style.css"></Radial>
+   </Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/sample2/sample2.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/sample2/ua.css"></Radial>
+  </Radial>
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/statemap">
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/statemap/css">
+    <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/statemap/css/style.css"></Radial>
+   </Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="704" name="../../..//Ftl/d/statemap/statemap.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="704" name="../../..//Ftl/d/statemap/statemapbig.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/statemap/statemapmedium.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/statemap/statemapsmall.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/statemap/ua.css"></Radial>
+  </Radial>
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/tilemap">
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/tilemap/css">
+    <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/tilemap/css/style.css"></Radial>
+   </Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="704" name="../../..//Ftl/d/tilemap/earmark_MA.xml"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Ftl/d/tilemap/earmark_PLDemo_2008.xml"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Ftl/d/tilemap/earmark_PLDemo_2009.xml"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Ftl/d/tilemap/earmark_PLDemo_2010.xml"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Ftl/d/tilemap/tilemap.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Ftl/d/tilemap/tilemapblank.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/tilemap/ua.css"></Radial>
+  </Radial>
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/treemap">
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//Ftl/d/treemap/css">
+    <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/treemap/css/style.css"></Radial>
+   </Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/treemap/treemap.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/d/treemap/ua.css"></Radial>
+  </Radial>
+ </Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="704" name="../../..//Ftl/earmark_MA.xml"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/extradatahandler.properties"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/layoutevaluator.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/layoutevaluator.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/layoutevaluator.o"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Ftl/layoutrender.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/layoutrender.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="48" name="../../..//Ftl/layoutrender.o"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/loopdialog.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/loopdialog.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Ftl/loopdialog.o"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/main.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Ftl/main.o"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/moc_layoutrender.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Ftl/moc_layoutrender.o"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/moc_loopdialog.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Ftl/moc_loopdialog.o"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="0" name="../../..//Ftl/moc_renderable3d.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/moc_renderable3d.o"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Ftl/qtalenode.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/qtalenode.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="56" name="../../..//Ftl/qtalenode.o"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//Ftl/renderable.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/renderable.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="96" name="../../..//Ftl/renderable.o"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/renderable3d.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/renderable3d.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/renderable3d.o"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Ftl/renderconfig.h"></Radial>
+</Radial>
+<Radial refname="child" open="1" bgcolor="#777" name="../../..//Html5">
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/aleactions.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" name="../../..//Html5/boxes">
+  <Radial refname="child" open="1" bgcolor="#777" size="144" name="../../..//Html5/boxes/Archive.zip"></Radial>
+  <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/boxes/horvbox.ale"></Radial>
+  <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Html5/boxes/horvbox.js"></Radial>
+  <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Html5/boxes/horvbox.pl"></Radial>
+  <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/boxes/horvboxdemo.html"></Radial>
+  <Radial refname="child" open="1" bgcolor="#777" size="464" name="../../..//Html5/boxes/jquery-1.6.1.js"></Radial>
+  <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/boxes/render.js"></Radial>
+ </Radial>
+ <Radial refname="child" open="1" bgcolor="#777" name="../../..//Html5/demos">
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//Html5/demos/mywidget">
+   <Radial refname="child" open="1" bgcolor="#777" size="464" name="../../..//Html5/demos/mywidget/jquery-1.6.1.js"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/demos/mywidget/mud.js"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/demos/mywidget/mywidget.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Html5/demos/mywidget/mywidget.js"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Html5/demos/mywidget/mywidget.js.orig"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/demos/mywidget/mywidget.pl"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/demos/mywidget/mywidget.pl.orig"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Html5/demos/mywidget/render.js"></Radial>
+  </Radial>
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//Html5/demos/radial1">
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Html5/demos/radial1/364"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="176" name="../../..//Html5/demos/radial1/Archive.zip"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="208" name="../../..//Html5/demos/radial1/PolarGrammar.js"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="64" name="../../..//Html5/demos/radial1/PolarGrammar.pl"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="464" name="../../..//Html5/demos/radial1/jquery-1.6.1.js"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/demos/radial1/mud.js"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/demos/radial1/recurls"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Html5/demos/radial1/render.js"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/demos/radial1/spiraldemo1.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Html5/demos/radial1/spiraldemo1.js"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Html5/demos/radial1/spiraldemo1.pl"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Html5/demos/radial1/spiraldemo2.html"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//Html5/demos/radial1/spiraldemo2.js"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Html5/demos/radial1/spiraldemo2.pl"></Radial>
+  </Radial>
+ </Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="56" name="../../..//Html5/horvbox.js"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/horvboxdemo.html"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="464" name="../../..//Html5/jquery-1.6.1.js"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/mud.js"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Html5/mywidget.js"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Html5/render.js"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/render.js.bak"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/render.js.orig"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/skeleton.html"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//Html5/stateMap.js"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//Html5/statemapdemo.html"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="736" name="../../..//Html5/statemapdemo2.html"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//Html5/statemapdemo3.html"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="136" name="../../..//Html5/treemap4.js"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="56" name="../../..//Html5/underscore.js"></Radial>
+</Radial>
+<Radial refname="child" open="1" bgcolor="#777" size="184" name="../../..//Html5.zip"></Radial>
+<Radial refname="child" open="1" bgcolor="#777" name="../../..//PrinterAleNode">
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//PrinterAleNode/MakeRadial"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//PrinterAleNode/PrettyPrinter.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//PrinterAleNode/PrettyPrinter.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//PrinterAleNode/printeralenode.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//PrinterAleNode/printeralenode.h"></Radial>
+</Radial>
+<Radial refname="child" open="1" bgcolor="#777" name="../../..//QtAleNode">
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/BrowserLayoutRenderer.pro"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//QtAleNode/MakeRadial"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" name="../../..//QtAleNode/QtAleNode_ale.app">
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//QtAleNode/QtAleNode_ale.app/Contents">
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/QtAleNode_ale.app/Contents/Info.plist"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/QtAleNode_ale.app/Contents/PkgInfo"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//QtAleNode/QtAleNode_ale.app/Contents/Resources">
+    <Radial refname="child" open="1" bgcolor="#777" size="0" name="../../..//QtAleNode/QtAleNode_ale.app/Contents/Resources/empty.lproj"></Radial>
+   </Radial>
+  </Radial>
+ </Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/layoutevaluator.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/layoutevaluator.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//QtAleNode/layoutrender.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/layoutrender.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/loopdialog.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/loopdialog.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/main.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//QtAleNode/qtalenode.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/qtalenode.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//QtAleNode/renderable.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/renderable.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/renderable3d.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/renderable3d.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNode/renderconfig.h"></Radial>
+</Radial>
+<Radial refname="child" open="1" bgcolor="#777" size="40" name="../../..//QtAleNode.zip"></Radial>
+<Radial refname="child" open="1" bgcolor="#777" name="../../..//QtAleNodeStale">
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/BrowserLayoutRenderer.pro"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/layoutevaluator.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/layoutevaluator.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//QtAleNodeStale/layoutrender.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/layoutrender.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/loopdialog.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/loopdialog.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/main.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/qtalenode.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/qtalenode.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//QtAleNodeStale/renderable.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/renderable.h"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/renderable3d.cpp"></Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//QtAleNodeStale/renderable3d.h"></Radial>
+</Radial>
+<Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//alenode.cpp"></Radial>
+<Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//libFunctions.cpp"></Radial>
+<Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//libFunctions.h"></Radial>
+<Radial refname="child" open="1" bgcolor="#777" name="../../..//testing">
+ <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/printer">
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/printer/simple3b">
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/MakeRadial"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/PrettyPrinter.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/PrettyPrinter.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="96" name="../../..//testing/printer/simple3b/ale.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//testing/printer/simple3b/ale.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/alenode.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/alenode.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/functions.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/printer/simple3b/inputParser.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/inputParser.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/libFunctions.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/libFunctions.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/printeralenode.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/printeralenode.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/simple3b.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/simple3b.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/simple3b.xml"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/userFunctions.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple3b/userFunctions.h"></Radial>
+  </Radial>
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/printer/simple4b">
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/MakeRadial"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/PrettyPrinter.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/PrettyPrinter.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="56" name="../../..//testing/printer/simple4b/ale.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//testing/printer/simple4b/ale.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/alenode.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/alenode.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/functions.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/printer/simple4b/inputParser.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/inputParser.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/libFunctions.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/libFunctions.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/printeralenode.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/printeralenode.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/simple4b.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/simple4b.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/simple4b.xml"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/userFunctions.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/printer/simple4b/userFunctions.h"></Radial>
+  </Radial>
+ </Radial>
+ <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt">
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt/simple3b">
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt/simple3b/BrowserLayoutRenderer.app">
+    <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt/simple3b/BrowserLayoutRenderer.app/Contents">
+     <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/BrowserLayoutRenderer.app/Contents/Info.plist"></Radial>
+     <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt/simple3b/BrowserLayoutRenderer.app/Contents/MacOS">
+     </Radial>
+     <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/BrowserLayoutRenderer.app/Contents/PkgInfo"></Radial>
+     <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt/simple3b/BrowserLayoutRenderer.app/Contents/Resources">
+      <Radial refname="child" open="1" bgcolor="#777" size="0" name="../../..//testing/qt/simple3b/BrowserLayoutRenderer.app/Contents/Resources/empty.lproj"></Radial>
+     </Radial>
+    </Radial>
+   </Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/BrowserLayoutRenderer.pro"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//testing/qt/simple3b/MakeRadial"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="96" name="../../..//testing/qt/simple3b/ale.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//testing/qt/simple3b/ale.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="360" name="../../..//testing/qt/simple3b/ale.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/alenode.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/alenode.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/alenode.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/functions.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/qt/simple3b/inputParser.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/inputParser.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//testing/qt/simple3b/inputParser.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/layoutevaluator.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/layoutevaluator.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/layoutevaluator.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/qt/simple3b/layoutrender.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/layoutrender.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="64" name="../../..//testing/qt/simple3b/layoutrender.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/libFunctions.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/libFunctions.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//testing/qt/simple3b/libFunctions.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/loopdialog.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/loopdialog.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/qt/simple3b/loopdialog.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/main.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//testing/qt/simple3b/main.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/moc_layoutrender.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//testing/qt/simple3b/moc_layoutrender.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/moc_loopdialog.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/qt/simple3b/moc_loopdialog.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="0" name="../../..//testing/qt/simple3b/moc_renderable3d.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/moc_renderable3d.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/qt/simple3b/qtalenode.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/qtalenode.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="56" name="../../..//testing/qt/simple3b/qtalenode.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//testing/qt/simple3b/renderable.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/renderable.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="112" name="../../..//testing/qt/simple3b/renderable.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/renderable3d.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/renderable3d.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/renderable3d.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/renderconfig.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/simple3b.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/simple3b.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/qt/simple3b/simple3b.o"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/simple3b.xml"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt/simple3b/simple3b_ale.app">
+    <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt/simple3b/simple3b_ale.app/Contents">
+     <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/simple3b_ale.app/Contents/Info.plist"></Radial>
+     <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt/simple3b/simple3b_ale.app/Contents/MacOS">
+      <Radial refname="child" open="1" bgcolor="#777" size="600" name="../../..//testing/qt/simple3b/simple3b_ale.app/Contents/MacOS/simple3b_ale"></Radial>
+     </Radial>
+     <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/simple3b_ale.app/Contents/PkgInfo"></Radial>
+     <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt/simple3b/simple3b_ale.app/Contents/Resources">
+      <Radial refname="child" open="1" bgcolor="#777" size="0" name="../../..//testing/qt/simple3b/simple3b_ale.app/Contents/Resources/empty.lproj"></Radial>
+     </Radial>
+    </Radial>
+   </Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/userFunctions.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/userFunctions.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple3b/userFunctions.o"></Radial>
+  </Radial>
+  <Radial refname="child" open="1" bgcolor="#777" name="../../..//testing/qt/simple4b">
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/BrowserLayoutRenderer.pro"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//testing/qt/simple4b/MakeRadial"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="56" name="../../..//testing/qt/simple4b/ale.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="24" name="../../..//testing/qt/simple4b/ale.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/alenode.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/alenode.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/functions.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/qt/simple4b/inputParser.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/inputParser.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/layoutevaluator.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/layoutevaluator.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/qt/simple4b/layoutrender.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/layoutrender.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/libFunctions.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/libFunctions.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/loopdialog.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/loopdialog.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/main.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="16" name="../../..//testing/qt/simple4b/qtalenode.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/qtalenode.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="32" name="../../..//testing/qt/simple4b/renderable.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/renderable.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/renderable3d.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/renderable3d.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/renderconfig.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/simple4b.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/simple4b.h"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/simple4b.xml"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/userFunctions.cpp"></Radial>
+   <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/qt/simple4b/userFunctions.h"></Radial>
+  </Radial>
+ </Radial>
+ <Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//testing/runtests.sh"></Radial>
+</Radial>
+<Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//userFunctions.cpp"></Radial>
+<Radial refname="child" open="1" bgcolor="#777" size="8" name="../../..//userFunctions.h"></Radial>
+
+</Radial> </Top>
+</contents>
+<h1>Widget Source</h1>
+<pre>
+schedule {
+  //Optional: force sequential (recursive) evaluation of render attribute calls
+  //allInstances(render, RenderInstances), member([recursive,RenderInstances], Schedule)
+}
+
+type shapeType =  None | Rect | RoundedRect | Ellipse | Edge;
+
+interface Root { 
+  input radius : int;
+  input centerRadius : int;
+  input centerAlpha : int;
+  var render : int;
+  
+  input w : int;
+  input h : int;
+  input bgcolor : color;
+}
+interface Node { 
+  input open : float;
+  var show : float;
+
+  var r : int;
+  var alpha : int;
+  var sectorAng : int;
+  var maxR : int;
+  var level : int;
+  
+  var x : int;
+  var y : int;
+  var w : int;
+  var h : int;
+  var parentX : float;
+  var parentY : float;
+   
+  var render : int;
+  input bgcolor : color;
+  
+}
+
+
+class Top : Root { 
+  children { 
+    child : Node;
+  }
+  constraints {
+    child.alpha := 45;
+    child.maxR := radius;        
+    child.sectorAng := 360;
+
+    child.level := 1;
+    
+    child.show := 1.0;
+    
+    child.parentX := (centerRadius/2 + child.w/2) * cos(PI() * centerAlpha / 180) - child.w/2;
+    child.parentY := (centerRadius/2 + child.w/2) * cos(PI() * centerAlpha / 180) - child.w/2;
+    
+    render := paintStart(w, h) + paint(Rect, 0, 0, w, h, bgcolor);
+  }  
+}
+
+class Radial : Node { 
+  children {
+    child : [ Node ];
+  } 
+  attributes {
+    var numOpenChildren : int;
+    
+    var xOpen : int;
+    var yOpen : int;
+    var xClose : int;
+    var yClose : int;    
+  }
+  constraints {
+  
+    r := maxR / pow(1.8, level);
+  
+    loop child {
+      child.show := show * child.open;
+    
+      child.maxR := maxR;    
+      
+      child.sectorAng := sectorAng / $$.numOpenChildren;
+      child.alpha := 
+          fold alpha - (sectorAng / 2) - (sectorAng/($$.numOpenChildren*2)) 
+          .. 
+          child$-.alpha + child$i.show * (sectorAng/$$.numOpenChildren);
+
+      child.level := level + 1;
+      numOpenChildren := fold 0 .. $-.numOpenChildren + child$i.show;
+      
+      child.parentX := x;
+      child.parentY := y;
+        
+      render := 
+        fold 
+          paint(Ellipse, x, y, w, h, bgcolor)
+          ..
+          paint(Edge, x, y, child$i.x, child$i.y, bgcolor);
+        
+    }
+    w := pow(show,level) * 3.0 * r / 8.0;
+    h := w;
+    
+    xOpen := parentX + r * cos(PI() * alpha / 180);
+    yOpen := parentY + r * sin(PI() * alpha / 180);      
+    xClose := parentX;
+    yClose := parentY;
+    x := show * xOpen + (1 - show) * xClose;
+    y := show * yOpen + (1 - show) * yClose;
+  } 
+}
+</pre>
+</body>
+</html>

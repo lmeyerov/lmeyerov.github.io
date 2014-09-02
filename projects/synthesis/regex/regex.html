@@ -1,0 +1,532 @@
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<script src="jquery-1.7.1.min.js"></script>
+
+<script type="application/javascript;version=1.7" src="syn.js"></script>
+
+<script type="application/javascript;version=1.7">
+function tester () {
+	var tst = "function asdf () { yield 1; }";
+	try {
+		eval(tst);
+	} catch (e) {
+		alert("Your browser does not support the 'generator' language feature of JS1.7. Try Firefox!");
+	}
+
+}
+</script>
+<script>
+$(function () {
+	try {
+		tester();
+	} catch (e) {
+		alert("Your browser does not support the 'generator' language feature of JS1.7. Try Firefox!");
+	}
+});
+</script>
+
+<script>
+$(function () {
+	$('input[type="text"]').map(function () {
+		$(this).attr('value', $(this).attr('defaultValue'));
+	});
+});
+</script>
+
+<script type="application/javascript;version=1.7">
+function prettyPrintTemplate (template) {
+	return template.map(function (o) {
+			return typeof(o) == "string" ? o : ("\\" + (o+1));
+		}).join('');
+}
+
+function prettyPrint (lbl, out) {
+	console.log(
+		'====',		
+		lbl, 
+		out.rgxs.join(', '), 
+		out.nfo.map(function (o) { return o.steps; }).join(', '),
+		prettyPrintTemplate(out.template));
+}
+
+function testExamples () {
+
+	var initials = synRegex().syn(
+		{ioTriplets: [
+			['Emina Torlak', ['E', 'T'], 'T., E.'],
+			['Leo Meyerovich', ['L','M'], 'M., L.']
+			],
+		 template: "?., ?.",
+		 depth: 3,
+		 timeout: 1.0,
+		 maxAttempts: 100000}).next();
+	prettyPrint('initials', initials);
+	
+	var dna = synRegex().syn(
+		{ioTriplets: [
+			["28951__NM_021643.3__z__10", ["28951", "z", "10"], "28951_z_10"],
+			["0__0__X__0007", ["0", "X", "0007"], "0_X_0007"]],
+		 template: "?_?_?",
+		 depth: 3, 
+		 timeout: 1.0,
+		 maxAttempts: 100000}).next();
+	prettyPrint('dna', dna);
+}
+try {
+	testExamples();
+} catch (e) {
+	console.error('failed tests', e);
+}
+
+function getTimeout () {
+	try {
+		return parseFloat($('#timeout').val())
+	} catch (e) {
+		alert("Timeout must be a number: " + $('#timeout').val());
+		throw 'exn';
+	}
+}
+
+function getAttempts () {
+	try {
+		return parseInt($('#attempts').val())
+	} catch (e) {
+		alert("Attempts must be an integer: " + $('#attempts').val());
+		throw 'exn';
+	}
+}
+
+function getDepth () {
+	try {
+		var res = parseInt($('#depth').val());
+		if (res > 5) {
+			alert("Warning: big search space of all expressions of up to " + Math.pow(2,res) + " symbols long");
+		}
+		return res;
+	} catch (e) {
+		alert("Depth must be an integer: " + $('#depth').val());
+		throw 'exn';
+	}
+}
+
+
+function getPlaceholder () {
+	var v = $('#placeholder').val();
+	if (!v || v.length == 0) {
+		alert("Need unique placeholder for template that is not used in text, common ones are '?' or '#'")
+		throw 'no placeholder'
+	}
+	return v;
+}
+
+
+function prettyRgx(rgx) {
+  return rgx.toString().substring(1, rgx.toString().length - 1);
+}
+
+
+
+$(function () {
+
+	var gen = null;
+	var syn = null;
+
+
+	function displayResults (res, syn, startT) {
+	
+		prettyPrint('res', res);			
+		$('#data #out .match pre').map(function (i) {
+			  $(this).text(res.rgxs.length > i ? prettyRgx(res.rgxs[i]) : '');
+		});
+		$('#out .output pre').text(prettyPrintTemplate(res.template));
+		
+		$('#nfo').text("Tried: " + syn.getCount() + ", " + Math.round((new Date().getTime() - startT)/1000) + "s");
+	
+	}
+
+
+
+	$('#next').click(function () {
+		if (!gen) {
+			alert('must click "synthesis" before "next" button works');
+			return;
+		}
+		try {
+			displayResults(gen.next(), syn, new Date().getTime());
+		} catch (e) {
+			alert('Searched entire space');
+			console.log('next done on exn', e);
+		}
+	});
+
+
+	$('#synthesize').click(function () {
+				
+		var template = $('#template').val();
+		if (!template || template=="") {
+			alert("Please fill in the output template");
+			return;
+		}
+		
+		var examples = [];	
+		$('#data .example').map(function (_,i) {
+			var row = this;
+			if ($('.input input', row).val() && $('.output input', row).val()) {
+				var input = $('.input input', row).val();
+				var matches = 
+					$('.match input', row)
+						.filter(function () {  return $(this).val(); })
+						.map(function () { return $(this).val(); })
+						.toArray();
+				if (matches.length == 0) return;
+				var output = $('.output input', row).val();
+				examples.push([input, matches, output]);
+			}
+		});				
+		if (examples.length == 0) {
+			alert("Requires at least one valid example row with an input, output, and at least one match");
+			return;
+		}
+		
+		try {
+			var startT = new Date().getTime();
+			syn = synRegex();
+			gen = syn.syn(
+				{ioTriplets: examples,
+				 template: template,
+				 depth: getDepth(), 
+				 splitter: getPlaceholder(),
+				 extras: {
+				 	pre: [$('#pre').val()],
+				 	leaves: [
+				 		$('#leaf1').val(),
+				 		$('#leaf2').val(),
+				 		$('#leaf3').val(),
+				 		$('#leaf4').val()
+				 	],
+				 	binops: [$('#op1').val(), $('#op2').val()],
+				 	posts: [$('#post').val()]
+				 },
+				 timeout: getTimeout(),
+				 maxAttempts: getAttempts()});	
+			displayResults(gen.next(), syn, startT);
+		} catch (e) {
+			console.log('fail');
+			alert(e);
+			$('#out .match pre').text('');
+		}
+
+	
+	});
+	
+	
+	
+	
+});
+
+
+
+$(function () {
+
+	var on = false;
+	$('#hints table').toggle(on);
+
+	$('#toggle').click(function () {	
+		on = !on;
+		$('#hints table').toggle(on);
+		$(this).text(on ? 'hide' : 'show');
+	
+	});
+
+});
+
+function clearIOExamples () {
+		$('#data input[type="text"], #template').val('');
+		$('#data input[type="text"], #template').map(textResizer);		
+		
+		$('#data tr.example').remove();
+		$('#out .match pre, #out .output pre').text('');		
+}
+
+
+function textResizer () { 
+	$(this).attr('size', Math.min($(this).val().length + 5, 50)); 
+} 
+
+$(function () {
+
+	 $('input[type="text"]').keyup(textResizer).map(textResizer);
+
+	$('#clear').click(clearIOExamples);
+
+	function textareaResizer () {
+		$(this).css('height', ($(this).val().split('\n').length + 1) + 'em');	
+	}
+	
+	$('textarea').keyup(textareaResizer).map(textareaResizer);
+
+	$('#dumpParagraph').click(function () {
+		var rows = $('#paragraph textarea').val().split("\n");
+		if (rows.length > 0 && rows[rows.length - 1].trim() == "") {
+			rows = rows.reverse().slice(1).reverse();
+		}
+		if (!rows.length) {
+			alert("Error: need at least one line of text");
+			return;
+		}
+		clearIOExamples();
+		var elts = [];
+		var str = "";
+		var i = 0;
+		for (var example of rows.reverse()) {
+			i++;
+			var elt = $('<tr></tr>').attr('class','example')
+				.append($('<td></td>').attr('class','input').append($('<input></input>', {type: 'text', value: example, id: 'in' + i})))
+				.append($('<td></td>').attr('class','match').append($('<input></input>', {type: 'text', id: 'm' + i + '_1'})))
+				.append($('<td></td>').attr('class','match').append($('<input></input>', {type: 'text', id: 'm' + i + '_2'})))
+				.append($('<td></td>').attr('class','match').append($('<input></input>', {type: 'text', id: 'm' + i + '_3'})))
+				.append($('<td></td>').attr('class','match').append($('<input></input>', {type: 'text', id: 'm' + i + '_4'})))
+				.append($('<td></td>').attr('class','output').append($('<input></input>', {type: 'text', value: 1, id: 'out' + i})));
+			
+			
+	 		$('input[type="text"]', elt).keyup(textResizer).map(textResizer);
+
+			$('#ioSampleHeader').after(elt);
+		}
+		$('#template').val(1);
+	});
+	
+
+});
+	 
+	 
+	 
+</script>
+
+<style>
+body { font-size: 1.1em; }
+a { color: blue; }
+pre { font-size: 1.0em; }
+#out td { vertical-align: middle; }
+#out td.match, #out td.output {
+	background-color: #FFDD00;
+}
+.box {
+	border: 1px solid black; 
+	padding: 0.5em;
+	margin: 1em;
+	display: inline-block;
+	min-width: 47em;
+}
+textarea {
+	width: 45em;
+	min-height: 3em;
+}
+
+p {
+	max-width: 45em;
+	margin: 0.7em;
+}
+
+input[type=text] { text-align: center; font-family: courier }
+input[type=button] { font-size: 1.2em; }
+#hints.box { border-color: #777 }
+#hints * { color: #777; }
+#nfo { 
+	color: grey; 
+	margin: 1em; 
+}
+
+.input { background-color: lightgray; }
+.match { background-color: lightblue; }
+.output { background-color: pink; }
+
+</style>
+
+<script>
+$(function () {
+  $('head').append(
+    $("<link></link", {href: 'http://fonts.googleapis.com/css?family=Droid+Sans', rel: 'stylesheet', type: 'text/css'));
+});
+
+</script>
+<style>
+body {
+	font-family: 'Droid Sans', sans-serif;
+}
+</style>
+<script>
+$(function () {
+  $('head').append(
+    $("<link></link", {href: 'http://fonts.googleapis.com/css?family=Coming+Soon', rel: 'stylesheet', type: 'text/css'));
+});
+</script>
+<style>
+h1, h2, input[type=button] {
+	font-family: 'Coming Soon', sans-serif;
+	color: green;	
+}
+
+#toggle {
+	text-decoration: underline;
+	color: blue;
+	margin-left: 1em;
+	cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+
+<h1>Synthesize &quot;find/replace&quot; regular expressions</h1>
+
+<p>Provide some examples of the text you want to rewrite and hit &quot;synthesize&quot; to infer the regular expressions.</p>
+<p>Find out more about <b>synthesis for programming languages</b> at Leo Meyerovich's 
+<a href="http://www.eecs.berkeley.edu/~lmeyerov">research page</a> and 
+<a href="http://lmeyerov.blogspot.com/2013/09/sneak-peek-for-my-strange-loop-talk-on.html">blog</a>. Questions, ideas, or bugs? Email me at LMeyerov@gmail.com.
+</p>
+
+<div id="paragraph" class="box">
+<h3>Step 0: Sample Data</h3>
+<p>Put in sample data. Lines should correspond to rows.</p>
+<p><textarea>Emina Torlak
+Leo A. Meyerovich</textarea></p>
+<input id="dumpParagraph" value="next" type="button">
+</div>
+
+
+<div>
+<div style="display: inline-block" class="box">
+<h2>Input/Output Examples</h2>
+<h3>Step 1: Samples</h3>
+<table id="data">
+<tr style="font-weight: bold; text-decoration: underline" id="ioSampleHeader">
+  <td>Input</td><td colspan="4">Text to find</td><td>Output</td>
+</tr>
+<tr class="example">
+  <td class="input"><input id="in1" type="text" defaultValue="Emina Torlak"></td>
+  <td class="match"><input id="m1_1" type="text" defaultValue="E"></td>
+  <td class="match"><input id="m1_2" type="text" defaultValue="Torlak"></td>
+  <td class="match"><input id="m1_3" type="text" defaultValue=""></td>
+  <td class="match"><input id="m1_4" type="text" defaultValue=""></td>
+  <td class="output"><input id="out1" type="text" defaultValue="Torlak, E."></td>
+</tr>    
+<tr class="example">
+  <td class="input"><input id="in2" type="text" defaultValue="Leo A. Meyerovich"></td>
+  <td class="match"><input id="m2_1" type="text" defaultValue="L"></td>
+  <td class="match"><input id="m2_2" type="text" defaultValue="Meyerovich"></td>
+  <td class="match"><input id="m2_3" type="text" defaultValue=""></td>
+  <td class="match"><input id="m2_4" type="text" defaultValue=""></td>
+  <td class="output"><input id="out2"type="text" defaultValue="Meyerovich, L."></td>
+</tr>    
+<tr style="font-weight: bold; color: green">
+	<td></td>
+	<td colspan="4">Match</td>
+	<td>Template</td>
+</tr> 
+<tr id="out">
+	<td></td>
+	<td class="match"><pre></pre></td>
+	<td class="match"><pre></pre></td>
+	<td class="match"><pre></pre></td>
+	<td class="match"><pre></pre></td>
+	<td class="output"><pre></pre></td>
+</tr> 
+</table>
+<h3>Step 2: Hints</h3>
+<p>
+	<b><u>Template Hint</u></b>
+	<input type="text" id="template" defaultValue="?, ?.">
+	<p>
+		Describe the output structure in the above box.
+		It should look like an example output, except wherever a defaultValue from the input should be substituted, instead write &quot;?&quot;.
+
+	</p>
+	
+</p>
+<h3>Step 3: Solve!</h3>
+<input style="color: green" type="button" value="synthesize" id="synthesize">
+<input style="color: black; font-size: 0.8em" type="button" value="next" id="next">
+<span id="nfo"></span>
+<input style="float:right" type="button" value="clear" id="clear">
+</div>
+</div>
+
+<div class="box">
+<h2>Hints</h2>
+<p>Play with the Optional Settings:</p>
+<p>If the synthesizer can infer only some of the matches, put the solved matches into the &quot;tokens&quot; box below (and remove any opening/closing parentheses in them).</p>
+<p>If you can let your computer work for awhile, increase the Timeout,  Attempts, and Depth settings.</p>
+
+</div>
+
+<div class="box" id="hints">
+<h2>Optional settings <span id="toggle">(show)</span>
+</h2>
+<table>
+<tr>
+	<td><b>Timeout</b></td>
+	<td><input type="text" defaultValue="4.0" id="timeout"></td>
+	<td colspan="5">seconds</td>
+</tr>
+<tr>
+	<td><b>Attempts</b></td>
+	<td><input type="text" defaultValue="1000000" id="attempts"></td>
+	<td colspan="5">maximum</td>
+</tr>
+<tr>
+	<td><b>Depth</b></td>
+	<td><input type="text" defaultValue="3" id="depth"></td>
+	<td colspan="4"><i>log</i>(answer size)</td>
+</tr>	
+<tr>
+	<td><b>Pre</b></td>
+	<td><input type="text" defaultValue="" id="pre"></td>
+	<td colspan="4">beginning text</td>
+</tr>
+<tr>
+	<td><b>Tokens</td>
+	<td><input type="text" defaultValue="" id="leaf1"></td>
+	<td><input type="text" defaultValue="" id="leaf2"></td>
+	<td><input type="text" defaultValue="" id="leaf3"></td>
+	<td><input type="text" defaultValue="" id="leaf4"></td>	
+	<td>Keywords, e.g., "invoice"</td>
+</tr>
+<tr>
+	<td><b>Operators</b></td>
+	<td><input type="text" defaultValue="" id="op1"></td>
+	<td><input type="text" defaultValue="" id="op2"></td>
+	<td colspan="3">(ex: *)</td>	
+</tr>
+<tr>
+	<td><b>Post</b></td>
+	<td><input type="text" defaultValue="" id="post"></td>
+	<td colspan="4">ending text</td>
+</tr>
+<tr>
+	<td><b>Placeholder</b></td>
+	<td><input type="text" defaultValue="?" id="placeholder"></td>
+	<td colspan="4">template symbol</td>
+</tr>
+</table>
+</div>
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-27943864-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

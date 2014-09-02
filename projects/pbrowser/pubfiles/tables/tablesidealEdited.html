@@ -1,0 +1,212 @@
+<html><head><title>html5 backend: everything</title>
+<script>
+state = undefined;
+</script>
+<script src="tablesideal.helper.js"></script><!-- table ADT -->
+<script src="tablesideal.js"></script><!-- visitors -->
+<script src="tablesideal.patch.js"></script><!-- DAG monkeypatching -->
+<script src="render.js"></script>
+<script src="jquery-1.6.1.js"></script>
+<script>
+
+if (false) { //log
+logger = 
+  {log: function (i) { 
+      if ((typeof(i) == 'string') && i.indexOf('skipping text node') != -1) return;
+      else console.log(i);
+    },
+  group: console.group,
+  groupEnd: console.groupEnd,
+  error: console.error};
+
+} else { //no log
+  logger = {log: function () {}, group: function (){}, groupEnd: function(){}, error: function() {} };
+}
+
+window.addEventListener("load", function () {
+    $("#htmlSrc")[0].innerHTML 
+      = $("#contents")[0].innerHTML.replace(/</g,"&lt;").replace(/>/g,"&gt");
+  }, false);
+
+</script>
+</head>
+<body>
+<h1>About</h1>
+<p>The following example shows a table widget we specified in FTL, found parallelism in, and generated an HTML5 engine: the picture below is a live run of the engine!</p>
+
+<p>The widget is defined mostly in standard FTL. Two parts are not; we are experimenting with extensions to handle them and, as is, they provide a good lesson in how to mix with foreign code. </p>
+
+<p>The idea is that we work <i>with</i> the synthesizer and code generator. In developing this demo, we actually did not the final parallelization scheme: it found the basic schedule, and as we modified the code, ensured we didn't violate the scheme. In fact, near the end of the experience, we used the synthesizer to find a shorter schedule than what we working with throughout most of the initial development! Furthermore, we try to stay in FTL as much as possible because of the code generation benefits: the code shown here can be (provably) automatically parallelized and incrementalized. </p>
+
+
+<h2>Node types:</h2>
+<ul>
+  <li style="border: 1px black solid; margin: 10px; padding: 5px">Black: &lt;Leaf&gt;</li>
+  <li style="border: 1px blue solid; margin: 10px; padding: 5px">Blue: &lt;WrapBox&gt;</li>
+  <li style="border: 1px gray solid; margin: 10px; padding: 5px">Gray: &lt;Cell&gt;</li>
+  <li style="border: 1px orange solid; margin: 10px; padding: 5px">Orange: &lt;Cell rowspan="2"&gt;</li>
+  <li style="border: 1px #F0F solid; margin: 10px; padding: 5px">Pink: &lt;Cell colspan="2"&gt;</li>
+  <li style="border: 1px green solid; margin: 10px; padding: 5px">Green: &lt;Row&gt;</li>
+  <li style="border: 1px red solid; margin: 10px; padding: 5px">Red: &lt;Column&gt;</li>
+  <li style="border: 1px #CCC solid; margin: 10px; padding: 5px">Light gray: &lt;TableBox&gt;</li>
+</ul>
+<h2>Output: </h2>
+<div><canvas id="canvas"/></div>
+<contents id="contents">
+<Top>
+  <WrapBox refName="child" width="500">
+          <Leaf refName="childs" width="100"></Leaf>  
+          <Leaf refName="childs" width="100"></Leaf>  
+          <Leaf refName="childs" width="100"></Leaf>  
+          <Leaf refName="childs" width="100"></Leaf>  
+          <Leaf refName="childs" width="100"></Leaf>  
+    <TableBox refName="childs">
+      <Cols refName="columns"></Cols>
+      <Row refName="rows">
+        <Cell refName="childs">
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+        </Cell>           
+        <Cell refName="childs" rowspan="2" width="50" borderc="orange">
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+        </Cell>           
+        <Cell refName="childs" rowspan="2" borderc="orange">
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+        </Cell>           
+        <Cell refName="childs">
+          <Leaf refName="childs"></Leaf>          
+        </Cell>
+      </Row>
+      <Row refname="rows">
+        <Cell refName="childs" height="100">
+          <Leaf refName="childs"></Leaf>          
+        </Cell>
+        <Cell refName="childs" height="100">
+          <Leaf refName="childs"></Leaf>          
+        </Cell>
+        <Cell refName="childs" height="100">
+          <Leaf refName="childs"></Leaf>          
+        </Cell>
+      </Row>
+      <Row refname="rows">
+        <Cell refName="childs" colspan="2" borderc="#F0F">
+          <Leaf refName="childs"></Leaf>          
+        </Cell>
+        <Cell refName="childs">
+          <Leaf refName="childs"></Leaf>          
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+          <Leaf refName="childs"></Leaf>  
+        </Cell>
+        <Cell refName="childs">
+          <Leaf refName="childs"></Leaf>          
+        </Cell>
+        <Cell refName="childs" height="100">
+          <Leaf refName="childs"></Leaf>          
+        </Cell>
+      </Row>
+    </TableBox>
+     <Leaf refName="childs"></Leaf>  
+     <Leaf refName="childs"></Leaf>  
+     <Leaf refName="childs"></Leaf>  
+     <Leaf refName="childs"></Leaf>  
+     <Leaf refName="childs"></Leaf>  
+     <Leaf refName="childs"></Leaf>  
+     <Leaf refName="childs"></Leaf>  
+     <Leaf refName="childs"></Leaf>  
+     <Leaf refName="childs" width="100"></Leaf>  
+     <Leaf refName="childs" width="100"></Leaf>  
+
+  </WrapBox>
+</Top>
+</contents>
+
+<h1>Design Notes</h1>
+
+<p><b>Standard FTL</b><br/>
+A fairly small specification language was used to specify most of the example. 
+</p>
+
+<p><b>ADTs</b><br/>
+The example highlights that we do not need to define all of the functions in FTL. For example, <i>min</i> and <i>max</i> are JavaScript library calls: FTL assume any unknown function is <i>pure</i>.</p>
+<p>Externally implemented ADTs are a powerful escape hatch. 
+We use them here to compute the column and row number for each cell, such as with call <i>appendIntPairList</i>. 
+We believe a similar strategy is possible for tracking floats.</p>
+
+<p>There a pros and cons of using external functions for optimization. The drawback is that we will not optimize the memory of external code (e.g., to guarantee that it uses a parallel malloc) and vectorization may suffer.
+However, FTL's primary optimizations still apply: it could still automatically parallelize and incrementalize calls into the foreign code. 
+</p>
+
+
+<p><b>External constraints</b><br/>
+We told the synthesizer about the constraints induced by our external library code:
+<pre>schedule { 
+  "asserta(assignment(cols, self, intrinsprefwidth, self, cellsready)),
+  ...
+  P = [(_,td,_,_,_),(_,td,_,_,_),(_,bu,_,_,_),(_,td,_,_,_),(_,td,_,_,_),(_,bu,_,_,_),(_,td,_,_,_)]"
+}</pre>
+The constraints are written in standard Prolog.
+</p>
+
+<p>At a high level, the first statement says there is a dependency not visible in the basic widget spec. More on this below.
+The second line says that we want to synthesize a particular schedule of 7 top down (td) and bottom up (bu) tree traversals.
+External code will monkey patch the traversal schedule, which is why we tell the synthesizer to look for this specific schedule.
+Overall, this example shows one clean way to guide the synthesizer to incorporate external knowledge and respect external constraints. 
+</p>
+
+<p><b>DAGs, not trees</b><br/>
+The first line of the schedule constraint addresses the issue that we need to extend FTL to compute over DAGs, not just trees. Ideally, we wanted to write:
+<pre>
+class Col(...) : ColI {
+  children {
+    childs : [ CellI ] = ../rows/childs[.column == self.colNum];
+  }
+  ...
+}
+</pre>
+This would define the cells of a column as the cells of rows where the column numbers match, implying a DAG. 
+The analyzer would track that column cells cannot be immediately computed. Likewise, the synthesizer should know that the column cannot compute over its cells until they are known.</p>
+
+<p>However, the current version of FTL only supports trees, not DAGs. 
+Thus, we created attribute <i>cellsready</i> to mean that the cells have been found. 
+In the scheduling constraint above, we added a dependency on various column attributes on <i>cellsready</i> (such as for <i>intrinsprefwidth</i>), meaning they cannot be scheduled until after <i>cellsready</i>. We are working on expressive extensions to enable referencing non-local children. We use external code (monkey patching) to perform the actual aliasing; the constraint here is about ensuring the otherwise correct code is generated.</p>
+</p>
+<p>Our workaround for DAGs involves guiding the code generator: it should not generate code for attributes that the external code claims to solve.
+To pass our specification verifier, both a Row and a Column have to assign all of the attributes of a cell. Our synthesizer does not support DAGs, only trees: for each cell, it assumes the parent is row XOR col. The synthesizer would fail on the correct specification (row defines cell x position and col defines cell y position) because the row does not specify both cell (x,y) nor does the col.
+We know the external code will handle these cases, so we include, as part of the specification, <i>phantom</i> attributes for rows and columns: they will be assumed to be solvable at any time and no code will be emitted.</p>
+
+<h2>Document source</h2>
+The document is similar to standard HTML. Note that, except when overridden through attributes, the width, height, x, and y of elements are not specified. Likewise, cells have a default colspan/rowspan of 1, except for a few cells that span 2 rows or columns. The layout most solve for the positions of elements, including which row/column a cell is in.
+<pre id="htmlSrc">
+asdf
+</pre>
+<h2>Widget sources</h2>
+The widget is mostly specified in FTL. Note the (optional) use of scheduling constraints at the top and, to allow external code to define some values, phantom attribute sections for rows and columns.
+<iframe src="tablesideal.ftl" style="width: 80em;  height: 100%; scroll: overflow"></iframe>
+<h2>Monkey patch</h2>
+After the layout engine is loaded, we run the following monkey patcher. It modifies tree traversals near table elements. 
+<ol>
+<li>The second time a table is visited, a monkey patched call to dynamically create implicit column cells.</li>
+<li>Whenever a column is visited, the <i>getChildren</i> function is swapped to find cells of the right column number.</li>
+<li>The patch changes the visit order for top down visits to guarantee all rows and columns are visited before the cells of a table, and the reverse for bottom up tree traversals.</li>
+</ol>
+<iframe src="tablesideal.patch.js" style="width: 80em;  height: 100%; scroll: overflow"></iframe>
+<h2>Table ADT</h2>
+Cell positions in a table are greedily computed top-down and left-to-right. Rows are traversed consecutively and added to the table one at a time. Adding a row involves outputing which columns the cells of the row belong to and the updated constraints for adding the next row. Cell positions are just intermediate values from this computation.
+<iframe src="tablesideal.helper.js" style="width: 80em;  height: 100%; scroll: overflow"></iframe>
+<h2>Generated layout engine</h2>
+The code here is automatically generated; we did not modify it at all. It is fairly naive for the HTML5 backend and automatically includes logging code. The empty code blocks correspond to phantom attributes. Visitor dispatch code is near the bottom.
+<iframe src="tablesideal.js" style="width: 80em;  height: 100%; scroll: overflow"></iframe>
+</body>
+</html>

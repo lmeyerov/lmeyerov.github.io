@@ -1,0 +1,1210 @@
+<html>
+<head>
+<title>BSS interpreter</title>
+<style>
+* { margin: 0px; padding: 0px }
+</style>
+<script>
+
+// ========== FIREBUG EMULATOR ========================
+try {
+if (!console)
+  console = {
+    log: function () {},
+    error: function (e) { throw e; },
+    group: function () {},
+    groupEnd: function () {},
+  };
+} catch (e) {
+  console = {
+    dir: function () {},
+    log: function () {},
+    error: function (e) { throw e; },
+    group: function () {},
+    groupEnd: function () {},
+  };
+
+}
+//disable?
+try {
+if (false) {
+  console.log = function (){};
+  console.error = function (){};
+  console.group = function () {};
+  console.groupEnd = function () {};
+}
+} catch (e) {}
+// ====================================================
+
+
+// ========== HELPERS =================================
+
+function extend (t, o) {
+  if (o) for (i in o) t[i] = o[i];
+  return t; 
+}
+
+function map (f, lst) {
+  var res = [];
+  if (lst) {
+    var l = lst.length;
+    for (var i = 0; i < l; i++) res.push(f(lst[i]));
+  }
+  return res;
+}
+
+function foldl (f, acc, lst) {
+  var a = acc;
+  var l = lst.length;
+  for (var i = 0; i < l; i++) 
+    a = f(a, lst[i]);
+  return a;
+}
+
+function max (lst) {
+  var r = 0;
+  var l = lst.length;
+  for (var i = 0; i < l; i++) r = Math.max(r, lst[i]);
+  return r;
+}
+
+function sum (lst) {
+  var r = 0;
+  var l = lst.length;
+  for (var i = 0; i < l; i++) r+= lst[i];
+  return r;
+}
+
+//sometimes know sizeS/size yields a px
+function flattenPx (c) {
+  if ("px" in c) return c.px;
+  else console.error("unknown flattenPx pattern");
+}
+
+// ====================================================
+
+// ========== RENDERING LANGUAGE ======================
+function Node (o) {
+  return extend(this, o);
+}
+Node.prototype =  {
+  parent: null,
+  children: [],
+  relx: 0,
+  rely: 0,
+  width: 0,
+  height: 0,
+  backgroundColor: "white"  
+};
+
+function render (node, ctx) {
+  try {
+    console.group("(" + node.relx + ", " + node.rely + ") :: " + node.ntype);    
+  } catch (e) {
+    console.group("(failed render coords)");
+  }
+  ctx.save();
+  try {
+    console.log(node.width + " x " + node.height + ": " + node.backgroundColor + 
+         " (th: " + node.th.px + "/" + node.th +
+         (node.tw ? (", tw: " + node.tw.px) : "") +
+         ("minWidth" in node ? (", minWidth: " + node.minWidth) : "") +
+         ("prefWidth" in node ? (", prefWidth: " + node.prefWidth) : "") +
+         ")");
+    ctx.translate(node.relx, node.rely);
+    ctx.fillStyle = node.backgroundColor;
+    ctx.fillRect(0, 0, node.width, node.height);
+    var l = node.children.length;
+    for (var i = 0; i < l; i++) render(node.children[i], ctx);
+  } catch (e) {
+    console.error("painting error: " + e);
+  }
+  ctx.restore();
+  console.groupEnd();
+}
+// ====================================================
+
+
+// ========== BSS0 ====================================
+//----------- helpers ---------------------------------
+function sizeS(n, c) {
+  if (n == "auto" && typeof c == "object" && "pcnt" in c) {
+    return n;
+  } else if (typeof n == "object" && "px" in n && typeof c == "object" && "pcnt" in c) {
+    return {px: n.px * 0.01 * c.pcnt};
+  } else if (typeof c == "object" && "px" in c) {
+    return c;
+  } else if (c == "auto") {
+    return "auto";
+  } else {
+    console.error("unknown sizeS pattern");
+  }
+}
+
+//flattens
+function joinS(th, v) {
+  if (th === "auto") { return v; }
+  else if (typeof th == "object" && "px" in th) { return th.px; }
+  else { console.error("unknown joinsS pattern"); }
+}
+
+//-------- order checks ------------------------------
+//... also used for incrementalization ...
+function bss0wCnstrnt (o) { return "px" in o || "pcnt" in o; }
+function bss0hCnstrnt (o) { return o == "auto" || "px" in o || "pcnt" in o; }
+function bss0Px (o) { return (typeof o == "object" && "px" in o); }
+function isNumber (o) { return (typeof o) === "number"; }
+function isTh (o) { return (typeof o == "object" && "px" in o) || o == "auto"; }
+var bss0order = 
+  {input: 
+    {H: {"wCnstrnt": bss0wCnstrnt,  "hCnstrnt": bss0hCnstrnt},
+     V: {"wCnstrnt": bss0wCnstrnt,  "hCnstrnt": bss0hCnstrnt},
+     R: {"wCnstrnt": bss0Px,        "hCnstrnt": bss0Px}},
+   passes: [
+     {inherit: {
+        H: {width: isNumber, th: isTh, relx: isNumber},
+        V: {width: isNumber, th: isTh, relx: isNumber},
+        R: {width: isNumber, th: isTh, relx: isNumber}},
+      synthesize: {
+        H: {height: isNumber, rely: isNumber},
+        V: {height: isNumber, rely: isNumber},
+        R: {height: isNumber, rely: isNumber}}}]};
+
+
+//-------- defaults ----------------------------------
+var bss0defaults =
+  {
+    V: {children: [], wCnstrnt: {pcnt: 100}, hCnstrnt: "auto"},
+    H: {children: [], wCnstrnt: {pcnt: 100}, hCnstrnt: "auto"},
+    R: {children: [], wCnstrnt: {px: 300}, hCnstrnt: {px: 300}} //browser specific..
+  }
+
+//-------- passes ------------------------------------
+var bss0stages = 
+{V: [
+   {inherit: function (n) {
+        map(function (c) { 
+            c.th = sizeS(n.th, c.hCnstrnt);
+            c.width = flattenPx(sizeS({px: n.width}, c.wCnstrnt));
+            c.relx = 0;
+          }, n.children);   
+    },   
+    synthesize: function (n) {
+          n.height = joinS(n.th, 
+                           sum(map(function (c) { return c.height; }, 
+                                   n.children)));
+          if (n.children.length > 0) n.children[0].rely = 0;
+          var l = n.children.length;
+          for (var i = 1; i < l; i++)
+            n.children[i].rely = n.children[i-1].rely + n.children[i-1].height;
+    }}
+ ],
+ H: [ 
+   {inherit: function (n) {
+        map(function (c) {
+            c.th = sizeS(n.th, c.hCnstrnt);
+            c.width = flattenPx(sizeS({px: n.width}, c.wCnstrnt));
+          }, n.children);
+        var l = n.children.length;
+        if (l > 0) n.children[0].relx = 0;
+        for (var i = 1; i < l; i++) {
+          var overflow = n.children[i-1].relx + n.children[i-1].width > n.width;
+          n.children[i].relx = overflow ? 0
+                                        : n.children[i-1].relx + n.children[i-1].width;          
+        }        
+    },   
+    synthesize: function (n) {
+        if (n.children.length > 0) {
+          n.children[0].relx = 0;
+          n.children[0].rely = 0;          
+        }
+        var l = n.children.length;
+        for (var i = 1; i < l; i++) {
+          var overflow = n.children[i-1].relx + n.children[i-1].width > n.width;
+          n.children[i].rely = overflow ? n.children[i-1].rely + n.children[i-1].height 
+                                        : n.children[i-1].rely;
+        }
+        n.height = joinS(n.th, max(map(function (c) { return c.rely + c.height; },
+                                       n.children)));
+    }} 
+ ],
+ R: [ 
+   {inherit: function (n) {
+        n.width = flattenPx(n.wCnstrnt);
+        n.height = flattenPx(n.hCnstrnt);
+        n.th = n.hCnstrnt;
+        n.relx = 0;
+        n.rely = 0;
+        map(function (c) { 
+            c.th = sizeS(n.th, c.hCnstrnt);
+            c.width = flattenPx(sizeS({px: n.width}, c.wCnstrnt));
+            c.relx = 0;
+          }, n.children);   
+    },   
+    synthesize: function (n) {
+          if (n.children.length > 0) n.children[0].rely = 0;
+          var l = n.children.length;
+          for (var i = 1; i < l; i++)
+            n.children[i].rely = n.children[i-1].rely + n.children[i-1].height;    
+    }} 
+ ]};
+
+
+// ====================================================
+
+// ===== BSS1 =========================================
+//----------- helpers ---------------------------------
+function size (n, c, d) {
+ if ( (n === "auto" || n === "expand" || n === "shrink")
+      && (typeof c == "object" && "pcnt" in c)) 
+   return d;
+ else if (typeof n == "object" && "px" in n && typeof c == "object" && "pcnt" in c)
+   return {px: n.px * 0.01 * c.pcnt};
+ else return c;
+}
+
+function join (n, v) {
+  if (n == "auto" || n == "expand" || n == "shrink") 
+    return v;
+  else if (typeof n == "object" && "px" in n)
+    return n.px;
+  else console.error("unknown join pattern");  
+}
+
+function w (nw, ctw, cmw, cpw) {
+  if (ctw == "auto" || ctw == "expand") return nw;
+  else if (ctw == "shrink") return Math.min(Math.max(cmw, nw), cpw);
+  else if ("px" in ctw) return ctw.px;
+  else console.error("unknown w pattern");
+}
+
+//-------- order checks ------------------------------
+function bss1wCnstrnt (o) { return o == "expand" || o == "shrink" || "px" in o || "pcnt" in o; }
+function bss1hCnstrnt (o) { return o == "auto" || "px" in o || "pcnt" in o; }
+function bss1PolW (o) { return o == "expand" || o == "shrink"; }
+function bss1Px (o) { return (typeof o == "object" && "px" in o); }
+function isNumber (o) { return (typeof o) === "number"; }
+function isBss1Tw (o) { return o == "expand" || o == "shrink" || "px" in o; }
+function isBss1Th (o) { return o == "auto" || "px" in o; }
+var bss1order = 
+  {input: 
+    {H: {"wCnstrnt": bss1wCnstrnt,  "hCnstrnt": bss1hCnstrnt, "defCnstrnt": bss1PolW},
+     V: {"wCnstrnt": bss1wCnstrnt,  "hCnstrnt": bss1hCnstrnt, "defCnstrnt": bss1PolW},
+     R: {"wCnstrnt": bss1Px,        "hCnstrnt": bss1Px,       "defCnstrnt": bss1PolW}},
+   passes: [
+     {inherit: {
+        H: {th: isBss1Th, tw: isBss1Tw},
+        V: {th: isBss1Th, tw: isBss1Tw},
+        R: {th: isBss1Th, tw: isBss1Tw, minWidth: isNumber, prefWidth: isNumber,  
+            relx: isNumber, rely: isNumber, height: isNumber}},
+      synthesize: {
+        H: {minWidth: isNumber, prefWidth: isNumber},
+        V: {minWidth: isNumber, prefWidth: isNumber},
+        R: {}}},
+     {inherit: {
+       H: {width: isNumber},
+       V: {width: isNumber},
+       R: {width: isNumber}},
+      synthesize: {
+        H: {relx: isNumber, rely: isNumber, height: isNumber},
+        V: {relx: isNumber, rely: isNumber, height: isNumber},
+        R: {}}}]};
+
+//-------- defaults ----------------------------------
+var bss1defaults =
+  {
+    V: {children: [], wCnstrnt: "shrink", hCnstrnt: "auto", defCnstrnt: "shrink"},
+    H: {children: [], wCnstrnt: "shrink", hCnstrnt: "auto", defCnstrnt: "shrink"},
+    R: {children: [], wCnstrnt: {px: 300}, hCnstrnt: {px: 300}, defCnstrnt: "shrink"} //browser specific..
+  };
+
+//-------- passes ------------------------------------
+var bss1stages = 
+  {V: [
+     {inherit: function (n) { 
+        map(function (c) {
+            c.th = size(n.th, c.hCnstrnt, "auto");
+            c.tw = size(n.tw, c.wCnstrnt, n.defCnstrnt);
+          }, n.children);       
+      },
+      synthesize: function (n) {
+        n.prefWidth = join(n.tw, max(map(function (c) { return c.prefWidth; },
+                                         n.children)));
+        n.minWidth = join(n.tw, max(map(function (c) { return c.minWidth; },
+                                        n.children)));
+      }},
+     {inherit: function (n) {
+        map(function (c) { c.width = w(n.width, c.tw, c.minWidth, c.prefWidth); },
+            n.children);
+      },
+      synthesize: function (n) {
+        if (n.children.length > 0) {
+          n.children[0].relx = 0;
+          n.children[0].rely = 0;
+        }
+        var acc = 0;
+        var l = n.children.length;
+        for (var i = 1; i < l; i++) {
+          n.children[i].relx = 0;
+          acc += n.children[i-1].height;
+          n.children[i].rely = acc;
+        }
+        n.height = join(n.th, sum(map(function (c) { return c.height; },
+                                      n.children)));
+      } }],
+   H: [
+     {inherit: function (n) { 
+        map(function (c) {
+            c.th = size(n.th, c.hCnstrnt, "auto");
+            c.tw = size(n.tw, c.wCnstrnt, n.defCnstrnt);
+          },
+          n.children);        
+      },
+      synthesize: function (n) {
+        n.prefWidth = join(n.tw, sum(map(function (c) { return c.prefWidth; },
+                                         n.children)));
+        n.minWidth = join(n.tw, max(map(function (c) { return c.minWidth; },
+                                        n.children)));
+                                         
+      }},
+     {inherit: function (n) {
+        map(function (c) { c.width = w(n.width, c.tw, c.minWidth, c.prefWidth); },
+            n.children);        
+      },
+      synthesize: function (n) {
+        var tup =
+          foldl(function (acc, c) {
+              var overflow = acc[0] > 0 && (acc[0] + c.width) > n.width;
+              c.relx = overflow ? 0 : acc[0];
+              c.rely = acc[1] + overflow ? acc[2] : 0;
+              return [c.relx + c.width, c.rely, overflow ? c.height : Math.max(acc[2], c.height)];
+            },
+            [0, 0, 0],
+            n.children);
+        n.height = join(n.th, tup[2]);
+      } }],
+   R: [
+     {inherit: function (n) { 
+        n.th = n.hCnstrnt;
+        n.tw = n.wCnstrnt;
+        n.prefWidth = flattenPx(n.wCnstrnt);
+        n.minWidth = flattenPx(n.wCnstrnt);
+        n.width = n.prefWidth;
+        n.height = flattenPx(n.th);
+        n.relx = 0;
+        n.rely = 0;
+        map(function (c) {
+            c.th = size(n.th, c.hCnstrnt, "auto");
+            c.tw = size(n.tw, c.wCnstrnt, n.defCnstrnt);
+          }, n.children);       
+
+     },
+      synthesize: function (n) {}},
+     {inherit: function (n) {
+        map(function (c) { c.width = w(n.width, c.tw, c.minWidth, c.prefWidth); },
+            n.children);     
+     },
+      synthesize: function (n) {
+        if (n.children.length > 0) {
+          n.children[0].relx = 0;
+          n.children[0].rely = 0;
+        }
+        var acc = 0;
+        var l = n.children.length;
+        for (var i = 1; i < l; i++) {
+          acc += n.children[i-1].height;
+          n.children[i].rely = acc;
+        }            
+      } }]};
+
+
+// ====================================================
+
+// ========== BSS2 ====================================
+//----------- helpers ---------------------------------
+
+var mtSpace = {fringe: [], shift: {x: 0, y: 0}, by: 0, rx: 0, ty: 0};
+function mkMtSpace () { return {fringe: [], shift: {x: 0, y: 0}, by: 0, rx: 0, ty: 0}; }
+
+function bss2wCnstrnt (o) { return o == "expand" || o == "shrink" || "px" in o || "pcnt" in o; }
+function bss2hCnstrnt (o) { return o == "auto" || "px" in o || "pcnt" in o; }
+function bss2PolW (o) { return o == "expand" || o == "shrink"; }
+function bss2bool (o) { return o === true || o === false; }
+function bss2Px (o) { return (typeof o == "object" && "px" in o); }
+function bss2false (o) { return o === false; }
+function isBss2Tw (o) { return o == "expand" || o == "shrink" || "px" in o; }
+function isBss2Th (o) { return o == "auto" || "px" in o; }
+function isNumber (o) { return (typeof o) === "number"; }
+function isBss2Space (o) { return o && o.fringe instanceof Array && isNumber(o.shift.x) && 
+                                  isNumber(o.shift.y) && isNumber(o.by) && isNumber(o.rx) && 
+                                  isNumber(o.rx) && isNumber(o.ty); }
+                           
+                            
+//----------- order checks ----------------------------
+
+var bss2order = 
+  {input:
+     {H: {"wCnstrnt": bss2wCnstrnt,  "hCnstrnt": bss2hCnstrnt, "defCnstrnt": bss2PolW,
+          "f": bss2bool, "e": bss2false, "i": bss2bool,
+          "spaceIn": isBss2Space, "spaceOut": isBss2Space},
+      V: {"wCnstrnt": bss2wCnstrnt,  "hCnstrnt": bss2hCnstrnt, "defCnstrnt": bss2PolW,
+          "f": bss2bool, "e": bss2bool, "i": bss2bool,
+          "spaceIn": isBss2Space, "spaceOut": isBss2Space},
+      R: {"wCnstrnt": bss2Px,        "hCnstrnt": bss2Px,       "defCnstrnt": bss2PolW,
+          "f": bss2false, "e": bss2false, "i": bss2false, /* escape is meaningless */
+          "spaceOut": isBss2Space }}, 
+   speculate: {H: {spaceIn: mtSpace, spaceOut: mtSpace}, 
+               V: {spaceIn: mtSpace, spaceOut: mtSpace},
+               R: {spaceOut: mtSpace}},
+   passes:[
+     {inherit: 
+       {H: {tw: isBss2Tw, th: isBss2Th},
+        V: {tw: isBss2Tw, th: isBss2Th},
+        R: {th: isBss2Th, tw: isBss2Tw, minWidth: isNumber, prefWidth: isNumber,  
+            relx: isNumber, rely: isNumber, height: isNumber, spaceIn: isBss2Space}},
+      synthesize:
+        {H: {minWidth: isNumber, prefWidth: isNumber},
+         V: {minWidth: isNumber, prefWidth: isNumber},
+         R: {} }},
+     {inherit: 
+       {H: {width: isNumber},
+        V: {width: isNumber},
+        R: {} },
+      synthesize:
+        {H: {spaceIn: isBss2Space, spaceOut: isBss2Space, relx: isNumber, rely: isNumber},
+         V: {spaceIn: isBss2Space, spaceOut: isBss2Space, relx: isNumber, rely: isNumber},
+         R: {spaceOut: isBss2Space} }}
+   ]};
+
+//-------- defaults ----------------------------------
+var bss2defaults =
+  {
+    V: {children: [], wCnstrnt: "shrink", hCnstrnt: "auto", defCnstrnt: "expand", e: true, i: false, f: false},
+    H: {children: [], wCnstrnt: "shrink", hCnstrnt: "auto", defCnstrnt: "shrink", e: false, i: false, f: false},
+    R: {children: [], wCnstrnt: {px: 300}, hCnstrnt: {px: 300}, defCnstrnt: "shrink", f: false, e: false, i: false} //browser specific..
+  };
+
+//-------- passes ------------------------------------
+
+
+//return (lx, ty) of where to place a float, assuming nothing later in the flow
+//part of CSS standard: float cannot overflow unless it is on the left (so if inlines take up line, so be it)
+// (9.5 informal des is more restrictive than 9.5.1)
+
+function delta_f (cursor, nw, space, cw, ch, lh) {  
+  if (space.fringe.length == 0) { //no floats or cannot fit w/ floats.. but there might be inlines
+    //delta_f in v should return {x: 0, y: space.by};  
+    return {x: 0, 
+        y: Math.max(space.by, 
+                    cursor.x != 0 && cursor.x + cw > nw ? 
+                      cursor.y + lh : cursor.y)}    
+  }
+  else {
+    var t = Math.max(cursor.y, space.ty);
+    var hd = space.fringe[0];
+    if (t < hd.y - space.shift.y) { //above rightmost float
+      if (hd.x - space.shift.x + cw < nw) { //and fits
+        return {x: cursor.x, y: t};
+      } else { //doesn't fit, move below hd and try again on tl
+        return delta_f({x: cursor.x, y: hd.y - space.shift.y}, nw, 
+                       {fringe: space.fringe.slice(1), //TODO make fringe functional so O(1) concat
+                        shift: space.shift,
+                        by: space.by, rx: space.rx, ty: space.ty}, 
+                       cw, ch, lh);
+      }
+    } else { //below rightmost float, try again below it
+      return delta_f(cursor, nw, {fringe: space.fringe.slice(1), //TODO make fringe functional so O(1) concat
+                        shift: space.shift,
+                        by: space.by, rx: space.rx, ty: space.ty}, cw, ch, lh);
+    }
+  }
+}
+
+
+
+function shift(space, cursor) {
+try {
+  return {fringe: space.fringe, 
+          by: space.by - cursor.y, rx: space.rx - cursor.x, ty: space.ty - cursor.y, 
+          shift: {x: space.shift.x + cursor.x, y: space.shift.y + cursor.y}};
+ } catch (e) {
+   console.error("bad shift.");
+   console.trace();
+   throw e;
+ }
+}
+
+function unshift(space, cursor) {
+  return shift(space, {x: -cursor.x, y: -cursor.y});
+}
+
+//add a float to space at a (legal) rel x/y
+function UPlus (space, crelx, crely, cwidth, cheight) {
+  if (space.fringe.length == 0) {
+    return {fringe: [{x: space.shift.x + crelx + cwidth,
+                     y: space.shift.y + crely + cheight}],
+            shift: space.shift,
+            by: Math.max(space.by, crely + cheight),
+            rx: Math.max(space.rx, crelx + cwidth),
+            ty: crely};
+  } else {
+    var hd = space.fringe[0];
+    if (hd.y > space.shift.y + crely + cheight) {
+      return {fringe: [{x: space.shift.x + crelx + cwidth,
+                        y: space.shift.y + crely + cheight}].concat(space.fringe), 
+              shift: space.shift,
+              by: Math.max(space.by, crely + cheight),
+              rx: Math.max(space.rx, crelx + cwidth),
+              ty: space.shift.y + crely};
+    } else {
+      return UPlus({fringe: space.fringe.slice(1), shift: space.shift,
+                    by: space.by, rx: space.rx, ty: space.ty},
+                   crelx, crely, cwidth, cheight);
+    }
+  }
+}
+
+function place(dSpace, cursor, nw, cw) {
+  return cursor.x + cw > nw ?
+      {x: cw, y: cursor.y + max(map(function (c) { return c.height; }, dSpace.nQueue))}
+    : {x: cursor.x + cw, y: cursor.y};
+}
+
+function clear(dSpace, nw, cursor) {
+  var lh = max(map(function (c) { return c.height; }, dSpace.nQueue));
+  var ix = cursor.x - sum(map(function (c) { return c.width; }, dSpace.nQueue));
+  var l = dSpace.nQueue.length;
+  for (var i = 0; i < l; i++) {
+    var c = dSpace.nQueue[i];
+    c.relx = ix;
+    c.rely = cursor.y + lh - c.height;
+    ix += c.width;
+  }
+  l = dSpace.fQueue.length;
+  var spaceAcc = dSpace.space;
+  for (var i = 0; i < l; i++) {
+    var f = dSpace.fQueue[i];
+    var tup = delta_f(cursor, nw, spaceAcc, f.width, f.height, lh);
+    f.relx = tup.x;
+    f.rely = tup.y;
+    spaceAcc = UPlus(spaceAcc, f.relx, f.rely, f.width, f.height);
+  }
+  return spaceAcc;
+}
+
+var bss2stages = 
+  {V: [ {inherit: function (n) {
+           map(function (c) {
+               c.th = size(n.th, c.hCnstrnt, "auto");
+               c.tw = size(n.th, c.wCnstrnt, n.defCnstrnt);           
+             }, n.children);
+         }, 
+         synthesize: function (n) {
+           n.prefWidth = join(n.tw, max(map(function (c) { 
+                                              return (c.i || !c.f) ? c.prefWidth : 0; },
+                                            n.children)));
+           n.minWidth = join(n.tw, max(map(function (c) { 
+                                              return (c.i || !c.f) ? c.minWidth : 0; },
+                                            n.children)));
+        }},
+        {inherit: function (n) {
+           map(function (c) {
+               c.width = w(n.width, c.tw, c.minWidth, c.prefWidth);
+             }, n.children);
+         }, 
+         synthesize: function (n) {
+           var cursorAcc = {x: 0, y: 0};
+           var spaceAcc = n.f ? n.spaceIn : mtSpace;
+           var l = n.children.length;
+           for (var i = 0; i < l; i++) {
+             var c = n.children[i];
+             if (c.f) {
+               c.spaceIn = mtSpace;
+               var tup = delta_f(cursorAcc, n.width, spaceAcc, c.width, c.height, 0);
+               c.relx = tup.x;
+               c.rely = tup.y;
+               spaceAcc = UPlus(spaceAcc, c.relx, c.rely, c.width, c.height);
+             } else {
+               c.relx = 0;
+               c.rely = cursorAcc.y
+               c.spaceIn = shift(spaceAcc, cursorAcc);
+               spaceAcc = unshift(c.spaceOut, cursorAcc); //careful on order
+               cursorAcc.x = 0;
+               cursorAcc.y += c.height;               
+             }
+           }
+           n.spaceOut = n.e ? spaceAcc : n.spaceIn;
+           n.height = join (n.th, n.i ? Math.max(cursorAcc.y, spaceAcc.by)
+                                      : cursorAcc.y);
+           
+           
+         }}],
+   H: [ {inherit: function (n) {
+           map(function (c) {
+               c.th = size(n.th, c.hCnstrnt, "auto");
+               c.tw = size(n.th, c.wCnstrnt, n.defCnstrnt);           
+             }, n.children);
+         }, 
+         synthesize: function (n) {
+           n.prefWidth = join(n.tw, sum(map(function (c) { 
+                                              return (c.i || !c.f) ? c.prefWidth : 0; },
+                                            n.children)));
+           n.minWidth = join(n.tw, max(map(function (c) { 
+                                              return (c.i || !c.f) ? c.minWidth : 0; },
+                                            n.children)));
+        }},
+        {inherit: function (n) {
+           map(function (c) {
+               c.width = w(n.width, c.tw, c.minWidth, c.prefWidth);
+             }, n.children);
+         }, 
+         synthesize: function (n) {
+           var cursorAcc = {x: 0, y: 0};
+           var dSpaceAcc = {space: n.spaceIn, nQueue: [], fQueue: [], lh: 0};
+           var l = n.children.length;
+           for (var i = 0; i < l; i++) {
+             var c = n.children[i];
+             c.spaceIn = mtSpace;
+             if (c.f) {
+               var tup = delta_f(cursorAcc, n.width, dSpaceAcc.space, c.width, c.height, dSpaceAcc.lh);
+               var fx = tup.x;
+               var fy = tup.y;
+               if (fy <= cursorAcc.y + dSpaceAcc.lh) {                 
+                 c.relx = fx;
+                 c.rely = fy;
+                 if (!dSpaceAcc.fQueue.length == 0) { throw 'expected mt fqueue'; }
+                 cursorAcc.x += c.width;
+                 dSpaceAcc = {space: UPlus(dSpaceAcc.space, c.relx, c.rely, c.width, c.height),
+                              nQueue: dSpaceAcc.nQueue,
+                              fQueue: dSpaceAcc.fQueue,
+                              lh: dSpaceAcc.lh};
+               } else {
+                 dSpaceAcc = {space: dSpaceAcc.space,
+                              nQueue: dSpaceAcc.nQueue,
+                              fQueue: dSpaceAcc.fQueue.concat([c]),
+                              lh: dSpaceAcc.lh};
+               }
+             } else {
+               var nuCursor = place(dSpaceAcc, cursorAcc, n.width, c.width);
+               if (cursorAcc.y == nuCursor.y) {
+                 dSpaceAcc = {space: dSpaceAcc.space, 
+                              nQueue: dSpaceAcc.nQueue.concat([c]),
+                              fQueue: dSpaceAcc.fQueue,
+                              lh: Math.max(dSpaceAcc.lh, c.height)};
+               } else {
+                 dSpaceAcc = {space: clear(dSpaceAcc, n.width, cursorAcc),                 
+                 			  nQueue: [c],
+                              fQueue: [],
+                              lh: c.height};
+               }
+               cursorAcc = nuCursor;
+             }
+           }
+           var lh = max(map(function (c) { return c.height; }, dSpaceAcc.nQueue));
+           dSpaceAcc = {space: clear(dSpaceAcc, n.width, cursorAcc),
+                        fQueue: [],
+                        nQueue: [],
+                        lh: 0};
+           n.spaceOut = n.e ? dSpaceAcc.space : n.spaceIn;
+           n.height = join (n.th, n.i ? Math.max(cursorAcc.y + lh, dSpaceAcc.space.by)
+                                      : cursorAcc.y + lh);
+
+         }}],
+   R: [ {inherit: function (n) {
+           n.th = n.hCnstrnt;
+           n.tw = n.wCnstrnt;
+           n.prefWidth = flattenPx(n.wCnstrnt);
+           n.minWidth = flattenPx(n.wCnstrnt);
+           n.width = n.prefWidth;
+           n.height = flattenPx(n.th);
+           n.relx = 0;
+           n.rely = 0;
+           n.spaceIn = mtSpace;
+           map(function (c) {
+               c.th = size(n.th, c.hCnstrnt, "auto");
+               c.tw = size(n.tw, c.wCnstrnt, n.defCnstrnt);
+             }, n.children);
+         }, 
+         synthesize: function (n) { }},
+        {inherit: function (n) {
+           map(function (c) {
+               c.width = w(n.width, c.tw, c.minWidth, c.prefWidth); 
+             }, n.children);
+         }, 
+         synthesize: function (n) {
+           var cursorAcc = {x: 0, y: 0};
+           var spaceAcc = n.f ? n.spaceIn : mtSpace;
+           var l = n.children.length;
+           for (var i = 0; i < l; i++) {
+             var c = n.children[i];
+             if (c.f) {
+               c.spaceIn = mtSpace;
+               var tup = delta_f(cursorAcc, n.width, spaceAcc, c.width, c.height, 0);
+               c.relx = tup.x;
+               c.rely = tup.y;
+               spaceAcc = UPlus(spaceAcc, c.relx, c.rely, c.width, c.height);
+             } else {
+               c.relx = 0;
+               c.rely = cursorAcc.y
+               c.spaceIn = shift(spaceAcc, cursorAcc);
+               spaceAcc = unshift(c.spaceOut, cursorAcc); //careful on order
+               cursorAcc.x = 0;
+               cursorAcc.y += c.height;               
+             }
+           }
+           n.spaceOut = n.e ? spaceAcc : n.spaceIn;           
+         }}]};
+
+// ====================================================
+
+// ===== Grammar Evaluator ============================
+
+//sugar like V0 with default style (and partial JSON)
+//  V0(partialStyle, child1, child2...) => {ntype: "V", partialStyle join defaultStyle,
+//                                          children: [child1, child2, ...]}                                     
+function exportDefaults(defaults, suffix) {
+ for (var i in defaults) (function (i) {
+     window[i + suffix] = function (o /*, child1, child2, ... */) {       
+       var res = new Node();
+       res.parent = null;
+       res.ntype = i;
+       for (var d in defaults[i])
+         res[d] = defaults[i][d];
+       if (o) for (var d in o)
+         res[d] = o[d];
+       res.children = o && o.children ? o.children : [];
+       var l = arguments.length;
+       for (var c = 1; c < l; c++) {
+         res.children.push(arguments[c]);
+         arguments[c].parent = res; //makes incremental easier
+       }
+       return res;
+     };
+ })(i);
+}
+
+
+function reorganizeGrammar(grammar, order) {
+  //reoranize as a bunch of passes
+  console.group("stages");
+  var stages = [];
+  stages.speculate = order.speculate; //might be null
+  for (var stageN = 0; true; stageN++) {
+    console.group("looking for pass " + stageN);
+    var stage = {inherit: {}, synthesize: {}};  
+    var foundOne = false;
+    for (var ntype in grammar) {
+      //console.log("ntype: " + ntype);
+      if (grammar[ntype].length > stageN) {
+        foundOne = true;
+        //console.log("adding " + ntype); 
+        stage.inherit[ntype] = grammar[ntype][stageN].inherit;
+        stage.synthesize[ntype] = grammar[ntype][stageN].synthesize;
+        console.log(ntype + " " + (stage.inherit[ntype] ? "inherit " : "")
+                                + (stage.synthesize[ntype] ? "synthesize " : ""));
+        for (var attr in order.speculate) {
+          if (attr in grammar[ntype][stageN].inherit || 
+              attr in grammar[ntype][stageN].synthesize) {
+             if (!stage.speculative) stage.speculate = {};
+             stage.speculative[attr] = true;
+          }
+        }
+      }
+    }
+    console.groupEnd();
+    if (foundOne) {
+      stages.push(stage);
+    } else { 
+      console.log("not found");
+      break; 
+    }    
+  }
+  console.groupEnd();
+  return stages;
+}
+
+
+/*
+  //quickly go from attribute to when it's computed
+  //loopup[n.ntype][attr] => [null or pass, true if inherit]
+  var lookup = {};
+  for (var ntype in order.input) {
+    var o = {};
+    lookup[ntype] = o;
+    for (var iattr in order.input[ntype]) {
+      o[niattr] = [null, false];
+    }
+  }
+  for (var pass = 0; pass < order.passes.length; pass++) {
+    for (var ntype in order.passes[pass]) {
+      var o = lookup[ntype];
+      for (var iattr in order.passes[pass][ntype].inherit) o[iattr] = [pass, true];
+      for (var iattr in order.passes[pass][ntype].synthesize) o[iattr] = [pass, false];
+    }
+  }
+*/
+
+
+function addMatches (rgx, str, arr) {
+  while (match = rgx.exec(str))  {
+    var m = match[1];
+    if (m != "children" && m != "parent")
+      arr.push(m);
+  }
+}
+
+function genDependencies(f) {
+  var s = f.toString();
+ 
+  var nwrites = [];
+  addMatches(/n\.([a-zA-Z]+)[ ]?=/g, s, nwrites);
+  
+  var cwrites = [];
+  addMatches(/c\.([a-zA-Z]+)[ ]?=/g, s, cwrites);
+  addMatches(/n\.children\[.+\]\.([a-zA-Z]+)[ ]?=/g, s, cwrites);  
+  
+  var nreads = [];
+  addMatches(/n\.([a-zA-Z]+)(?!([ ]?=))[ ,\?\)\]\};]/g, s, nreads);
+  
+  var creads = [];
+  addMatches(/c\.([a-zA-Z]+)(?!([ ]?=))[ ,\?\)\]\};]/g, s, cwrites);
+  addMatches(/n\.children\[.+\]\.([a-zA-Z]+)(?!([ ]?=))[ ,\?\)\]\};]/g, s, cwrites);  
+  
+}
+
+// node, attr -> 
+
+
+function makeBang(stages, order) {
+ 
+}
+
+
+
+function down (pass, n) {
+  console.group(n.ntype + ": inherit = " + pass.inherit[n.ntype]);
+  if (pass.inherit && pass.inherit[n.ntype]) pass.inherit[n.ntype](n); 
+  var l = n.children.length;
+  for (var i = 0; i < l; i++) down(pass, n.children[i]);
+  console.groupEnd();
+}
+
+function specCopy(pass, n) {
+  var spec = {};
+  for (var i in pass.speculative) {
+    spec[i] = n[i];
+  }  
+}
+
+function specCheck(pass, n, spec) {
+  var res = true;
+  for (var attr in pass.speculative) {
+  
+    if (typeof spec[attr] == 'object') {
+      for (var ii in n[attr]) {
+        res &= (spec[attr][ii] == n[attr][ii]);
+      }
+    } else {
+      res &= spec[attr] == n[attr];
+    }
+  }
+
+}
+
+
+function downSpeculative (pass, n) {
+  var res = true;
+
+  var spec = specCopy(pass, n);
+
+  console.group(n.ntype + ": inherit = " + pass.inherit[n.ntype]);
+  if (pass.inherit && pass.inherit[n.ntype]) pass.inherit[n.ntype](n); 
+
+  res &= specCheck(pass, n, spec);
+
+
+  var l = n.children.length;
+  for (var i = 0; i < l; i++) res&= downSpeculative(pass, n.children[i]);
+  console.groupEnd();
+
+  return res;
+}
+
+
+function up (pass, n) {
+  console.group();
+  var l = n.children.length;
+  for (var i = 0; i < l; i++) up(pass, n.children[i]);
+  console.log(n.ntype + ": synthesize = " + pass.synthesize[n.ntype]);
+  if (pass.synthesize && pass.synthesize[n.ntype]) pass.synthesize[n.ntype](n);
+  console.groupEnd();
+}
+
+
+
+function upSpeculative(pass, n) {
+  var res = true;
+  
+  var l = n.children.length;
+  for (var i = 0; i < l; i++) res &= upSpeculative(pass, n.children[i]);
+  console.log(n.ntype + ": synthesize = " + pass.synthesize[n.ntype]);
+  
+  var spec = specCopy(pass, n);
+  
+  if (pass.synthesize && pass.synthesize[n.ntype]) pass.synthesize[n.ntype](n);
+  console.groupEnd();
+  
+  res &= specCheck(pass, n, spec);
+  
+  return res;
+}
+
+//inherit, handle subtree, synthesize
+function downUp(pass, n) {
+  if (pass.inherit && pass.inherit[n.ntype]) pass.inherit[n.ntype](n); 
+  var l = n.children.length;
+  for (var i = 0; i < l; i++) downUp(pass, n.children[i]);
+  if (pass.synthesize && pass.synthesize[n.type]) pass.synthesize[n.type](n);
+}
+
+function check(n, t) {
+  for (var i in t[n.ntype])
+    try {
+      if (!t[n.ntype][i](n[i])) {
+        console.error("failed check:" + n.ntype + ": attrib " + i + " fails " + t[n.ntype][i] + 
+                      " with " + n[i]);
+      } 
+    } catch (e) {
+      console.error("exn on check: " + n.ntype + ": " + i + " fails " + t[n.ntype][i] + "::" + e);    
+    }
+  var l = n.children.length;
+  for (var i = 0; i < l; i++) check(n.children[i], t);  
+}
+
+function fillSpeculative(n, specs) {
+  for (var i in specs[n.ntype]) {
+    n[i] = specs[n.ntype][i];
+  }
+  var l = n.children.length;
+  for (var i = 0; i < l; i++) {
+    fillSpeculative(n.children[i], specs);
+  }
+}
+
+
+
+//down pass then up pass
+function grammarEvaluatorSpec(passes, tree, types) {
+
+
+  if (passes.speculate) { 
+    fillSpeculative(tree, passes.speculate);
+  }
+
+  var st = new Date().getTime();
+  if (types) check(tree, types.input);
+  var l = passes.length;
+  for (var i = 0; i < l; i++) {
+    if (passes[i].speculative) {
+      throw 'bad';
+      var fixed = false;
+      while (!fixed) {
+        fixed = true;
+
+        console.group("spec pass:  " + i);
+        console.dir(tree);
+        console.group("spec inherit");    
+        fixed &= downSpeculative(passes[i], tree);
+        console.dir(tree);
+        if (types) {
+          console.log("checking");
+          check(tree, types.passes[i].inherit);
+        }
+        console.groupEnd();
+        console.group("spec synthesize");
+        fixed &= upSpeculative(passes[i], tree);
+            
+
+        console.dir(tree);
+        if (types) {
+          console.log("spec checking");
+          check(tree, types.passes[i].synthesize);
+        }
+        console.groupEnd();
+        console.groupEnd();
+      }
+    } else {
+
+        console.group("pass:  " + i);
+        console.dir(tree);
+        console.group("inherit");    
+        down(passes[i], tree);
+        console.dir(tree);
+        if (types) {
+          console.log("checking");
+          check(tree, types.passes[i].inherit);
+        }
+        console.groupEnd();
+        console.group("synthesize");
+        up(passes[i], tree);
+        console.dir(tree);
+        if (types) {
+          console.log("checking");
+          check(tree, types.passes[i].synthesize);
+        }
+        console.groupEnd();
+        console.groupEnd(); 
+    
+    }
+    
+    
+    
+  }
+  var et = new Date().getTime();
+  document.getElementById("log").innerHTML += "layout time: " + (et - st)/1000 + "s<br/>";
+}
+
+
+// ====================================================
+
+// =====  Driver ============================
+
+function interp(canv) {
+  var w = 300;
+  var h = 500;
+
+  var canvas = document.getElementById(canv);  
+  canvas.width = w;
+  canvas.height = h;
+  
+  for (var i = 0; i < 3; i++) {
+     exportDefaults(window["bss" + i + "defaults"], '' + i);
+     window["bss" + i + "passes"] = reorganizeGrammar(window["bss" + i + "stages"],
+                                                      window["bss" + i + "order"]);
+  }
+  
+  function clean (f) {
+     var s = f;
+     var m = /(function [a-zA-Z0-9]+\([a-zA-Z0-9]*\)..[\s\S]....return)([\s\S]*)./.exec(s); 
+     return m[2];
+  }
+  
+  var about = document.getElementById('languages');
+  about.innerHTML += '<br/>';
+  for (var i = 0; i < 3; i++) {
+    about.innerHTML += '<hr/><div><h2>BSS Level ' + i + '</h2><div>';
+    var o =  window["bss" + i + 'order'].input;
+    for (var n in o) {
+      about.innerHTML += '<b>' + n + '</b><ul>';
+      for (var attr in o[n]) {
+        about.innerHTML += '<li><b>' + attr + '</b> ' + clean(o[n][attr]) + '</li>';
+      }
+      about.innerHTML += '</ul>';
+    }
+    
+    about.innerHTML += '</div></div>';
+  }
+
+  
+  var page = V0({
+      backgroundColor: "rgb(255, 204, 204)",
+      wCnstrnt: {px: 250},
+      hCnstrnt: {px: 250},
+    },
+    V0({wCnstrnt: {px: 20}, hCnstrnt: {px: 20}, backgroundColor: "red"}),
+    H0({wCnstrnt: {px: 30}, hCnstrnt: "auto", backgroundColor: "green"},
+      V0({wCnstrnt: {px: 20}, hCnstrnt: {px: 20}, backgroundColor: "orange"}),
+      V0({wCnstrnt: {px: 5}, hCnstrnt: {px: 5}, backgroundColor: "white"})
+    ));
+
+  var wind = R0({wCnstrnt: {px: w}, hCnstrnt: {px: w}}, page);
+  grammarEvaluatorSpec(bss0passes, wind/*, bss0order*/);
+  console.log("rendering");
+  var st = new Date().getTime();
+  render(wind, canvas.getContext('2d'));
+  var et = new Date().getTime();
+  document.getElementById("log").innerHTML += "render time: " + (et - st)/1000 + "s<hr/>";
+
+  
+}
+
+function rerender () {
+  var sel =  document.getElementById('bssLevel');
+  var level = sel.options[sel.selectedIndex].value;
+  var R = window["R" + level];
+  var passes = window["bss" + level + "passes"];
+  var order = window["bss" + level + "order"];
+  var defaults = window["bss" + level + "defaults"];
+  exportDefaults(defaults, '');
+  
+  var str = document.getElementById('txt').value;  
+  var ast = eval(str);
+
+  var w = 300;
+  var h = 500;
+
+  var canvas = document.getElementById('mycanvas');  
+  canvas.getContext('2d').clearRect(0, 0, w, h);
+
+  var wind = R({wCnstrnt: {px: w}, hCnstrnt: {px: w}}, ast);
+  grammarEvaluatorSpec(passes,  wind, order);
+  console.log("rendering");
+  var st = new Date().getTime();
+  render(wind, canvas.getContext('2d'));
+  var et = new Date().getTime();
+  document.getElementById("log").innerHTML += "render time: " + (et - st)/1000 + "s<hr/>";
+
+}
+
+// ====================================================
+
+
+</script>
+</head>
+<body onload="interp('mycanvas')" style="background-color:#CCC">
+
+<div style="overflow: auto">
+  <canvas style="margin-left: 15px; float: left" id="mycanvas"></canvas>
+  <hr style="float: left; background-color: #000; width: 3px; height: 470px; margin: 15px;"/>
+  <div style="float: left">
+    <textarea style="font-size: .9em; overflow: auto; width: 570px; height: 500px;" id="txt">
+V({backgroundColor: "rgb(255, 204, 204)",
+   wCnstrnt: {px: 250},
+   hCnstrnt: {px: 250}},
+  V({wCnstrnt: {px: 20}, hCnstrnt: {px: 20}, backgroundColor: "red"}),
+  H({wCnstrnt: {px: 30}, hCnstrnt: "auto", backgroundColor: "green"},
+    V({wCnstrnt: {px: 20}, hCnstrnt: {px: 20}, backgroundColor: "orange"}),
+    V({wCnstrnt: {px: 5}, hCnstrnt: {px: 5}, backgroundColor: "white"})))
+    </textarea>
+    
+    
+    <div style="float: right; margin-left: 15px">
+      <div>
+        <div stye="overflow:auto">
+            <input style="float: right; margin-left: 10px" type="button" value="render" onclick="rerender()"/>
+            <div style="float: right">
+                bss: 
+                <select id="bssLevel">
+                <option value="0" selected>bss0</option>
+                <option value="1">bss1</option>
+                <option value="2">bss2</option>
+                </select>
+            </div>
+        </div>
+        <div>         
+          <b>Log: </b><input style = "float: right" type=button onclick="document.getElementById('log').innerHTML = '';" value="clear"/>
+          <hr/>
+          <div id="log" style="fontSize: .9em"></div>
+        </div>
+    </div>   
+  </div>
+  
+</div>
+
+<h2 style="clear:left">About</h2>
+The BSS0-2 languages (defined below) are specified using attribute grammars; the JS-based grammar interpreter here is a prototype of our C++-based one. The interpreter takes a grammar and a designer's layout and emits a render tree, which, in this case, is then output onto a canvas tag. Look at the source of this file: the variables of interest are bss0stages, bss1stages, and bss2stages.
+<div id="languages" style="clear: left"></div>
+
+<center><i>Last updated 1.12.2010</i></center>
+</body>
+</html>

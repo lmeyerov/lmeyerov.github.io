@@ -1,0 +1,71 @@
+<html>
+  <head>
+  <title>A Parallel Web Browser</title>
+  </head>
+  <body>
+<h1>Public</h1>
+<a href="http://parallelbrowser.blogspot.com">Official blog</a> and <a href="http://lmeyerov.blogspot.com">Leo's blog</a>
+<ol>
+ <li>April 19th, 2009. <b>Parallelizing the Web Browser</b> (CodeCon '09). slides (ppt, pdf)</li>
+ <li>April 1st, 2009. <b>Parallelizing the Web Browser</b> (HotPar '09). paper (<a href="hotpar09/paper.pdf">pdf</a>, bibtex), slides (ppt, <a href="hotpar09/slides.pdf">pdf</a>)</li>
+ <li>January 8th, 2009. <b>Parallelizing the Web Browser</b> (ParLab Winter Retreat). slides (<a href="retreatwinter2009/playout.pdf">pdf</a>)</li>
+</ol>
+
+
+  <h1>A Parallel Web Browser</h1>
+  We're designing the core algorithms and infrastructure of future browsers. Computers are facing a power wall, so, if <a href="http://en.wikipedia.org/wiki/Bell's_law">handhelds are really going to replace laptops</a>, they need to get a lot faster. Sequential optimizations and distributed computing will play a part, but we can also utilize hardware advances: 4-8 cores that are multithreaded and support SIMD instructions. Browsers on handhelds are increasingly CPU bound, so we're redesigning the core browser infrastructure for better sequential and parallel performance. As we have to redesign the basics, this is a good chance to modernize the rest as well.
+
+  <h2>Plan</h2> 
+Our active targets are browser kernels: lexing, parsing, CSS selectors, CSS layout, and animation. After, we plan to examine parallel scripting in a way that integrates with our new libraries (e.g., concurrent DOM calls and JIT'd layout) and greater systems (below). Furthermore, we will combine our kernels into the skeleton of a new browser to expose integration issues. We are targeting web browsers as they provide a dominant, productive application environment: we will focus on standards compliant optimizations where possible, but standards might be broken and languages might not be productive. In these latter cases, we're more than willing to fix them.
+
+  <h2>Collaborators</h2>
+The browser kernels will run as part of a greater system (in collaboration with the <a href="http://parlab.eecs.berkeley.edu">Par Lab</a>, <a href="http://www.sisa.samsung.com">Samsung</a>, and <a href="http://webblaze.cs.berkeley.edu">Webblaze</a>). As our core stabilizes, we'll be thinking about:
+  <ol>
+  <li><b><i>Tessellation OS</i></b> A thin multicore operating system with resource partitioning.</li>
+  <li><b><i>Lithe</i></b> A hierarchical, cooperative hardware thread scheduler to enable mixing different parallelism frameworks without worrying about interference.</li>
+  <li><i>Security</i> Traditional browser security focuses on protecting lower-level abstractions like runtimes but barely protects actual application abstractions once communication between components inevitably occurs. We will combine operating-system provided separation notions (e.g., Chrome), object capabilities (e.g., Darpa Browser), and more specialized notions (advice membranes -- contact for more information).</li>
+  <li><b><i>Manual Tuning and Autotuning</i></b> There is a lot of room for general optimizations, but also many machine-specific ones.</li>
+  <li><b><i>RAMP</i></b> We're testing on a variety of hardware configurations, but simulators will enable us to explore many more.</li>
+<!--  <li><b><i>XCB</i></b> A (somewhat) thread-safe update to XLib</li> -->
+</ol>
+
+<p>
+<i>Current contributors</i><br/>
+Gradudate students: Leo Meyerovich, Seth Fowler<br/>
+Undergraduates: James Ide
+</p>
+
+<p>
+<i>Previous contributors</i><br/>
+Graduate students: Chris Jones (now @ Mozilla)<br/>
+Undergraduates: Justin Bonar
+</p>
+
+ <p>
+  We're always looking for collaborators, so please contact us! Parallelism in the consumer space, especially in handhelds, is a new area, so a willingness to explore is the main qualifier.</p>
+
+  <h1>Code</h1>
+  <b><i>Ours</i></b>
+  <p>Our work is <a href="http://en.wikipedia.org/wiki/BSD_license">BSD licensed</a>. We're targetting x86 (TBB or Cilk++, unclear about SSE) internally but expect ARM ports (and may switch to ARM) once we have the hardware or help. No policy on GPUs yet -- likely CUDA or OpenCL.</p> 
+  <ol>
+    <li>Lexer (<i>currently specialized for Cell processors</i>)</li>
+    <li>Parser (<i>current target</i>)</li>
+    <li><a href="http://code.google.com/p/pbrowser/source/browse/trunk/layout/match/parseHTML.cilk">CSS selector engine</a> -- Cilk++ and TBB implementations. Expects a dictionary of CSS rules and parsed HTML; annotates nodes with matching rules. Requires non-user agent rules and subsequent rule prioritization. Whittles down 80ms (on a Nehalem) naive algorithm to 1ms (4 hardware threads). 
+ <a href="http://pbrowser.googlecode.com/svn/trunk/layout/match/writeup/rulematching.pdf">working draft pdf</a>
+<p><b>Future optimizations:</b> see document. </p>
+<p><b>Future features: </b>further selectors, rule resolution, default properties, adaptive selectors. </p></li>
+    <li>CSS 2.1 layout engine (<i>current target</i>). <a href="http://pbrowser.googlecode.com/svn/trunk/ecss/ecss2.pdf">parallel css kernel semantics</a>. A big chunk of this is actually font handling (how to call into FreeType2). We're not optimizing painting yet -- GPUs might enter the picture here (e.g., Cairo Glitz or something smarter). </li>
+  </ol>
+  <b><i>Relevant software by others</i></b>
+  <ol>
+    <li>XML parser: ParaXML (+ XPath), ParaBix</li>
+    <li>SIMD images, GPU fonts</li>
+    <li>Dataflow scripting language: <a href="http://www.flapjax-lang.org">Flapjax</a> for functional reactive web programming
+    <li>Data parallel scripting: Copperhead (Python/CUDA)</li>
+  </ol>
+<i>
+Last updated 09.23.09
+</i>
+
+</body>
+</html>

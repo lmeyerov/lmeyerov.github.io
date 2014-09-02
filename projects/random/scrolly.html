@@ -1,0 +1,440 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Scrolly</title>
+<!-- Dynamic Drive: CSS Liquid Layout #2.1- (Fixed-Fluid) -->
+<style type="text/css">
+
+	body{
+		margin:0;
+		padding:0;
+		line-height: 1.5em;
+		font-family: Arial;
+		font-size: .8em;
+	}
+
+	b{font-size: 110%;}
+	em{color: red;}
+
+
+	#topsection{
+		height: 50px; /*Height of top section*/
+		border-bottom: 1px #000 solid;
+		background: #eee;
+	}
+
+	#topsection h1{
+		margin: 0;
+		padding-top: 15px;
+
+	}
+
+	#contentwrapper{
+		float: left;
+		width: 100%;
+		padding-bottom: 0px;
+		margin-bottom: 0px;
+		cursor:move;
+	}
+
+	#contentcolumn{
+		margin-left: 200px; /*Set left margin to LeftColumnWidth*/
+		border-left: 5px #000 solid;
+		margin-bottom: 0px
+		padding-bottom: 0px;
+		cursor:arrow;
+	}
+
+	#leftcolumn{
+		float: left;
+		width: 200px; /*Width of left column*/
+		margin-left: -100%;
+	}
+
+	#footer{
+		border: 1px #000 solid;
+		clear: left;
+		width: 100%;
+		color: #000;
+		text-align: center;
+		padding: 4px 0;
+		background: #eee;
+	}
+
+	.innertube{
+		margin: 0px;
+	}
+
+	.hmenu {
+		padding: 0px;
+		margin: 0px;
+		display: inline;
+	}
+
+	.hmenu li {
+		display: inline;
+		padding: 5px;
+		margin: 0px;
+	}
+
+	.evens {
+		background: #eef;
+	}
+
+	tr {
+		padding: 0px; margin: 0px;
+	}
+
+	td {
+		padding: 0px; margin: 0px;
+		border: 1px #ccf solid;
+		border-top: 0px;
+		border-left: 0px;
+	}
+
+
+	td span {
+		padding: 2px;
+		padding-left: 5px;
+		padding-right: 5px;
+		margin: 0px;
+	}
+
+
+</style>
+
+<script type="text/javascript">
+	var dlat = 0; //latency
+	var a, b, v; //dom nodes
+	var broadcast = 100; //ms: polling rate before steady RTT
+
+
+	var lastHit = new Date().getTime(); //last time AP *received* a request
+
+	function release(f, a) {
+		lastHit = new Date().getTime();
+		f(a);
+	}
+
+	var roughBroadcast = broadcast/2;
+	function squeeze(f,a) {
+		//if lastHit < 500ms ago, delay RTT time
+		var t = new Date().getTime();
+		var d = t - lastHit; //ms since last broadcast
+		if (d < 500) { setTimeout(release, dlat, f, a); }
+		else { //catch on next Bp, pretend it is 50ms
+			setTimeout(release, dlat + roughBroadcast, f, a);
+		}
+	}
+
+	function $ (i) { return document.getElementById(i); }
+
+	/* http://www.dynamicdrive.com/dynamicindex9/noselect.htm */
+	function disableSelection(target){
+		if (typeof target.onselectstart!="undefined") //IE route
+			target.onselectstart=function(){return false}
+		else if (typeof target.style.MozUserSelect!="undefined") //Firefox route
+			target.style.MozUserSelect="none"
+		else //All other route (ie: Opera)
+			target.onmousedown=function(){return false}
+		target.style.cursor = "default"
+	}
+
+
+
+	//-> TR
+	function makeEntry  (o /* [String] */, tdClass /* 'evens' + 'odds' */) {
+		var rr =  document.createElement('TR');
+		for (var i = 0; i < o.length; i++) {
+			var td = document.createElement('TD');
+			td.className = tdClass;
+			var s = document.createElement('SPAN');
+			s.appendChild(document.createTextNode(o[i]));
+			td.appendChild(s);
+			rr.appendChild(td);
+		}
+		return rr;
+	}
+
+	//-> [TR]
+	function makeEntries (n) {
+		var es = [];
+		for (var i = 0; i < n; i++) {
+			var a = [i];
+			for (var j = 0; j < 5; j++) {
+				a.push(Math.round(Math.random() * (Math.pow(10, Math.random()*12))));
+			}
+			es.push(makeEntry(a, i % 4 < 2 ? 'evens' : 'odds'));
+		}
+		return es;
+	}
+
+	//->[table]
+	function makeTables () {
+		var e = parseInt(getURLParam('elts'));
+		var o = e ? e : 20;
+		var tables = [];
+		for (var i = 0; i < 10; i++) {
+
+			var tbl = document.createElement('TABLE');
+			tbl.cellSpacing=0;
+
+			var htr = document.createElement('TR');
+
+			var htnum = document.createElement('TD');
+			htnum.className='htnum';
+
+			var htn = document.createElement('TD');
+			htn.appendChild(document.createTextNode('Name'));
+			htn.className='htn';
+
+			var htt = document.createElement('TD');
+			htt.appendChild(document.createTextNode('Time'));
+			htt.className='htt';
+
+			var htar = document.createElement('TD');
+			htar.appendChild(document.createTextNode('Artist'));
+			htar.className='htar';
+
+			var htal = document.createElement('TD');
+			htal.appendChild(document.createTextNode('Album'));
+			htal.className='htal';
+
+			var htg = document.createElement('TD');
+			htg.appendChild(document.createTextNode('Genre'));
+			htg.className='htg';
+
+
+			htr.appendChild(htnum);
+			htr.appendChild(htn);
+			htr.appendChild(htt);
+			htr.appendChild(htar);
+			htr.appendChild(htal);
+			htr.appendChild(htg);
+
+			tbl.appendChild(htr);
+
+			var body = makeEntries(o);
+			for (var j in body) {
+				tbl.appendChild(body[j]);
+			}
+
+			tables.push(tbl);
+		}
+		return tables;
+	}
+	var tables = makeTables();
+
+	/*instantaneous*/ function loadTable(i) {
+
+		var h = $('tblHolder');
+
+		while (h.firstChild) h.removeChild(h.firstChild);
+		h.appendChild(tables[i]);
+	}
+
+	function dLoadTable(i) {
+		squeeze(loadTable, i);
+	}
+
+
+	function render (w) {
+		a.marginLeft = b.width = w;
+	}
+
+	//http://www.11tmr.com/11tmr.nsf/D6Plinks/MWHE-695L9Z
+	function getURLParam(strParamName){
+	  var strReturn = "";
+	  var strHref = window.location.href;
+	  if (strHref.indexOf("?") > -1 ){
+		var strQueryString = strHref.substr(strHref.indexOf("?")).toLowerCase();
+		var aQueryString = strQueryString.split("&");
+		for (var iParam = 0; iParam < aQueryString.length; iParam++ ){
+		  if (aQueryString[iParam].indexOf(strParamName.toLowerCase() + "=") > -1 ){
+			var aParam = aQueryString[iParam].split("=");
+			strReturn = aParam[1];
+			break;
+		  }
+		}
+	  }
+	  return unescape(strReturn);
+	}
+
+
+	function grender (e) {
+		render(e.pageX + 'px');
+	}
+
+
+	function lat(v, i) {
+		dlat = v;
+		var h = $('latmenu');
+		for (var n = 2; n < h.childNodes.length - 1; n++) {
+			//alert(h.childNodes[n]);
+			h.childNodes[n].style.backgroundColor = '';
+		}
+		h.childNodes[i+2].style.backgroundColor = '#FFF';
+		//document.onmousemove = (v == 0)? grender : drender;
+	}
+
+
+	var last = new Date().getTime();
+
+	function drender(e) {
+		var n = new Date().getTime();
+		if (n - last >= 5) {
+			squeeze(render, e.pageX + 'px');
+			//setTimeout(render, dlat, e.pageX + 'px');
+			last = n;
+		}
+	}
+
+
+	//document.onmousemove = drender;
+
+
+
+
+	var vs;
+	var v; //set on load
+
+	function sText(txt) {
+		while (v.firstChild) v.removeChild(v.firstChild);
+		v.appendChild(document.createTextNode(vs.value));
+
+	}
+
+	function cText () {
+		squeeze(sText,null);
+		//setTimeout(cpText, 0);
+	}
+
+	function load() {
+		loadTable(0);
+
+		a = $('contentcolumn').style;
+		b = $('leftcolumn').style;
+		v = $('vText');
+		vs = $('iText');
+
+		disableSelection(document.body);
+
+		var c = $('contentwrapper');
+		c.addEventListener(
+			'mousedown', function (e) { document.onmousemove = drender;
+										drender(e);
+									  }, true);
+
+		document.addEventListener(
+			'mouseup', function () { document.onmousemove = null; }, true);
+
+
+
+	}
+
+</script>
+
+</head>
+<body onload="load()">
+	<div id="maincontainer">
+
+		<div id="topsection">
+			<div class="innertube">
+				<!-- <ul class="hmenu">
+					<li>File</li>
+					<li>Edit</li>
+					<li>Controls</li>
+					<li>View</li>
+					<li>Store</li>
+					<li>Advanced</li>
+					<li>Help</li>
+				</ul> -->
+				<span style="padding: 30px; font-weight: bold">myApplication</span>
+				Network latency:
+				<ul class="hmenu" id="latmenu">
+					<script type="text/javascript"/>
+						var n = [20,50,70,100,150];
+						document.write('<li style="background-color: #FFF"><a id=l0 href="javascript:lat(0,0)">0</a></li>');
+						for (var indo in n) {
+							var i = n[indo];
+							var ind = parseInt(indo) + 1;
+							document.write('<li><a id=' + ('l' + i) + ' href="javascript:lat(' + i + ', ' + ind + ')">' + i + '</a></li>');
+						}
+					</script>
+				</ul>
+				<!--Jitter:
+				<ul class="hmenu">
+					<li><a href="javascript:jit(5)">5</a></li>
+					<li><a href="javascript:jit(10)">10</a></li>
+					<li><a href="javascript:jit(20)">20</a></li>
+				</ul>-->
+				Rows:
+				<ul class="hmenu">
+					<li><a href="scrolly.html?elts=1">1</a></li>
+					<li><a href="scrolly.html?elts=10">10</a></li>
+					<li><a href="scrolly.html?elts=50">50</a></li>
+					<li><a href="scrolly.html?elts=100">100</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="contentwrapper">
+			<div id="contentcolumn">
+				<div class="innertube">
+
+
+					<input id=iText type=text value="" style="color: #fff; border: 0px; opacity: 0; width:1px; height: 1px"
+													   onkeypress="cText()"
+													   onfocus="cText()"
+
+					/>
+					<div id="tblHolder"></div>
+				</div>
+			</div>
+		</div>
+
+		<div id="leftcolumn">
+			<div class="innertube" style="margin: 0px">
+
+				<div style="padding: 5px; border-bottom: 1px #000 solid">
+					<h2>Playlists</h2>
+					<select multiple onchange="dLoadTable(this.selectedIndex)" style="width:100%">
+						<option>first playlist</option>
+						<option >second playlist</option>
+						<option>third playlist</option>
+						<option>fourth playlist</option>
+						<option>fifth playlist</option>
+						<option>sixth playlist</option>
+						<option>seventh playlist</option>
+						<option>eighth playlist</option>
+						<option>ninth playlist</option>
+						<option>tenth playlist</option>
+					</select>
+
+					<h2>Search</h2>
+					<div style="border: #000 1px solid; min-height: 20px; width:100%">
+						<div onclick="document.getElementById('iText').value='';document.getElementById('iText').focus()">
+							<span id="vText">type here!</span>
+						</div>
+					</div>
+					<h2>0 Latency Search</h2>
+
+					<input id=iText type=text value="" style="border:1px #000 solid; width: 100%"/>
+
+				</div>
+
+				something that scrolls..
+
+			</div>
+
+		</div>
+
+		<div id="footer">
+			hi
+		</div>
+	</div>
+
+</body>
+</html>

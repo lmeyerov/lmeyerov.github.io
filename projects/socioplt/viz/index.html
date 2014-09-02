@@ -1,0 +1,103 @@
+<html>
+<head>
+<title>Socio-PLT: Quantifying Programming Language Perceptions</title>
+<script src="jquery.js"></script>
+<script src="d3.v2.js"></script>
+<script src="main.js"></script>
+<script type="text/javascript">
+$(function(){
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-27943864-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+});
+</script><link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body>
+
+<h1><span><a href="index.html">Socio-PLT:</a></span> Sociological Programming Language Theory</h1>
+
+<div class="about">
+<p><a href="index.html">What is Socio-PLT?</a> 
+| <a href="http://www.youtube.com/watch?v=v2ITaI4y7_0">Video</a> 
+| <a href="more.html">Further Resources</a>
+| Created by <a href="http://www.eecs.berkeley.edu/~lmeyerov">Leo Meyerovich</a> and <a href="http://www.eecs.berkeley.edu/~asrabkin/">Ari Rabkin</a> (EECS @ Berkeley)</p></div>
+
+<!-- <div class="toolbar survey">Contribute to science by filling out our <a href="survey.html">anonymous 2-page survey</a> about programming languages!</div> -->
+<div class="toolbar"><span><b>Visualizations:</b> <a href="rank.html">Language/statement ranking</a> <a href="statementcorr.html">Statement correlation</a> <a href="languagecorr.html">Language correlation</a> <a href="statekmeans.html">Statement clustering</a> <a href="langkmeans.html">Language clustering</a>
+</div>
+
+
+<p>
+<span class="emph">Why does one language succeed and another one fail?</span> To answer questions like this, we are examining sociological aspects of programming language theory: socio-PLT. This varies from establishing first principles (see <a href="http://www.eecs.berkeley.edu/~lmeyerov/projects/socioplt/paper0413.pdf">our survey of sociological research</a>) to building socially-optimized languages. The interactive visualizations here show some of our recent efforts for <span class="emph">a quantitative analysis of programming language perceptions</span>. 
+
+<p>
+We're examining large-scale activity, and a lot of it:
+<ul>
+<li>Thousands of respondents from Berkeley's recent <a href="https://www.coursera.org/course/saas">massive open online course on software as a service</a>, most of whom are working developers that already completed at least a bachelors in computer science.
+<li>A decade of <a href="http://sourceforge.net/">SourceForge respository data</a>, including over 300,000 projects
+<li>Two years of the the <a href="http://hammerprinciple.com/therighttool">Hammer Principle online survey</a> on programming languages, including over 13,000 respondents
+</ul>
+
+<p>
+<a href="languagecorr.html"><img src="zoom.png" width="200px" style="float:left"/></a>
+The visualizations on this site currently focus on the last data set. First, we computed <a href="rank.html">how well a language matches a particular statement</a> relative to other languages. From there, we <a href="languagecorr.html">correlated languages</a> with each other and the same for <a href="statementcorr.html">statement correlations</a>. This revealed pairwise relationships that were often surprising, such as that <span class="emph">static types and code reuse do not mix well</span>. Finally, to understand multiway relationships, we computed the <a href="langkmeans.html">k-means clusterings for languages</a> and for <a href="statekmeans.html">statements</a>. We explain all of these below, or you can follow the links in this paragraph to start exploring the data.
+
+<h2>The Hammer Principle Survey</h2>
+<p>
+Respondents came in bursts from popular online sites such as Slashdot, Hacker News, and Reddit. They went through the following process:
+
+<div class="step">
+<h3>Step 1: <br/>Pick languages</h3>
+<p>Respondents picked a set of languages that they are comfortable out of a pool of 51. The average set had about 7 languages. 
+<img src="select.png" width="230"/>
+</div>
+
+<div class="step">
+<h3>Step 2: <br/>Rank languages by statement</h3>
+Respondents were shown a series of statements. For each statement, a respondent ordered the previously selected languages based on how well they matched the statement. The average respondent answered 10-11 questions.
+<img src="rank.png" width="200"/>
+</div>
+
+<div style="clear:both"></div>
+<p><span class="emph">Over two years, 13,000 people filled out the survey.</span> While individual responses are sparse and often contradictory, our statistical analysis revealed strong themes with high confidence.
+
+<h2>Algorithm Step 1: Ranking with Glicko</h2>
+
+<a href="rank.html"><img src="glicko.png" width="200" style="float: left;"/></a>
+
+<p>Our <a href="rank.html">first interactive visualization</a> compares languages according to how well they match different statements about them. This provides <span class="emph">a basic fingerprint for each language</span> and reveals languages that rank similarly -- or fail to -- for certain properties.
+
+<p>Consider a respondent ranking a few languages for some statement X. The languages might be given order A &gt; B &gt; C. We treat this as the outcome of 3 different matches between players A, B, and C in sport X, where A &gt; B, A &gt; C, B &gt; C. While respondents only looked at 140,000 statements, these sequences expand into <span class="emph">4 million pairwise comparisons</span>!
+
+<p>For a given statement X, globally ordering the languages is difficult. There is no logically consistent ordering -- one respondent may rank A &gt; B and another B &gt; A. Worse, the data is sparse for unpopular languages.
+
+<p>The <a href="http://www.glicko.net/">Glicko 2</a> ranking algorithm is designed for this scenario.  You may have seen it in sports: Glicko generalizes the old <a href="http://en.wikipedia.org/wiki/Elo_rating_system">Elo rating system</a>. 
+You may even have your own Glicko rank because a variant drives <a href="http://research.microsoft.com/en-us/projects/trueskill/">XBox's TrueSkill online player rankings</a>.
+
+<p>Glicko is a simulation. <span class="emph">A weak language beating a strong language gives the weak one a big boost in score and the strong one a drop, while there is little change in ranks from a strong language beating a weak one.</span>
+Time and contention is factored in by tracking the deviation across matches: an occasional upset is disregarded (such as from spam bots and zealots), but if the upsets become consistent (e.g., a language was upgraded), the rank will converge on the new value.  Likewise, high disagreement about a statement is reflected by a high deviation.
+
+
+
+
+<h2>Algorithm Step 2: Correlation and Clustering</h2>
+<p>Finally, we looked more closely for correlations. We did this in two ways:
+
+
+<p>
+<a href="languagecorr.html"><img src="corr.png" width="200" style="float: left;"/></a>
+1. We computed the <a href="statementcorr.html">statement correlation matrix</a>. This tells us, for any two given statements, whether they have a linear relationship across the different languages. For example, we found that programmers perceive that <span class="emph">static type systems strongly anti-correlate with code reuse</span>.  We also computed the <a href="languagecorr.html">language correlation matrix</a>, which reveals languages that are similar and opposite.
+
+<p>
+<a href="statekmeans.html"><img src="clusters.png" width="200" style="float: left; padding: 1em"/></a>
+2. We computed <span class="emph">the <a href="en.wikipedia.org/wiki/K-means_clustering">k-means clustering</a> to showcase relationships across multiple items rather than just between pairs.</span> For a desired number of k groups, it will partition the data in a way that minimizes the average distance a node is from the center of its group. We clustered both <a href="langkmeans.html">languages</a> and <a href="statekmeans.html">statements</a> for different values of k. This reveals strong themes and, in some cases, items that are tough to pin down. 
+
+
+</body>
+</html>

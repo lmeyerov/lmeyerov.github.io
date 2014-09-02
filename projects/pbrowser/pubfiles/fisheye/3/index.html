@@ -1,0 +1,308 @@
+<html>
+<head>
+<script src="DOMToRender.js"></script>
+<script src="render.js"></script>
+<script src="runSelectors.js"></script>
+<script src="sizzle.js"></script>
+<script src="fisheye.js"></script>
+<script>
+function sqrt(a) { return Math.sqrt(a); }
+</script>
+<script>
+	attrMap = {};
+	otherAttrs = ['mouseX', 'mouseY', 'enlargeMult'];	 //opt-in array of input attributes that can be set by CSS selectors
+	logger = {log: function(){}, err: function (e) { console.error(e); }};
+	
+	function loader() {
+	
+	  otherAttrs.push('refName');
+	  
+	  var doc = document.getElementById('content'); 
+	  var cnv = document.getElementById('cnv');
+		
+	  runSelectors([document.getElementById('documentStyle')], Sizzle("#content, #content *"));
+	  var data = coreDraw(doc, cnv, true, true, false);
+//	  console.log(data);
+	  
+	  
+	  var dirty = false;	  
+	  window.addEventListener('mousemove',
+	    function(evt) {	    
+		  data.addedStyles.mousex = evt.offsetX;
+		  data.addedStyles.mousey = evt.offsetY;
+		  dirty = true;		  
+	    });	  
+	    
+	  setInterval(function() {
+			if (dirty) {
+				coreDraw2(data, cnv);
+				dirty = false;
+//				console.log('redraw');
+			}
+		}, 20);
+
+	}
+	window.addEventListener('load', loader);	
+	window.addEventListener('load', function() {
+			document.getElementById('cssSrc').innerHTML = document.getElementById('documentStyle').innerHTML;
+			document.getElementById('htmlSrc').innerText = document.getElementById('content').parentNode.innerHTML;
+		});
+</script>
+<style>
+pre { width: 100%; max-width: 50em; height: 20em; overflow-y: scroll; border: 1px solid black }
+</style>
+</head>
+<body>
+<style id="documentStyle">
+top { padding: 5}
+leaf { enlargeMult: 10.0; }
+
+* { refName: childs; }
+top > * { refName: child; }
+</style>
+<div>
+<!--
+<top id="content">
+<vbox>
+  <hbox>
+    <leaf></leaf>
+  </hbox>
+</vbox>
+</top>
+-->
+
+<top id="content">
+<vbox>
+  <hbox>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+  </hbox>
+  <hbox>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+  </hbox>
+  <hbox>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+  </hbox>
+  <hbox>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+  </hbox>
+  <hbox>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+  </hbox>
+  <hbox>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+  </hbox>
+  <hbox>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+  </hbox>
+  <hbox>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+  </hbox>
+  <hbox>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+  </hbox>
+  <hbox>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+    <leaf></leaf>
+  </hbox>
+
+</vbox>
+</top>
+</div>
+<h1>Canvas</h1>
+<canvas style="margin-left: auto; margin-right: auto" id="cnv"></canvas>
+<h1>Widgets</h1>
+<iframe src="fisheye.ftl" style="width: 100%; max-width: 50em; height: 20em"></iframe>
+<h1>CSS</h1><pre id="cssSrc" style="width: 100%; max-width: 50em; height: 20em;"></pre>
+<h1>HTML</h1>
+<pre id="htmlSrc"></pre>
+</body>
+</html>
